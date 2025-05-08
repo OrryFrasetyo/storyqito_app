@@ -1,0 +1,135 @@
+import 'package:flutter/material.dart';
+import 'package:storyqito_app/core/data/network/response/stories_response.dart';
+import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
+import 'package:storyqito_app/core/utils/formatted_local_time.dart';
+
+class StoryDetailScreen extends StatelessWidget {
+  final ListStory story;
+  final VoidCallback onBackPressed;
+
+  const StoryDetailScreen({
+    super.key,
+    required this.story,
+    required this.onBackPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          localizations.story_detail,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        elevation: 0,
+        leading: IconButton(
+          onPressed: onBackPressed,
+          icon: Icon(Icons.arrow_back),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Hero(
+                tag: "story-image-${story.id}",
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minWidth: double.infinity,
+                    minHeight: 200,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16.0),
+                    child: Image.network(
+                      story.photoUrl,
+                      width: double.infinity,
+                      fit: BoxFit.contain,
+                      loadingBuilder: (context, child, loadingStatus) {
+                        if (loadingStatus == null) return child;
+                        return Container(
+                          constraints: BoxConstraints(minHeight: 350),
+                          color: Colors.grey[200],
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              value:
+                                  loadingStatus.expectedTotalBytes != null
+                                      ? loadingStatus.cumulativeBytesLoaded /
+                                          loadingStatus.expectedTotalBytes!
+                                      : null,
+                            ),
+                          ),
+                        );
+                      },
+                      errorBuilder:
+                          (context, error, stackTrace) => Container(
+                            color: Colors.grey[300],
+                            child: Center(
+                              child: Icon(
+                                Icons.broken_image,
+                                size: 64.0,
+                                color: Colors.grey[400],
+                              ),
+                            ),
+                          ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        child: Text(
+                          story.name.isNotEmpty
+                              ? story.name[0].toUpperCase()
+                              : localizations.question_mark,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      SizedBox(width: 12.0),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              story.name,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              formatLocalTime(story.createdAt),
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: 16.0),
+                  Text(story.description, style: TextStyle(fontSize: 16.0)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
