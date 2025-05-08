@@ -56,7 +56,7 @@ class AppRoot extends StatelessWidget {
               ),
         ),
       ],
-      child: MyApp(sharedPrefs: sharedPrefs),
+      child: MyApp(),
     );
   }
 }
