@@ -1,13 +1,8 @@
-class Setting {
-  final bool isDark;
-  final String locale;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  Setting({required this.isDark, required this.locale});
+part 'setting.freezed.dart';
 
-  Setting copyWith({bool? isDark, String? locale}) {
-    return Setting(
-      isDark: isDark ?? this.isDark,
-      locale: locale ?? this.locale,
-    );
-  }
+@freezed
+abstract class Setting with _$Setting {
+  const factory Setting({required bool isDark, required String locale}) = _Setting;
 }

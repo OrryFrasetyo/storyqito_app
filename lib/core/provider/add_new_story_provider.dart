@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:storyqito_app/core/data/repository/story_repository.dart';
 
@@ -29,7 +30,7 @@ class AddNewStoryProvider extends ChangeNotifier {
 
   bool get showCamera => _showCamera;
   bool get isCameraInitialized => _isCameraInitialized;
-  bool get isrequestPermission => _requestPermission;
+  bool get isRequestPermission => _requestPermission;
   List<CameraDescription>? get cameras => _cameras;
 
   void setImageFile(XFile? file) {
@@ -115,5 +116,29 @@ class AddNewStoryProvider extends ChangeNotifier {
 
     _isLoading = false;
     notifyListeners();
+  }
+
+  Future<void> uploadStoryWithFile({
+    required String token,
+    required String description,
+    required XFile imageFile,
+  }) async {
+    if (kIsWeb) {
+      final bytes = await imageFile.readAsBytes();
+      return addNewStory(
+        token: token,
+        description: description,
+        fileName: imageFile.name,
+        photoBytes: bytes,
+      );
+    } else {
+      final file = File(imageFile.path);
+      return addNewStory(
+        token: token,
+        description: description,
+        fileName: imageFile.name,
+        photoFile: file,
+      );
+    }
   }
 }

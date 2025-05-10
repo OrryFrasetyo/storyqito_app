@@ -1,40 +1,29 @@
 import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class User extends Equatable {
-  final String? name;
-  final String? email;
-  final String? password;
-  final String? token;
-  final String? language;
+part 'user.freezed.dart';
+part 'user.g.dart';
 
-  const User({this.name, this.email, this.password, this.token, this.language});
+@freezed
+abstract class User with _$User {
+  const factory User({
+    String? name,
+    String? email,
+    String? password,
+    String? token,
+  }) = _User;
 
-  @override
-  String toString() =>
-      "User(name: $name, email: $email, password: $password, token: $token, language: $language)";
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+}
 
-  Map<String, dynamic> toMap() => {
-    "name": name,
-    "email": email,
-    "password": password,
-    "token": token,
-    "language": language,
-  };
+extension UserExtension on User {
+  String toJsonString() => json.encode(toJson());
 
-  factory User.fromMap(Map<String, dynamic> map) => User(
-    name: map["name"],
-    email: map["email"],
-    password: map["password"],
-    token: map["token"],
-    language: map["language"],
-  );
-
-  String toJson() => json.encode(toMap());
-
-  factory User.fromJson(String source) => User.fromMap(json.decode(source));
-
-  @override
-  List<Object?> get props => [name, email, password, token, language];
+  static User fromJsonString(String source) {
+    if (source.isEmpty) {
+      throw const FormatException('Empty JSON string');
+    }
+    return User.fromJson(json.decode(source) as Map<String, dynamic>);
+  }
 }

@@ -143,17 +143,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             prefixIcon: Icons.email_outlined,
                           ),
                           keyboardType: TextInputType.emailAddress,
-                          // validator: (value) {
-                          //   if (value == null || value.isEmpty) {
-                          //     return localizations.enter_email;
-                          //   }
-                          //   if (!RegExp(
-                          //     r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                          //   ).hasMatch(value)) {
-                          //     return localizations.enter_valid_email;
-                          //   }
-                          //   return null;
-                          // },
                           validator:
                               (value) => Validators.validateEmail(
                                 value,
@@ -182,15 +171,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           obscureText: _obscurePassword,
-                          // validator: (value) {
-                          //   if (value == null || value.isEmpty) {
-                          //     return localizations.enter_password;
-                          //   }
-                          //   if (value.length < 8) {
-                          //     return localizations.password_minimum;
-                          //   }
-                          //   return null;
-                          // },
                           validator:
                               (value) => Validators.validatePassword(
                                 value,

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/auth_provider.dart';
 import 'package:storyqito_app/core/provider/story_provider.dart';
-import 'package:storyqito_app/ui/home/widget/story_card_widget.dart';
+import 'package:storyqito_app/ui/home/widgets/auth_error_widget.dart';
+import 'package:storyqito_app/ui/home/widgets/loading_widget.dart';
+import 'package:storyqito_app/ui/home/widgets/no_user_widget.dart';
+import 'package:storyqito_app/ui/home/widgets/story_error_widget.dart';
+import 'package:storyqito_app/ui/home/widgets/story_list_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   final VoidCallback onLogout;
@@ -21,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadUserAndStories();
     });
@@ -33,6 +37,13 @@ class _HomeScreenState extends State<HomeScreen> {
     await authProvider.getUser();
 
     if (authProvider.user != null && mounted) {
+      _loadStories();
+    }
+  }
+
+  void _loadStories() {
+    final authProvider = context.read<AuthProvider>();
+    if (authProvider.user != null) {
       context.read<StoryProvider>().getStories(user: authProvider.user!);
     }
   }
@@ -44,9 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  bool _isShouldLoadMore() {
+    return _scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 500;
+  }
+
   void _scrollListener() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 500) {
+    if (_isShouldLoadMore()) {
       final authProvider = context.read<AuthProvider>();
       final storyProvider = context.read<StoryProvider>();
 
@@ -65,13 +80,17 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void _showLogoutSuccessMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(AppLocalizations.of(context)!.logout_success)),
+    );
+  }
+
   void _logOut(AuthProvider authProvider) async {
     await authProvider.logout();
     widget.onLogout();
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.logout_success)),
-      );
+      _showLogoutSuccessMessage();
     }
   }
 
@@ -83,205 +102,34 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Consumer2<AuthProvider, StoryProvider>(
         builder: (context, authProvider, storyProvider, child) {
           if (authProvider.isLoadingLogin) {
-            return Center(child: CircularProgressIndicator());
+            return LoadingViewWidget();
           }
 
           if (authProvider.errorMsg.isNotEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Lottie.asset(
-                    "assets/animation/error.json",
-                    fit: BoxFit.contain,
-                    width: 64.0,
-                    height: 64.0,
-                  ),
-                  const SizedBox(height: 16.0),
-                  Text(
-                    "${localizations.error} ${authProvider.errorMsg}",
-                    style: const TextStyle(fontSize: 16.0),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 16.0),
-                  ElevatedButton(
-                    onPressed: widget.onLogout,
-                    child: Text(localizations.logout),
-                  ),
-                ],
-              ),
+            return AuthErrorWidget(
+              errorMsg: authProvider.errorMsg,
+              onLogout: widget.onLogout,
             );
           }
 
           if (authProvider.user == null) {
-            return Center(child: Text(localizations.no_user_data));
+            return NoUserWidget();
           }
 
           if (storyProvider.errorMsg.isNotEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Lottie.asset(
-                    "assets/animation/error.json",
-                    fit: BoxFit.contain,
-                    width: 64.0,
-                    height: 64.0,
-                  ),
-                  const SizedBox(height: 16.0),
-                  Text(
-                    "${localizations.error_loading_stories} ${storyProvider.errorMsg}",
-                    style: TextStyle(fontSize: 16.0),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (authProvider.user != null) {
-                        storyProvider.refreshStories(user: authProvider.user!);
-                      }
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(localizations.retry),
-                    ),
-                  ),
-                ],
-              ),
+            return StoryErrorWidget(
+              errorMsg: storyProvider.errorMsg,
+              onRetry: () => _refreshStories(),
             );
           }
 
-          return RefreshIndicator(
-            onRefresh: () async {
-              if (authProvider.user != null) {
-                await storyProvider.refreshStories(user: authProvider.user!);
-              }
-            },
-            child: CustomScrollView(
-              controller: _scrollController,
-              slivers: [
-                SliverAppBar(
-                  primary: true,
-                  snap: true,
-                  floating: true,
-                  forceElevated: false,
-                  title: Row(
-                    children: [
-                      Text(
-                        localizations.name_app,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    IconButton(
-                      onPressed: _refreshStories,
-                      icon: Icon(Icons.refresh, color: Colors.purple),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: IconButton(
-                        onPressed: () => _logOut(authProvider),
-                        icon: Icon(Icons.logout, color: Colors.red),
-                      ),
-                    ),
-                  ],
-                  elevation: 0,
-                ),
-
-                if (storyProvider.isLoading && storyProvider.stories.isEmpty)
-                  SliverToBoxAdapter(
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ),
-
-                if (storyProvider.stories.isEmpty && !storyProvider.isLoading)
-                  _buildNoStories(),
-
-                if (storyProvider.stories.isNotEmpty)
-                  _buildSliverStoryList(storyProvider),
-
-                if (storyProvider.isLoading && storyProvider.stories.isNotEmpty)
-                  SliverToBoxAdapter(
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
+          return StoryListWidget(
+            scrollController: _scrollController,
+            storyProvider: storyProvider,
+            onRefresh: _refreshStories,
+            onLogout: () => _logOut(authProvider),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildNoStories() {
-    final localizations = AppLocalizations.of(context)!;
-
-    return SliverFillRemaining(
-      hasScrollBody: false,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.auto_stories, size: 80, color: Colors.grey),
-            SizedBox(height: 16),
-            Text(
-              localizations.no_stories,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Text(
-                localizations.pull_to_refresh,
-                style: TextStyle(color: Colors.grey[600]),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSliverStoryList(StoryProvider storyProvider) {
-    return SliverPadding(
-      padding: EdgeInsets.all(16.0),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            if (index == storyProvider.stories.length &&
-                storyProvider.isLoading) {
-              return Center(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-
-            if (index >= storyProvider.stories.length) {
-              return null;
-            }
-
-            final story = storyProvider.stories[index];
-            return Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 460),
-                child: StoryCardWidget(story: story),
-              ),
-            );
-          },
-          childCount:
-              storyProvider.stories.length + (storyProvider.isLoading ? 1 : 0),
-        ),
       ),
     );
   }

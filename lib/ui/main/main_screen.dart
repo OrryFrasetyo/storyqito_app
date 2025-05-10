@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/ui/home/home_screen.dart';
 import 'package:storyqito_app/ui/setting/setting_screen.dart';
-import 'package:storyqito_app/ui/upload/upload_story_screen.dart';
+import 'package:storyqito_app/ui/upload/screen/upload_story_screen.dart';
 
 class MainScreen extends StatelessWidget {
   final VoidCallback onLogout;

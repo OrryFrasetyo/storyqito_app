@@ -20,13 +20,13 @@ Future<ApiResponse<T>> executeSafely<T>(Future<T> Function() action) async {
   try {
     final result = await action();
     return ApiResponse.success(result);
-  } on ClientException {
-    log("API Call Failed: ClientException");
+  } on ClientException catch (e) {
+    log("API Call Failed: ClientException - ${e.message}");
     return ApiResponse.error(
       "Network request failed. Please check your connection.",
     );
-  } on SocketException {
-    log("API Call Failed: SocketException");
+  } on SocketException catch (e) {
+    log("API Call Failed: SocketException - ${e.message}");
     return ApiResponse.error(
       "No internet connection. Please check your network.",
     );

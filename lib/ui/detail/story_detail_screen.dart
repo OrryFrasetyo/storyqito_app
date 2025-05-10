@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:storyqito_app/core/data/network/response/list_story.dart';
 import 'package:storyqito_app/core/data/network/response/stories_response.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/utils/formatted_local_time.dart';

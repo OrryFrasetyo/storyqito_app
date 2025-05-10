@@ -1,11 +1,13 @@
-class SimpleResponse {
-  bool error;
-  String message;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  SimpleResponse({required this.error, required this.message});
+part 'simple_response.freezed.dart';
+part 'simple_response.g.dart';
+
+@freezed
+abstract class SimpleResponse with _$SimpleResponse {
+  const factory SimpleResponse({required bool error, required String message}) =
+      _SimpleResponse;
 
   factory SimpleResponse.fromJson(Map<String, dynamic> json) =>
-      SimpleResponse(error: json["error"], message: json["message"]);
-
-  Map<String, dynamic> toJson() => {"error": error, "message": message};
+      _$SimpleResponseFromJson(json);
 }

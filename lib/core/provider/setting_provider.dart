@@ -31,7 +31,7 @@ class SettingProvider extends ChangeNotifier {
               : isDarkSystem;
 
       final String savedLanguage =
-          _settingRepository.getString(SettingRepository.languageKey) ?? "en";
+          _settingRepository.getLanguage() ?? "en";
       _locale = Locale(savedLanguage);
 
       _setting = Setting(isDark: savedIsDark, locale: savedLanguage);

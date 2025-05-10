@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:storyqito_app/core/data/network/response/list_story.dart';
 import 'package:storyqito_app/core/data/network/response/stories_response.dart'
     show ListStory;
 import 'package:storyqito_app/core/provider/auth_provider.dart';

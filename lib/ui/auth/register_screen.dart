@@ -137,12 +137,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         label: localizations.full_name,
                         prefixIcon: Icons.person_outlined,
                       ),
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return localizations.enter_full_name;
-                      //   }
-                      //   return null;
-                      // },
                       validator:
                           (value) => Validators.validateRequired(
                             value,
@@ -157,17 +151,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         prefixIcon: Icons.email_outlined,
                       ),
                       keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return localizations.enter_email;
-                        }
-                        if (!RegExp(
-                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                        ).hasMatch(value)) {
-                          return localizations.enter_valid_email;
-                        }
-                        return null;
-                      },
+                      validator:
+                          (value) => Validators.validateEmail(
+                            value,
+                            localizations.enter_email,
+                            localizations.enter_valid_email,
+                          ),
                     ),
                     const SizedBox(height: 16.0),
                     TextFormField(
@@ -189,15 +178,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       obscureText: _obscurePassword,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return localizations.enter_password;
-                        }
-                        if (value.length < 8) {
-                          return localizations.password_minimum;
-                        }
-                        return null;
-                      },
+                      validator:
+                          (value) => Validators.validatePassword(
+                            value,
+                            localizations.enter_password,
+                            localizations.password_minimum,
+                          ),
                     ),
                     const SizedBox(height: 24.0),
                     Consumer<AuthProvider>(

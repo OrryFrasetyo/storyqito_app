@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:storyqito_app/core/constant/my_pref_key.dart';
 import 'package:storyqito_app/core/data/model/user.dart';
 import 'package:storyqito_app/core/data/network/response/login_response.dart';
 import 'package:storyqito_app/core/data/network/response/simple_response.dart';
@@ -11,36 +12,33 @@ class AuthRepository {
 
   AuthRepository(this._sharedPrefs, this._apiServices);
 
-  final String stateKey = "state";
-  final String userKey = "user";
-
   Future<bool> isLoggedIn() async {
-    return _sharedPrefs.getBool(stateKey) ?? false;
+    return _sharedPrefs.getBool(AuthPrefsKey.stateKey) ?? false;
   }
 
   Future<bool> login() async {
-    return _sharedPrefs.setBool(stateKey, true);
+    return _sharedPrefs.setBool(AuthPrefsKey.stateKey, true);
   }
 
   Future<bool> logout() async {
-    return _sharedPrefs.setBool(stateKey, false);
+    return _sharedPrefs.setBool(AuthPrefsKey.stateKey, false);
   }
 
   Future<bool> saveUser(User user) async {
-    return _sharedPrefs.setString(userKey, user.toJson());
+    return _sharedPrefs.setString(AuthPrefsKey.userKey, user.toJsonString());
   }
 
   Future<bool> deleteUser() async {
-    return _sharedPrefs.setString(userKey, "");
+    return _sharedPrefs.setString(AuthPrefsKey.userKey, "");
   }
 
   Future<User?> getUser() async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
-    final json = _sharedPrefs.getString(userKey) ?? "";
+    final json = _sharedPrefs.getString(AuthPrefsKey.userKey) ?? "";
     User? user;
     try {
-      user = User.fromJson(json);
+      user = UserExtension.fromJsonString(json);
     } catch (e) {
       user = null;
     }
@@ -64,9 +62,8 @@ class AuthRepository {
       final user = User(
         email: email,
         name: response.data!.loginResult.name,
-        password: password,
+        password: "password",
         token: response.data!.loginResult.token,
-        language: "en",
       );
 
       await saveUser(user);
