@@ -28,8 +28,12 @@ class MyRouteInformationParser extends RouteInformationParser<AppRoutePath> {
       return AppRoutePath.home(tabIndex: 1);
     }
 
-    if (uri.pathSegments.first == "setting") {
+    if (uri.pathSegments.first == "map") {
       return AppRoutePath.home(tabIndex: 2);
+    }
+
+    if (uri.pathSegments.first == "setting") {
+      return AppRoutePath.home(tabIndex: 3);
     }
 
     if (uri.pathSegments.first == "story" && uri.pathSegments.length == 2) {
@@ -64,6 +68,10 @@ class MyRouteInformationParser extends RouteInformationParser<AppRoutePath> {
       }
 
       if (tabIndex == 2) {
+        return RouteInformation(uri: Uri.parse("/map"));
+      }
+
+      if (tabIndex == 3) {
         return RouteInformation(uri: Uri.parse("/setting"));
       }
     }

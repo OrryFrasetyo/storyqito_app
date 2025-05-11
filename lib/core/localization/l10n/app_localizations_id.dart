@@ -183,7 +183,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get error_picking_image => 'Terjadi kesalahan saat memilih gambar:';
 
   @override
-  String get error_accessing_camera => 'Terjadi kesalahan saat mengakses kamera:';
+  String get error_accessing_camera => 'Akses kamera ditolak';
 
   @override
   String get error_initializing_camera => 'Terjadi kesalahan saat menyiapkan kamera:';
@@ -226,4 +226,13 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get map => 'Peta';
+
+  @override
+  String get refresh => 'Muat ulang';
+
+  @override
+  String get change_map_type => 'Ganti Tema Peta';
+
+  @override
+  String get ok => 'OKE';
 }

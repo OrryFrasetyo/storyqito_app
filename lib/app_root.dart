@@ -8,6 +8,7 @@ import 'package:storyqito_app/core/data/repository/setting_repository.dart';
 import 'package:storyqito_app/core/data/repository/story_repository.dart';
 import 'package:storyqito_app/core/provider/add_new_story_provider.dart';
 import 'package:storyqito_app/core/provider/auth_provider.dart';
+import 'package:storyqito_app/core/provider/map_provider.dart';
 import 'package:storyqito_app/core/provider/setting_provider.dart';
 import 'package:storyqito_app/core/provider/story_provider.dart';
 import 'package:storyqito_app/core/routes/my_route_delegate.dart';
@@ -47,6 +48,13 @@ class AppRoot extends StatelessWidget {
         ChangeNotifierProvider(
           create:
               (context) => SettingProvider(context.read<SettingRepository>()),
+        ),
+        ChangeNotifierProvider(
+          create:
+              (context) => MapProvider(
+                authProvider: context.read<AuthProvider>(),
+                storyProvider: context.read<StoryProvider>(),
+              ),
         ),
         ChangeNotifierProvider(
           create:

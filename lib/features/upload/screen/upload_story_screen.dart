@@ -96,7 +96,7 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
 
       context.read<MyRouteDelegate>().navigateToHome();
       // TODO : yang await ini waspada
-      await context.read<StoryProvider>().refreshStories(
+      context.read<StoryProvider>().refreshStories(
         user: authProvider.user!,
       );
 
@@ -124,7 +124,7 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
         centerTitle: true,
         title: Text(
           localization.upload_story,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
         ),
         actions: [
           if (imageFile != null && !showCamera)
@@ -152,6 +152,7 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
                       CameraWebViewWidget(cameraService: _cameraService)
                     else
                       ImagePreviewWidget(
+                        imageFile: imageFile,
                         onCameraPressed: _handleCameraButton,
                         onGalleryPressed:
                             () => _imagePickerService.pickImage(

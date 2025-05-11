@@ -79,7 +79,7 @@ class ImagePreviewWidget extends StatelessWidget {
               ),
               const SizedBox(width: 16),
               ElevatedButton.icon(
-                onPressed: () => onGalleryPressed,
+                onPressed: onGalleryPressed,
                 icon: Icon(
                   Icons.photo_library,
                   color: Theme.of(context).colorScheme.onSecondary,

@@ -66,7 +66,7 @@
   "image_too_large": "Ukuran gambar terlalu besar. Ukuran maksimum adalah 1MB.",
   "error_taking_picture": "Terjadi kesalahan saat mengambil gambar:",
   "error_picking_image": "Terjadi kesalahan saat memilih gambar:",
-  "error_accessing_camera": "Terjadi kesalahan saat mengakses kamera:",
+  "error_accessing_camera": "Akses kamera ditolak",
   "error_initializing_camera": "Terjadi kesalahan saat menyiapkan kamera:",
   "error_switching_camera": "Terjadi kesalahan saat mengganti kamera:",
   "camera_access_denied": "Akses ke kamera ditolak:",
@@ -80,6 +80,8 @@
   "uploading_story": "Sedang mengunggah cerita...",
   "question_mark": "?",
   "error": "Error",
-  "map": "Peta"
-
+  "map": "Peta",
+  "refresh": "Muat ulang",
+  "change_map_type": "Ganti Tema Peta",
+  "ok": "OKE"
 }

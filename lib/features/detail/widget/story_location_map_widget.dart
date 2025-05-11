@@ -47,7 +47,7 @@ class _StoryLocationMapWidgetState extends State<StoryLocationMapWidget> {
         if (snapshot.connectionState != ConnectionState.done) {
           return SizedBox(
             height: widget.height,
-            child: Center(child: CircularProgressIndicator()),
+            child: const Center(child: CircularProgressIndicator()),
           );
         }
 

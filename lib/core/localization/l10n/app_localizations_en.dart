@@ -192,7 +192,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error_switching_camera => 'Error switching camera:';
 
   @override
-  String get camera_access_denied => 'Camera access denied:';
+  String get camera_access_denied => 'Camera access denied';
 
   @override
   String get camera_used_by_other => 'Camera is in use by another app. Please close other camera apps and try again.';
@@ -226,4 +226,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get map => 'Map';
+
+  @override
+  String get refresh => 'Refresh';
+
+  @override
+  String get change_map_type => 'Change map type';
+
+  @override
+  String get ok => 'OK';
 }

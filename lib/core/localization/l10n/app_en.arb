@@ -60,7 +60,7 @@
   "error_accessing_camera": "Error accessing camera:",
   "error_initializing_camera": "Error initializing camera:",
   "error_switching_camera": "Error switching camera:",
-  "camera_access_denied": "Camera access denied:",
+  "camera_access_denied": "Camera access denied",
   "camera_used_by_other": "Camera is in use by another app. Please close other camera apps and try again.",
   "please_select_image": "Please select an image first!",
   "please_write_description": "Please fill description first!",
@@ -71,5 +71,9 @@
   "uploading_story": "Uploading story..",
   "question_mark": "?",
   "error": "Error",
-  "map": "Map"
+  "map": "Map",
+  "refresh": "Refresh",
+  "change_map_type": "Change map type",
+  "ok": "OK"
+
 }

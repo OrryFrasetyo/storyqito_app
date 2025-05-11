@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:storyqito_app/core/data/network/response/list_story.dart';
-import 'package:storyqito_app/core/data/network/response/stories_response.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/utils/formatted_local_time.dart';
+import 'package:storyqito_app/features/detail/widget/story_location_map_widget.dart';
 
 class StoryDetailScreen extends StatelessWidget {
   final ListStory story;
@@ -22,7 +22,7 @@ class StoryDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           localizations.story_detail,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
         leading: IconButton(
@@ -35,7 +35,7 @@ class StoryDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Hero(
                 tag: "story-image-${story.id}",
                 child: ConstrainedBox(
@@ -52,7 +52,7 @@ class StoryDetailScreen extends StatelessWidget {
                       loadingBuilder: (context, child, loadingStatus) {
                         if (loadingStatus == null) return child;
                         return Container(
-                          constraints: BoxConstraints(minHeight: 350),
+                          constraints: const BoxConstraints(minHeight: 350),
                           color: Colors.grey[200],
                           child: Center(
                             child: CircularProgressIndicator(
@@ -83,54 +83,99 @@ class StoryDetailScreen extends StatelessWidget {
             ),
 
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        child: Text(
-                          story.name.isNotEmpty
-                              ? story.name[0].toUpperCase()
-                              : localizations.question_mark,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      SizedBox(width: 12.0),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              story.name,
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              formatLocalTime(story.createdAt),
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  _buildStoryAuthorInfo(context),
+                  const SizedBox(height: 16.0),
+                  Text(
+                    story.description,
+                    style: const TextStyle(fontSize: 16.0),
                   ),
+                  const SizedBox(height: 24.0),
 
-                  SizedBox(height: 16.0),
-                  Text(story.description, style: TextStyle(fontSize: 16.0)),
+                  if (story.lat != null && story.lon != null)
+                    _buildLocationDetails(context, localizations),
                 ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildStoryAuthorInfo(BuildContext context) {
+    return Row(
+      children: [
+        CircleAvatar(
+          backgroundColor: Theme.of(context).primaryColor,
+          child: Text(
+            story.name.isNotEmpty
+                ? story.name[0].toUpperCase()
+                : AppLocalizations.of(context)!.question_mark,
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
+        const SizedBox(width: 12.0),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                story.name,
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                formatLocalTime(story.createdAt),
+                style: TextStyle(fontSize: 14.0, color: Colors.grey[600]),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLocationDetails(
+    BuildContext context,
+    AppLocalizations localizations,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Divider(),
+        const SizedBox(height: 16.0),
+        Row(
+          children: [
+            const Icon(Icons.location_on, color: Colors.red),
+            const SizedBox(width: 8.0),
+            Text(
+              localizations.location,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10.0),
+        Text(
+          "${localizations.latitude}: ${story.lat?.toStringAsFixed(6)}, ${localizations.longitude}: ${story.lon?.toStringAsFixed(6)}",
+          style: const TextStyle(fontSize: 14.0),
+        ),
+        const SizedBox(height: 16),
+        StoryLocationMapWidget(
+          key: ValueKey('detail-location-map-${story.id}'),
+          latitude: story.lat!,
+          longitude: story.lon!,
+          height: 400.0,
+        ),
+      ],
     );
   }
 }

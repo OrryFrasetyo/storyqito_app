@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:storyqito_app/core/data/network/response/list_story.dart';
-import 'package:storyqito_app/core/data/network/response/stories_response.dart'
-    show ListStory;
 import 'package:storyqito_app/core/provider/auth_provider.dart';
 import 'package:storyqito_app/core/provider/setting_provider.dart';
 import 'package:storyqito_app/core/routes/app_route_path.dart';
@@ -345,7 +343,7 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
             barrierDismissible: true,
             child: StoryDetailDialog(
               story: _currentStory!,
-              onBack: () {
+              onClose: () {
                 _isStoryDetailDialog = false;
                 _currentStory = null;
                 _currentStoryId = null;

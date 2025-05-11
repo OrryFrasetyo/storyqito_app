@@ -446,7 +446,7 @@ abstract class AppLocalizations {
   /// No description provided for @error_accessing_camera.
   ///
   /// In id, this message translates to:
-  /// **'Terjadi kesalahan saat mengakses kamera:'**
+  /// **'Akses kamera ditolak'**
   String get error_accessing_camera;
 
   /// No description provided for @error_initializing_camera.
@@ -532,6 +532,24 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Peta'**
   String get map;
+
+  /// No description provided for @refresh.
+  ///
+  /// In id, this message translates to:
+  /// **'Muat ulang'**
+  String get refresh;
+
+  /// No description provided for @change_map_type.
+  ///
+  /// In id, this message translates to:
+  /// **'Ganti Tema Peta'**
+  String get change_map_type;
+
+  /// No description provided for @ok.
+  ///
+  /// In id, this message translates to:
+  /// **'OKE'**
+  String get ok;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
