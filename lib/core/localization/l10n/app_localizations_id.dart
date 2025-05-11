@@ -223,4 +223,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get error => 'Error';
+
+  @override
+  String get map => 'Peta';
 }

@@ -526,6 +526,12 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Error'**
   String get error;
+
+  /// No description provided for @map.
+  ///
+  /// In id, this message translates to:
+  /// **'Peta'**
+  String get map;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

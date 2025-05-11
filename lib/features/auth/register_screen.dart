@@ -7,7 +7,7 @@ import 'package:storyqito_app/core/provider/auth_provider.dart';
 import 'package:storyqito_app/core/provider/setting_provider.dart';
 import 'package:storyqito_app/core/routes/my_route_delegate.dart';
 import 'package:storyqito_app/core/style/theme.dart';
-import 'package:storyqito_app/ui/widget/language_picker.dart';
+import 'package:storyqito_app/features/widget/language_picker.dart';
 
 class RegisterScreen extends StatefulWidget {
   final VoidCallback onRegister;

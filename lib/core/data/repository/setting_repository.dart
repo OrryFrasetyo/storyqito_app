@@ -52,7 +52,7 @@ class SettingRepository {
     }
   }
 
-  String? getLanguage() {
-    return _sharedPreferences.getString(SettingPrefsKey.languageKey);
+  String? getString(String key) {
+    return _sharedPreferences.getString(key);
   }
 }

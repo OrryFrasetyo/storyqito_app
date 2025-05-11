@@ -3,11 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/auth_provider.dart';
 import 'package:storyqito_app/core/provider/story_provider.dart';
-import 'package:storyqito_app/ui/home/widgets/auth_error_widget.dart';
-import 'package:storyqito_app/ui/home/widgets/loading_widget.dart';
-import 'package:storyqito_app/ui/home/widgets/no_user_widget.dart';
-import 'package:storyqito_app/ui/home/widgets/story_error_widget.dart';
-import 'package:storyqito_app/ui/home/widgets/story_list_widget.dart';
+import 'package:storyqito_app/features/home/widgets/auth_error_widget.dart';
+import 'package:storyqito_app/features/home/widgets/loading_widget.dart';
+import 'package:storyqito_app/features/home/widgets/no_user_widget.dart';
+import 'package:storyqito_app/features/home/widgets/story_error_widget.dart';
+import 'package:storyqito_app/features/home/widgets/story_list_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   final VoidCallback onLogout;
@@ -96,8 +96,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-
     return Scaffold(
       body: Consumer2<AuthProvider, StoryProvider>(
         builder: (context, authProvider, storyProvider, child) {

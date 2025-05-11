@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/setting_provider.dart';
 import 'package:storyqito_app/core/routes/my_route_delegate.dart';
-import 'package:storyqito_app/ui/widget/language_picker.dart';
+import 'package:storyqito_app/features/widget/language_picker.dart';
 
 class SettingScreen extends StatefulWidget {
   final VoidCallback onLogout;

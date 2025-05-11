@@ -9,10 +9,10 @@ import 'package:storyqito_app/core/provider/add_new_story_provider.dart';
 import 'package:storyqito_app/core/provider/auth_provider.dart';
 import 'package:storyqito_app/core/provider/story_provider.dart';
 import 'package:storyqito_app/core/routes/my_route_delegate.dart';
-import 'package:storyqito_app/ui/upload/services/camera_service.dart';
-import 'package:storyqito_app/ui/upload/services/image_picker_service.dart';
-import 'package:storyqito_app/ui/upload/widgets/camera_web_view_widget.dart';
-import 'package:storyqito_app/ui/upload/widgets/image_preview_widget.dart';
+import 'package:storyqito_app/features/upload/services/camera_service.dart';
+import 'package:storyqito_app/features/upload/services/image_picker_service.dart';
+import 'package:storyqito_app/features/upload/widgets/camera_web_view_widget.dart';
+import 'package:storyqito_app/features/upload/widgets/image_preview_widget.dart';
 
 class UploadStoryScreen extends StatefulWidget {
   const UploadStoryScreen({super.key});

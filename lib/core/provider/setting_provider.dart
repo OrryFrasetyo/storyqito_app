@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:storyqito_app/core/constant/my_pref_key.dart';
 import 'package:storyqito_app/core/data/model/setting.dart';
 import 'package:storyqito_app/core/data/repository/setting_repository.dart';
 
@@ -31,7 +32,7 @@ class SettingProvider extends ChangeNotifier {
               : isDarkSystem;
 
       final String savedLanguage =
-          _settingRepository.getLanguage() ?? "en";
+          _settingRepository.getString(SettingPrefsKey.languageKey) ?? "en";
       _locale = Locale(savedLanguage);
 
       _setting = Setting(isDark: savedIsDark, locale: savedLanguage);

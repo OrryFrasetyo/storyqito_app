@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/add_new_story_provider.dart';
-import 'package:storyqito_app/ui/upload/util/web_camera_util.dart';
+import 'package:storyqito_app/features/upload/util/web_camera_util.dart';
 
 class CameraService {
   CameraController? _cameraController;

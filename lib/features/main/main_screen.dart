@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
-import 'package:storyqito_app/ui/home/home_screen.dart';
-import 'package:storyqito_app/ui/setting/setting_screen.dart';
-import 'package:storyqito_app/ui/upload/screen/upload_story_screen.dart';
+import 'package:storyqito_app/features/home/home_screen.dart';
+import 'package:storyqito_app/features/map/ui/screen/story_map_screen.dart';
+import 'package:storyqito_app/features/setting/setting_screen.dart';
+import 'package:storyqito_app/features/upload/screen/upload_story_screen.dart';
 
 class MainScreen extends StatelessWidget {
   final VoidCallback onLogout;
@@ -29,6 +30,7 @@ class MainScreen extends StatelessWidget {
       children: [
         HomeScreen(onLogout: onLogout),
         UploadStoryScreen(),
+        StoryMapScreen(),
         SettingScreen(onLogout: onLogout),
       ],
     );
@@ -48,6 +50,10 @@ class MainScreen extends StatelessWidget {
                       NavigationRailDestination(
                         icon: Icon(Icons.upload),
                         label: Text(localizations.upload),
+                      ),
+                      NavigationRailDestination(
+                        icon: Icon(Icons.map_rounded),
+                        label: Text(localizations.map),
                       ),
                       NavigationRailDestination(
                         icon: Icon(Icons.settings),
@@ -80,6 +86,11 @@ class MainScreen extends StatelessWidget {
                       icon: Icon(Icons.upload),
                       label: localizations.upload,
                       tooltip: localizations.upload,
+                    ),
+                    NavigationDestination(
+                      icon: Icon(Icons.map_rounded),
+                      label: localizations.map,
+                      tooltip: localizations.map,
                     ),
                     NavigationDestination(
                       icon: Icon(Icons.settings),

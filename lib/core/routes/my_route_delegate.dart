@@ -6,13 +6,13 @@ import 'package:storyqito_app/core/provider/auth_provider.dart';
 import 'package:storyqito_app/core/provider/setting_provider.dart';
 import 'package:storyqito_app/core/routes/app_route_path.dart';
 import 'package:storyqito_app/core/utils/custom_page_transition.dart';
-import 'package:storyqito_app/ui/auth/login_screen.dart';
-import 'package:storyqito_app/ui/auth/register_screen.dart';
-import 'package:storyqito_app/ui/detail/story_detail_dialog.dart';
-import 'package:storyqito_app/ui/detail/story_detail_screen.dart';
-import 'package:storyqito_app/ui/main/main_screen.dart';
-import 'package:storyqito_app/ui/widget/dialog_page.dart';
-import 'package:storyqito_app/ui/widget/language_dialog.dart';
+import 'package:storyqito_app/features/auth/login_screen.dart';
+import 'package:storyqito_app/features/auth/register_screen.dart';
+import 'package:storyqito_app/features/detail/story_detail_dialog.dart';
+import 'package:storyqito_app/features/detail/story_detail_screen.dart';
+import 'package:storyqito_app/features/main/main_screen.dart';
+import 'package:storyqito_app/features/widget/dialog_page.dart';
+import 'package:storyqito_app/features/widget/language_dialog.dart';
 
 class MyRouteDelegate extends RouterDelegate<AppRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<AppRoutePath> {

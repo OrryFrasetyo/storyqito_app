@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/add_new_story_provider.dart';
-import 'package:storyqito_app/ui/upload/services/camera_service.dart';
+import 'package:storyqito_app/features/upload/services/camera_service.dart';
 
 class CameraWebViewWidget extends StatelessWidget {
   final CameraService cameraService;
