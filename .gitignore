@@ -52,3 +52,4 @@ lib/core/localization/l10n/app_localizations_en.dart
 lib/core/localization/l10n/app_localizations_id.dart
 
 web/env.js
+*.env

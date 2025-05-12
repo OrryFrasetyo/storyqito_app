@@ -550,6 +550,18 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'OKE'**
   String get ok;
+
+  /// No description provided for @loading_address.
+  ///
+  /// In id, this message translates to:
+  /// **'Memuat alamat'**
+  String get loading_address;
+
+  /// No description provided for @address_not_available.
+  ///
+  /// In id, this message translates to:
+  /// **'Address tidak tersedia'**
+  String get address_not_available;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

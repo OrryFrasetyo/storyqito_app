@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:storyqito_app/core/data/network/response/list_story.dart';
+import 'package:storyqito_app/core/data/network/responses/list_story.dart';
 
 part 'stories_response.freezed.dart';
 part 'stories_response.g.dart';

@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Consumer2<AuthProvider, StoryProvider>(
         builder: (context, authProvider, storyProvider, child) {
           if (authProvider.isLoadingLogin) {
-            return LoadingViewWidget();
+            return LoadingWidget();
           }
 
           if (authProvider.errorMsg.isNotEmpty) {

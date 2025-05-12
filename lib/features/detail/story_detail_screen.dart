@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:storyqito_app/core/data/network/response/list_story.dart';
+import 'package:storyqito_app/core/data/network/responses/list_story.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/utils/formatted_local_time.dart';
-import 'package:storyqito_app/features/detail/widget/story_location_map_widget.dart';
+import 'package:storyqito_app/features/detail/widget/location_widget.dart';
 
 class StoryDetailScreen extends StatelessWidget {
   final ListStory story;
@@ -96,7 +96,11 @@ class StoryDetailScreen extends StatelessWidget {
                   const SizedBox(height: 24.0),
 
                   if (story.lat != null && story.lon != null)
-                    _buildLocationDetails(context, localizations),
+                    LocationWidget(
+                      listStory: story,
+                      mapControlsEnabled: true,
+                      mapKeyPrefix: "detail",
+                    ),
                 ],
               ),
             ),
@@ -136,44 +140,6 @@ class StoryDetailScreen extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLocationDetails(
-    BuildContext context,
-    AppLocalizations localizations,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Divider(),
-        const SizedBox(height: 16.0),
-        Row(
-          children: [
-            const Icon(Icons.location_on, color: Colors.red),
-            const SizedBox(width: 8.0),
-            Text(
-              localizations.location,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16.0,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 10.0),
-        Text(
-          "${localizations.latitude}: ${story.lat?.toStringAsFixed(6)}, ${localizations.longitude}: ${story.lon?.toStringAsFixed(6)}",
-          style: const TextStyle(fontSize: 14.0),
-        ),
-        const SizedBox(height: 16),
-        StoryLocationMapWidget(
-          key: ValueKey('detail-location-map-${story.id}'),
-          latitude: story.lat!,
-          longitude: story.lon!,
-          height: 400.0,
         ),
       ],
     );

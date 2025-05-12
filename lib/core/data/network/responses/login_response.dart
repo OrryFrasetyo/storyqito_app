@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:storyqito_app/core/data/network/response/login_result.dart';
+import 'package:storyqito_app/core/data/network/responses/login_result.dart';
 
 part 'login_response.freezed.dart';
 part 'login_response.g.dart';

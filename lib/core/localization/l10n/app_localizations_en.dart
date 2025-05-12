@@ -235,4 +235,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ok => 'OK';
+
+  @override
+  String get loading_address => 'Loading address';
+
+  @override
+  String get address_not_available => 'Address not available';
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:storyqito_app/core/data/network/response/list_story.dart';
+import 'package:storyqito_app/core/data/network/responses/list_story.dart';
 import 'package:storyqito_app/core/provider/auth_provider.dart';
 import 'package:storyqito_app/core/provider/setting_provider.dart';
 import 'package:storyqito_app/core/routes/app_route_path.dart';

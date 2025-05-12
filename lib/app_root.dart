@@ -3,10 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:storyqito_app/core/data/network/service/api_services.dart';
+import 'package:storyqito_app/core/data/network/service/maps_api_service.dart';
 import 'package:storyqito_app/core/data/repository/auth_repository.dart';
+import 'package:storyqito_app/core/data/repository/maps_repository.dart';
 import 'package:storyqito_app/core/data/repository/setting_repository.dart';
 import 'package:storyqito_app/core/data/repository/story_repository.dart';
 import 'package:storyqito_app/core/provider/add_new_story_provider.dart';
+import 'package:storyqito_app/core/provider/address_provider.dart';
 import 'package:storyqito_app/core/provider/auth_provider.dart';
 import 'package:storyqito_app/core/provider/map_provider.dart';
 import 'package:storyqito_app/core/provider/setting_provider.dart';
@@ -27,6 +30,7 @@ class AppRoot extends StatelessWidget {
         Provider(create: (_) => SettingRepository(sharedPrefs)),
         Provider(create: (_) => MyRouteInformationParser()),
         Provider(create: (_) => ApiServices(httpClient: http.Client())),
+        Provider(create: (_) => MapsApiService(httpClient: http.Client())),
         Provider(
           create:
               (context) =>
@@ -34,6 +38,9 @@ class AppRoot extends StatelessWidget {
         ),
         Provider(
           create: (context) => StoryRepository(context.read<ApiServices>()),
+        ),
+        Provider(
+          create: (context) => MapsRepository(context.read<MapsApiService>()),
         ),
         ChangeNotifierProvider(
           create: (context) => AuthProvider(context.read<AuthRepository>()),
@@ -55,6 +62,9 @@ class AppRoot extends StatelessWidget {
                 authProvider: context.read<AuthProvider>(),
                 storyProvider: context.read<StoryProvider>(),
               ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AddressProvider(context.read<MapsRepository>()),
         ),
         ChangeNotifierProvider(
           create:

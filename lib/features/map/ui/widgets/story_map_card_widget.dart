@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:storyqito_app/core/data/network/response/list_story.dart';
+import 'package:storyqito_app/core/data/network/responses/list_story.dart';
 import 'package:storyqito_app/core/utils/formatted_local_time.dart';
 
 class StoryMapCardWidget extends StatelessWidget {

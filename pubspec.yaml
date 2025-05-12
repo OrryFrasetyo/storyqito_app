@@ -39,6 +39,9 @@ dependencies:
   json_annotation: ^4.9.0
   freezed_annotation: ^3.0.0
 
+  # environment
+  flutter_dotenv: ^5.2.1
+
 flutter_native_splash:
   color: "#ffffff"
   image: assets/icon/storyqito-logo.png
@@ -72,6 +75,7 @@ flutter:
     - assets/icon/
     - assets/flag/
     - assets/animation/
+    - assets/.env
 
   fonts:
     - family: Quicksand

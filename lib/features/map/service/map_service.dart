@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:storyqito_app/core/data/network/response/list_story.dart';
+import 'package:storyqito_app/core/data/network/responses/list_story.dart';
 import 'package:storyqito_app/features/map/model/map_bounds.dart';
 
 class MapService {

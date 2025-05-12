@@ -1,8 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:storyqito_app/core/constant/my_pref_key.dart';
 import 'package:storyqito_app/core/data/model/user.dart';
-import 'package:storyqito_app/core/data/network/response/login_response.dart';
-import 'package:storyqito_app/core/data/network/response/simple_response.dart';
+import 'package:storyqito_app/core/data/network/responses/login_response.dart';
+import 'package:storyqito_app/core/data/network/responses/simple_response.dart';
 import 'package:storyqito_app/core/data/network/service/api_services.dart';
 import 'package:storyqito_app/core/data/network/util/api_response.dart';
 

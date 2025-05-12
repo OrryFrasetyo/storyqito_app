@@ -95,14 +95,17 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
       _cameraService.cleanUpCamera();
 
       context.read<MyRouteDelegate>().navigateToHome();
-      // TODO : yang await ini waspada
-      context.read<StoryProvider>().refreshStories(
+      await context.read<StoryProvider>().refreshStories(
         user: authProvider.user!,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(localizations.story_upload_success)),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.story_upload_success),
+          ),
+        );
+      }
       _addNewStoryProvider!.reset();
     } else if (_addNewStoryProvider!.errorMsg != null) {
       ScaffoldMessenger.of(

@@ -10,6 +10,8 @@ class StoryLocationMapWidget extends StatefulWidget {
   final double height;
   final BorderRadius? borderRadius;
   final bool controlsEnabled;
+  final String title;
+  final String location;
 
   const StoryLocationMapWidget({
     super.key,
@@ -18,6 +20,8 @@ class StoryLocationMapWidget extends StatefulWidget {
     this.height = 200.0,
     this.borderRadius,
     this.controlsEnabled = true,
+    required this.title,
+    required this.location,
   });
 
   @override
@@ -35,7 +39,7 @@ class _StoryLocationMapWidgetState extends State<StoryLocationMapWidget> {
       Marker(
         markerId: MarkerId("story-location"),
         position: LatLng(widget.latitude, widget.longitude),
-        infoWindow: InfoWindow(title: "Story Location"),
+        infoWindow: InfoWindow(title: widget.title, snippet: widget.location),
       ),
     };
 

@@ -235,4 +235,10 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get ok => 'OKE';
+
+  @override
+  String get loading_address => 'Memuat alamat';
+
+  @override
+  String get address_not_available => 'Address tidak tersedia';
 }

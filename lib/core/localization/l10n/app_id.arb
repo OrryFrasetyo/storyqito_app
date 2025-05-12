@@ -83,5 +83,7 @@
   "map": "Peta",
   "refresh": "Muat ulang",
   "change_map_type": "Ganti Tema Peta",
-  "ok": "OKE"
+  "ok": "OKE",
+  "loading_address": "Memuat alamat",
+  "address_not_available": "Address tidak tersedia"
 }
