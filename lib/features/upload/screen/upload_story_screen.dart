@@ -13,6 +13,7 @@ import 'package:storyqito_app/features/upload/services/camera_service.dart';
 import 'package:storyqito_app/features/upload/services/image_picker_service.dart';
 import 'package:storyqito_app/features/upload/widgets/camera_web_view_widget.dart';
 import 'package:storyqito_app/features/upload/widgets/image_preview_widget.dart';
+import 'package:storyqito_app/features/upload/widgets/location_map_selector_widget.dart';
 
 class UploadStoryScreen extends StatefulWidget {
   const UploadStoryScreen({super.key});
@@ -24,7 +25,7 @@ class UploadStoryScreen extends StatefulWidget {
 class _UploadStoryScreenState extends State<UploadStoryScreen> {
   late final CameraService _cameraService;
   late final ImagePickerService _imagePickerService;
-  AddNewStoryProvider? _addNewStoryProvider;
+  late AddNewStoryProvider _addNewStoryProvider;
 
   @override
   void initState() {
@@ -45,7 +46,6 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
   @override
   void dispose() {
     _cameraService.cleanUpCamera();
-    _addNewStoryProvider = null;
     super.dispose();
   }
 
@@ -61,8 +61,8 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
     final localizations = AppLocalizations.of(context)!;
     final authProvider = context.read<AuthProvider>();
 
-    final imageFile = _addNewStoryProvider!.imageFile;
-    final caption = _addNewStoryProvider!.caption;
+    final imageFile = _addNewStoryProvider.imageFile;
+    final caption = _addNewStoryProvider.caption;
 
     if (imageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -79,19 +79,29 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
     }
 
     authProvider.getUser();
-    _addNewStoryProvider!.reset();
+    _addNewStoryProvider.reset();
 
     final token = authProvider.user?.token ?? "";
+    double? lat;
+    double? lon;
 
-    await _addNewStoryProvider!.uploadStoryWithFile(
+    if (_addNewStoryProvider.isLocationAttached &&
+        _addNewStoryProvider.attachedLocation != null) {
+      lat = _addNewStoryProvider.attachedLocation!.latitude;
+      lon = _addNewStoryProvider.attachedLocation!.longitude;
+    }
+
+    await _addNewStoryProvider.uploadStoryWithFile(
       token: token,
       description: caption,
       imageFile: imageFile,
+      lat: lat,
+      lon: lon,
     );
 
     if (!mounted) return;
 
-    if (_addNewStoryProvider!.isSuccess) {
+    if (_addNewStoryProvider.isSuccess) {
       _cameraService.cleanUpCamera();
 
       context.read<MyRouteDelegate>().navigateToHome();
@@ -101,16 +111,14 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.story_upload_success),
-          ),
+          SnackBar(content: Text(localizations.story_upload_success)),
         );
       }
-      _addNewStoryProvider!.reset();
-    } else if (_addNewStoryProvider!.errorMsg != null) {
+      _addNewStoryProvider.reset();
+    } else if (_addNewStoryProvider.errorMsg != null) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(_addNewStoryProvider!.errorMsg!)));
+      ).showSnackBar(SnackBar(content: Text(_addNewStoryProvider.errorMsg!)));
     }
   }
 
@@ -174,6 +182,11 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
                         },
                       ),
                       const SizedBox(height: 16),
+
+                      LocationMapSelectorWidget(),
+                      
+                      const SizedBox(height: 16.0),
+
                       ElevatedButton.icon(
                         onPressed:
                             isUploading

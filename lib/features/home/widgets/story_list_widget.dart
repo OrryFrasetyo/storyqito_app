@@ -86,7 +86,7 @@ class StoryListWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: IconButton(
-            onPressed: () => onLogout,
+            onPressed: onLogout,
             icon: Icon(Icons.logout, color: Colors.red),
           ),
         ),

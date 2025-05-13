@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:storyqito_app/core/data/repository/story_repository.dart';
 
 class AddNewStoryProvider extends ChangeNotifier {
@@ -15,21 +16,27 @@ class AddNewStoryProvider extends ChangeNotifier {
   String _caption = "";
   XFile? _imageFile;
 
+  bool get isLoading => _isLoading;
+  bool get isSuccess => _isSuccess;
+  String? get errorMsg => _errorMsg;
+  String get caption => _caption;
+  XFile? get imageFile => _imageFile;
+
   bool _showCamera = false;
   bool _isCameraInitialized = false;
   bool _requestPermission = false;
   List<CameraDescription>? _cameras;
 
-  bool get isLoading => _isLoading;
-  String? get errorMsg => _errorMsg;
-  bool get isSuccess => _isSuccess;
-  String get caption => _caption;
-  XFile? get imageFile => _imageFile;
-
   bool get showCamera => _showCamera;
   bool get isCameraInitialized => _isCameraInitialized;
   bool get isRequestPermission => _requestPermission;
   List<CameraDescription>? get cameras => _cameras;
+
+  bool _isLocationAttached = false;
+  LatLng? _attachedLocation;
+
+  bool get isLocationAttached => _isLocationAttached;
+  LatLng? get attachedLocation => _attachedLocation;
 
   void setImageFile(XFile? file) {
     _imageFile = file;
@@ -58,6 +65,16 @@ class AddNewStoryProvider extends ChangeNotifier {
 
   void setCameras(List<CameraDescription> cameras) {
     _cameras = cameras;
+    notifyListeners();
+  }
+
+  void toggleLocationAttached(bool value) {
+    _isLocationAttached = value;
+    notifyListeners();
+  }
+
+  void setAttachedLocation(LatLng? location) {
+    _attachedLocation = location;
     notifyListeners();
   }
 
@@ -120,6 +137,8 @@ class AddNewStoryProvider extends ChangeNotifier {
     required String token,
     required String description,
     required XFile imageFile,
+    double? lat,
+    double? lon,
   }) async {
     if (kIsWeb) {
       final bytes = await imageFile.readAsBytes();
@@ -128,6 +147,8 @@ class AddNewStoryProvider extends ChangeNotifier {
         description: description,
         fileName: imageFile.name,
         photoBytes: bytes,
+        lat: lat,
+        lon: lon,
       );
     } else {
       final file = File(imageFile.path);
@@ -136,6 +157,8 @@ class AddNewStoryProvider extends ChangeNotifier {
         description: description,
         fileName: imageFile.name,
         photoFile: file,
+        lat: lat,
+        lon: lon,
       );
     }
   }

@@ -562,6 +562,12 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Address tidak tersedia'**
   String get address_not_available;
+
+  /// No description provided for @tap_to_select_location.
+  ///
+  /// In id, this message translates to:
+  /// **'Ketuk untuk menentukan lokasi'**
+  String get tap_to_select_location;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

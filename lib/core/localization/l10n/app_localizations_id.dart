@@ -241,4 +241,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get address_not_available => 'Address tidak tersedia';
+
+  @override
+  String get tap_to_select_location => 'Ketuk untuk menentukan lokasi';
 }

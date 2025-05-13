@@ -24,7 +24,6 @@ class StoryProvider extends ChangeNotifier {
   bool get hasMoreStories => _canLoadMoreStories;
 
   Future<void> getStories({required User user, bool refresh = false}) async {
-    // if (_isLoading && !refresh) return;
 
     if (refresh) {
       _currentPage = 1;
@@ -33,6 +32,10 @@ class StoryProvider extends ChangeNotifier {
     }
 
     if (!_canLoadMoreStories && !refresh) return;
+
+    _isLoading = true;
+    _errorMsg = '';
+    notifyListeners();
 
     final result = await _storyRepository.getStories(
       page: _currentPage,

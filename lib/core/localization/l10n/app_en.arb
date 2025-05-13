@@ -76,6 +76,8 @@
   "change_map_type": "Change map type",
   "ok": "OK",
   "loading_address": "Loading address",
-  "address_not_available": "Address not available"
+  "address_not_available": "Address not available",
+  "tap_to_select_location": "Tap to select location"
+
 
 }

@@ -241,4 +241,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get address_not_available => 'Address not available';
+
+  @override
+  String get tap_to_select_location => 'Tap to select location';
 }
