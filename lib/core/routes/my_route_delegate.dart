@@ -18,7 +18,7 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<AppRoutePath> {
   final GlobalKey<NavigatorState> _navigationKey;
   final AuthProvider authProvider;
-  // final SettingProvider settingProvider;
+  final SettingProvider settingProvider;
   final _mainScreenKey = GlobalKey();
 
   bool _isLoginScreen = true;
@@ -27,14 +27,14 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
   bool _isLoggedIn = false;
   bool _isStoryDetail = false;
   bool _isStoryDetailDialog = false;
-  // bool _isLanguageDialogOpen = false;
+  bool _isLanguageDialogOpen = false;
   String? _currentStoryId;
   int _currentTabIndex = 0;
   ListStory? _currentStory;
 
   bool _isNavigateForward = true;
 
-  MyRouteDelegate(this.authProvider)
+  MyRouteDelegate(this.authProvider, this.settingProvider)
     : _navigationKey = GlobalKey<NavigatorState>() {
     _init();
   }
@@ -83,15 +83,15 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
     notifyListeners();
   }
 
-  // void showLanguageDialog() {
-  //   _isLanguageDialogOpen = true;
-  //   notifyListeners();
-  // }
+  void showLanguageDialog() {
+    _isLanguageDialogOpen = true;
+    notifyListeners();
+  }
 
-  // void closeLanguageDialog() {
-  //   _isLanguageDialogOpen = false;
-  //   notifyListeners();
-  // }
+  void closeLanguageDialog() {
+    _isLanguageDialogOpen = false;
+    notifyListeners();
+  }
 
   @override
   GlobalKey<NavigatorState>? get navigatorKey => _navigationKey;
@@ -360,20 +360,20 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
             ),
           ),
 
-        // if (_isLanguageDialogOpen)
-        //   DialogPage(
-        //     key: const ValueKey("LanguageDialog"),
-        //     barrierDismissible: true,
-        //     barrierColor: Colors.black54,
-        //     child: LanguageDialog(
-        //       selectedLanguageCode: settingProvider.locale.languageCode,
-        //       onLanguageChanged: (code) {
-        //         settingProvider.setLocale(code);
-        //         closeLanguageDialog();
-        //       },
-        //       onCancel: closeLanguageDialog,
-        //     ),
-        //   ),
+        if (_isLanguageDialogOpen)
+          DialogPage(
+            key: const ValueKey("LanguageDialog"),
+            barrierDismissible: true,
+            barrierColor: Colors.black54,
+            child: LanguageDialog(
+              selectedLanguageCode: settingProvider.locale.languageCode,
+              onLanguageChanged: (code) {
+                settingProvider.setLocale(code);
+                closeLanguageDialog();
+              },
+              onCancel: closeLanguageDialog,
+            ),
+          ),
       ],
       onDidRemovePage: (page) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
