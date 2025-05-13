@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/features/home/home_screen.dart';
+import 'package:storyqito_app/features/main/animation/animate_tab_switcher.dart';
 import 'package:storyqito_app/features/map/ui/screen/story_map_screen.dart';
 import 'package:storyqito_app/features/setting/setting_screen.dart';
 import 'package:storyqito_app/features/upload/screen/upload_story_screen.dart';
@@ -25,7 +26,7 @@ class MainScreen extends StatelessWidget {
     final isMobile = screenWidth < tabletWidthThreshold;
     final localizations = AppLocalizations.of(context)!;
 
-    Widget tabContent = IndexedStack(
+    Widget tabContent = AnimateTabSwitcher(
       index: selectedIndex,
       children: [
         HomeScreen(onLogout: onLogout),

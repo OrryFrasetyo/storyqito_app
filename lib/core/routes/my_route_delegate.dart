@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:storyqito_app/core/data/network/responses/list_story.dart';
+import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/auth_provider.dart';
 import 'package:storyqito_app/core/provider/setting_provider.dart';
 import 'package:storyqito_app/core/routes/app_route_path.dart';
 import 'package:storyqito_app/core/utils/custom_page_transition.dart';
-import 'package:storyqito_app/features/auth/login_screen.dart';
-import 'package:storyqito_app/features/auth/register_screen.dart';
+import 'package:storyqito_app/features/auth/animation/auth_screen_animation.dart';
+import 'package:storyqito_app/features/auth/screen/login_screen.dart';
+import 'package:storyqito_app/features/auth/screen/register_screen.dart';
 import 'package:storyqito_app/features/detail/story_detail_dialog.dart';
 import 'package:storyqito_app/features/detail/story_detail_screen.dart';
-import 'package:storyqito_app/features/main/main_screen.dart';
+import 'package:storyqito_app/features/main/screen/main_screen.dart';
 import 'package:storyqito_app/features/widget/dialog_page.dart';
 import 'package:storyqito_app/features/widget/language_dialog.dart';
 
@@ -16,7 +18,7 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<AppRoutePath> {
   final GlobalKey<NavigatorState> _navigationKey;
   final AuthProvider authProvider;
-  final SettingProvider settingProvider;
+  // final SettingProvider settingProvider;
   final _mainScreenKey = GlobalKey();
 
   bool _isLoginScreen = true;
@@ -25,12 +27,14 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
   bool _isLoggedIn = false;
   bool _isStoryDetail = false;
   bool _isStoryDetailDialog = false;
-  bool _isLanguageDialogOpen = false;
+  // bool _isLanguageDialogOpen = false;
   String? _currentStoryId;
   int _currentTabIndex = 0;
   ListStory? _currentStory;
 
-  MyRouteDelegate(this.authProvider, this.settingProvider)
+  bool _isNavigateForward = true;
+
+  MyRouteDelegate(this.authProvider)
     : _navigationKey = GlobalKey<NavigatorState>() {
     _init();
   }
@@ -79,15 +83,15 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
     notifyListeners();
   }
 
-  void showLanguageDialog() {
-    _isLanguageDialogOpen = true;
-    notifyListeners();
-  }
+  // void showLanguageDialog() {
+  //   _isLanguageDialogOpen = true;
+  //   notifyListeners();
+  // }
 
-  void closeLanguageDialog() {
-    _isLanguageDialogOpen = false;
-    notifyListeners();
-  }
+  // void closeLanguageDialog() {
+  //   _isLanguageDialogOpen = false;
+  //   notifyListeners();
+  // }
 
   @override
   GlobalKey<NavigatorState>? get navigatorKey => _navigationKey;
@@ -120,7 +124,7 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  "Akses langsung ke cerita tidak didukung. Dialihkan ke beranda.",
+                  AppLocalizations.of(context)!.direct_story_access_not_support,
                 ),
                 duration: Duration(seconds: 3),
               ),
@@ -264,8 +268,9 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
       key: navigatorKey,
       pages: [
         if (_isLoginScreen)
-          MaterialPage(
+          AuthScreenAnimation(
             key: ValueKey("LoginScreen"),
+            isForward: !_isNavigateForward,
             child: LoginScreen(
               onLogin: () {
                 _isLoggedIn = true;
@@ -274,6 +279,7 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
                 notifyListeners();
               },
               onRegister: () {
+                _isNavigateForward = true;
                 _isRegisterScreen = true;
                 _isLoginScreen = false;
                 notifyListeners();
@@ -282,8 +288,9 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
           ),
 
         if (_isRegisterScreen)
-          MaterialPage(
+          AuthScreenAnimation(
             key: ValueKey("RegisterScreen"),
+            isForward: _isNavigateForward,
             child: RegisterScreen(
               onRegister: () {
                 _isLoggedIn = true;
@@ -292,6 +299,7 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
                 notifyListeners();
               },
               onLogin: () {
+                _isNavigateForward = false;
                 _isLoginScreen = true;
                 _isRegisterScreen = false;
                 notifyListeners();
@@ -352,20 +360,20 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
             ),
           ),
 
-        if (_isLanguageDialogOpen)
-          DialogPage(
-            key: const ValueKey("LanguageDialog"),
-            barrierDismissible: true,
-            barrierColor: Colors.black54,
-            child: LanguageDialog(
-              selectedLanguageCode: settingProvider.locale.languageCode,
-              onLanguageChanged: (code) {
-                settingProvider.setLocale(code);
-                closeLanguageDialog();
-              },
-              onCancel: closeLanguageDialog,
-            ),
-          ),
+        // if (_isLanguageDialogOpen)
+        //   DialogPage(
+        //     key: const ValueKey("LanguageDialog"),
+        //     barrierDismissible: true,
+        //     barrierColor: Colors.black54,
+        //     child: LanguageDialog(
+        //       selectedLanguageCode: settingProvider.locale.languageCode,
+        //       onLanguageChanged: (code) {
+        //         settingProvider.setLocale(code);
+        //         closeLanguageDialog();
+        //       },
+        //       onCancel: closeLanguageDialog,
+        //     ),
+        //   ),
       ],
       onDidRemovePage: (page) {
         WidgetsBinding.instance.addPostFrameCallback((_) {

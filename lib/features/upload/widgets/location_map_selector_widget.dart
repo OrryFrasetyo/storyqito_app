@@ -36,91 +36,95 @@ class LocationMapSelectorWidget extends StatelessWidget {
         ),
         if (uploadProvider.isLocationAttached) ...[
           const SizedBox(height: 16),
-          Container(
-            height: 250.0,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
-            clipBehavior: Clip.antiAlias,
-            child: Stack(
-              children: [
-                GoogleMap(
-                  style: isDark ? customStyleDark : customStyleLight,
-                  mapType: MapType.normal,
-                  markers: {
-                    if (uploadProvider.attachedLocation != null)
-                      Marker(
-                        markerId: const MarkerId("story_location"),
-                        position: uploadProvider.attachedLocation!,
-                        draggable: true,
-                        onDragEnd: (newPosition) {
-                          uploadProvider.setAttachedLocation(newPosition);
-                        },
-                        infoWindow: InfoWindow(
-                          snippet:
-                              context
-                                  .watch<AddressProvider>()
-                                  .formattedAddress ??
-                              AppLocalizations.of(
-                                context,
-                              )!.address_not_available,
-                        ),
-                      ),
-                  },
-                  initialCameraPosition: CameraPosition(
-                    target:
-                        uploadProvider.attachedLocation ??
-                        const LatLng(-2.014380, 118.152180),
-                    zoom: uploadProvider.attachedLocation != null ? 12 : 4,
-                  ),
-                  myLocationButtonEnabled: true,
-                  zoomControlsEnabled: true,
-                  zoomGesturesEnabled: true,
-                  onTap: (position) {
-                    uploadProvider.setAttachedLocation(position);
-
-                    context.read<AddressProvider>().getAddressFromCoordinates(
-                      position.latitude,
-                      position.longitude,
-                    );
-                  },
-                ),
-
-                if (uploadProvider.attachedLocation == null)
-                  Positioned.fill(
-                    child: Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.touch_app,
-                            size: 40,
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.primary.withValues(alpha: 0.8),
+          AnimatedOpacity(
+            duration: const Duration(milliseconds: 700),
+            opacity: uploadProvider.isLocationAttached ? 1.0 : 0.0,
+            child: Container(
+              height: 250.0,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+              clipBehavior: Clip.antiAlias,
+              child: Stack(
+                children: [
+                  GoogleMap(
+                    style: isDark ? customStyleDark : customStyleLight,
+                    mapType: MapType.normal,
+                    markers: {
+                      if (uploadProvider.attachedLocation != null)
+                        Marker(
+                          markerId: const MarkerId("story_location"),
+                          position: uploadProvider.attachedLocation!,
+                          draggable: true,
+                          onDragEnd: (newPosition) {
+                            uploadProvider.setAttachedLocation(newPosition);
+                          },
+                          infoWindow: InfoWindow(
+                            snippet:
+                                context
+                                    .watch<AddressProvider>()
+                                    .formattedAddress ??
+                                AppLocalizations.of(
+                                  context,
+                                )!.address_not_available,
                           ),
-                          const SizedBox(height: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
+                        ),
+                    },
+                    initialCameraPosition: CameraPosition(
+                      target:
+                          uploadProvider.attachedLocation ??
+                          const LatLng(-2.014380, 118.152180),
+                      zoom: uploadProvider.attachedLocation != null ? 12 : 4,
+                    ),
+                    myLocationButtonEnabled: true,
+                    zoomControlsEnabled: true,
+                    zoomGesturesEnabled: true,
+                    onTap: (position) {
+                      uploadProvider.setAttachedLocation(position);
+            
+                      context.read<AddressProvider>().getAddressFromCoordinates(
+                        position.latitude,
+                        position.longitude,
+                      );
+                    },
+                  ),
+            
+                  if (uploadProvider.attachedLocation == null)
+                    Positioned.fill(
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.touch_app,
+                              size: 40,
                               color: Theme.of(
                                 context,
-                              ).colorScheme.surface.withValues(alpha: 0.8),
-                              borderRadius: BorderRadius.circular(16),
+                              ).colorScheme.primary.withValues(alpha: 0.8),
                             ),
-                            child: Text(
-                              AppLocalizations.of(
-                                context,
-                              )!.tap_to_select_location,
-                              textAlign: TextAlign.center,
+                            const SizedBox(height: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.surface.withValues(alpha: 0.8),
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                              child: Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!.tap_to_select_location,
+                                textAlign: TextAlign.center,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
           if (uploadProvider.attachedLocation != null) ...[
