@@ -16,11 +16,13 @@ class StoryProvider extends ChangeNotifier {
   bool _canLoadMoreStories = true;
   int _currentPage = 1;
   final int _pageSize = 10;
-
+  bool _isLoadingMore = false;
   List<ListStory> get stories => _stories;
   bool get hasMoreStories => _canLoadMoreStories;
 
   Future<void> getStories({required User user, bool refresh = false}) async {
+    if (_isLoadingMore && !refresh) return;
+
     if (refresh) {
       _currentPage = 1;
       _stories = [];
@@ -29,30 +31,39 @@ class StoryProvider extends ChangeNotifier {
 
     if (!_canLoadMoreStories && !refresh) return;
 
-    _state = const StoryLoadState.loading();
-    notifyListeners();
-
-    final result = await _storyRepository.getStories(
-      page: _currentPage,
-      size: _pageSize,
-      user: user,
-    );
-
-    if (result.data != null && !result.data!.error) {
-      if (refresh) {
-        _stories = List<ListStory>.from(result.data!.listStory);
-      } else {
-        _stories = [..._stories, ...result.data!.listStory];
-      }
-      _canLoadMoreStories = result.data!.listStory.length >= _pageSize;
-      _currentPage++;
-      _state = StoryLoadState.loaded(_stories);
-    } else if (result.message != null) {
-      _state = StoryLoadState.error(result.message!);
+    if (refresh) {
+      _state = const StoryLoadState.loading();
+    } else {
+      _isLoadingMore = true;
     }
 
     notifyListeners();
 
+    try {
+      final result = await _storyRepository.getStories(
+        page: _currentPage,
+        size: _pageSize,
+        user: user,
+      );
+
+      if (result.data != null && !result.data!.error) {
+        if (refresh) {
+          _stories = List<ListStory>.from(result.data!.listStory);
+        } else {
+          _stories = [..._stories, ...result.data!.listStory];
+        }
+        _canLoadMoreStories = result.data!.listStory.length >= _pageSize;
+        _currentPage++;
+        _state = StoryLoadState.loaded(_stories);
+      } else if (result.message != null) {
+        _state = StoryLoadState.error(result.message!);
+      }
+    } catch (e) {
+      _state = StoryLoadState.error(e.toString());
+    } finally {
+      _isLoadingMore = false;
+      notifyListeners();
+    }
   }
 
   Future<void> refreshStories({required User user}) async {
