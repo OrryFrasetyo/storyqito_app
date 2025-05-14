@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 result.message ?? AppLocalizations.of(context)!.login_success,
                 style: TextStyle(color: Colors.black),
               ),
+              backgroundColor: Colors.green.shade300,
             ),
           );
         }

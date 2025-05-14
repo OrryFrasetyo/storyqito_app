@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/data/network/responses/list_story.dart';
-import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
+import 'package:storyqito_app/core/provider/auth_provider.dart';
 import 'package:storyqito_app/core/provider/map_provider.dart';
 import 'package:storyqito_app/core/provider/story_provider.dart';
 import 'package:storyqito_app/core/routes/my_route_delegate.dart';
-import 'package:storyqito_app/features/map/ui/widgets/empty_story_map_widget.dart';
+import 'package:storyqito_app/features/home/widgets/empty_story_widget.dart';
+import 'package:storyqito_app/features/home/widgets/story_error_widget.dart';
 import 'package:storyqito_app/features/map/ui/widgets/story_map_card_widget.dart';
 
 class StoryMapListWidget extends StatelessWidget {
@@ -13,34 +14,23 @@ class StoryMapListWidget extends StatelessWidget {
 
   const StoryMapListWidget({super.key, this.onStoryTap});
 
+  void _refreshStories(BuildContext context) {
+    final authProvider = context.read<AuthProvider>();
+    if (authProvider.user != null) {
+      context.read<StoryProvider>().refreshStories(user: authProvider.user!);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
     final storyProvider = context.watch<StoryProvider>();
     final mapProvider = context.watch<MapProvider>();
 
-    // error state view
-    if (storyProvider.errorMsg.isNotEmpty) {
+    if (storyProvider.state.isError) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.warning_amber_rounded, size: 64.0, color: Colors.orange),
-            SizedBox(height: 16),
-            Text(
-              "${localizations.error_loading_stories} ${storyProvider.errorMsg}",
-              style: const TextStyle(fontSize: 16.0),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () => mapProvider.refreshStories(),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Text(localizations.retry),
-              ),
-            ),
-          ],
+        child: StoryErrorWidget(
+          errorMsg: storyProvider.state.errorMessage!,
+          onRetry: () => _refreshStories(context),
         ),
       );
     }
@@ -52,31 +42,28 @@ class StoryMapListWidget extends StatelessWidget {
       child: CustomScrollView(
         controller: mapProvider.scrollController,
         slivers: [
-          if (storyProvider.isLoading && storyProvider.stories.isEmpty)
-            SliverToBoxAdapter(
-              child: const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator(),
-                ),
+          if (storyProvider.state.isLoading && storyProvider.stories.isEmpty ||
+              storyProvider.state.isInitial)
+            const SliverFillRemaining(
+              child: Center(child: CircularProgressIndicator()),
+            )
+          else if (storyProvider.state.isError)
+            SliverFillRemaining(
+              child: StoryErrorWidget(
+                errorMsg: storyProvider.state.errorMessage!,
+                onRetry: () => _refreshStories(context),
               ),
-            ),
+            )
+          else if (storyProvider.stories.isEmpty)
+            EmptyStoryWidget()
+          else if (storyProvider.state.isLoaded)
+            _buildSliverStoryList(context),
 
-          if (storyProvider.stories.isEmpty && !storyProvider.isLoading)
-            SliverToBoxAdapter(
-              child: EmptyStoryMapWidget(localizations: localizations),
-            ),
-
-          if (storyProvider.stories.isNotEmpty) _buildSliverStoryList(context),
-
-          // show loading indicator at the bottom when loading more
-          if (storyProvider.isLoading && storyProvider.stories.isNotEmpty)
-            SliverToBoxAdapter(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator(),
-                ),
+          if (storyProvider.state.isLoading && storyProvider.stories.isNotEmpty)
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Center(child: CircularProgressIndicator()),
               ),
             ),
         ],
@@ -92,16 +79,6 @@ class StoryMapListWidget extends StatelessWidget {
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
-            if (index == storyProvider.stories.length &&
-                storyProvider.isLoading) {
-              return const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-
             if (index >= storyProvider.stories.length) {
               return null;
             }
@@ -130,7 +107,8 @@ class StoryMapListWidget extends StatelessWidget {
             );
           },
           childCount:
-              storyProvider.stories.length + (storyProvider.isLoading ? 1 : 0),
+              storyProvider.stories.length +
+              (storyProvider.state.isLoading ? 1 : 0),
         ),
       ),
     );

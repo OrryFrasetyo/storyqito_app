@@ -9,6 +9,7 @@ import 'package:storyqito_app/core/provider/add_new_story_provider.dart';
 import 'package:storyqito_app/core/provider/auth_provider.dart';
 import 'package:storyqito_app/core/provider/story_provider.dart';
 import 'package:storyqito_app/core/routes/my_route_delegate.dart';
+import 'package:storyqito_app/core/variant/build_config.dart';
 import 'package:storyqito_app/features/upload/services/camera_service.dart';
 import 'package:storyqito_app/features/upload/services/image_picker_service.dart';
 import 'package:storyqito_app/features/upload/widgets/camera_web_view_widget.dart';
@@ -122,13 +123,43 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
     }
   }
 
+  void _showPremiumUpgrade(BuildContext context) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: Text(AppLocalizations.of(context)!.get_premium),
+            content: Text(
+              AppLocalizations.of(context)!.premium_benefits_description,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(AppLocalizations.of(context)!.close),
+              ),
+              FilledButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.coming_soon),
+                    ),
+                  );
+                },
+                child: Text(AppLocalizations.of(context)!.upgrade),
+              ),
+            ],
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     final addNewStoryProvider = context.watch<AddNewStoryProvider>();
     final imageFile = addNewStoryProvider.imageFile;
-    final isUploading = addNewStoryProvider.isLoading;
     final showCamera = addNewStoryProvider.showCamera;
+    final isUploading = addNewStoryProvider.isLoading;
 
     return Scaffold(
       appBar: AppBar(
@@ -171,6 +202,7 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
                             ),
                       ),
                     const SizedBox(height: 16),
+
                     if (imageFile != null && !showCamera) ...[
                       TextField(
                         decoration: InputDecoration(
@@ -183,8 +215,17 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
                       ),
                       const SizedBox(height: 16),
 
-                      LocationMapSelectorWidget(),
-                      
+                      if (kIsWeb) ...[
+                        LocationMapSelectorWidget(),
+                      ] else if (Theme.of(context).platform ==
+                          TargetPlatform.android) ...[
+                        if (BuildConfig.canAddLocation) ...[
+                          LocationMapSelectorWidget(),
+                        ] else ...[
+                          _buildPremiumFeature(context),
+                        ],
+                      ],
+
                       const SizedBox(height: 16.0),
 
                       ElevatedButton.icon(
@@ -213,6 +254,46 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPremiumFeature(BuildContext context) {
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.location_on,
+              size: 36.0,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              AppLocalizations.of(context)!.premium_feature,
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8.0),
+            Text(
+              AppLocalizations.of(context)!.upgrade_to_add_location,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 16.0),
+            OutlinedButton.icon(
+              onPressed: () {
+                _showPremiumUpgrade(context);
+              },
+              icon: Icon(Icons.star),
+              label: Text(AppLocalizations.of(context)!.upgrade_now),
+            ),
+          ],
         ),
       ),
     );

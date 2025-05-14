@@ -80,11 +80,21 @@
   "uploading_story": "Sedang mengunggah cerita...",
   "question_mark": "?",
   "error": "Error",
+
   "map": "Peta",
   "refresh": "Muat ulang",
   "change_map_type": "Ganti Tema Peta",
   "ok": "OKE",
   "loading_address": "Memuat alamat",
   "address_not_available": "Address tidak tersedia",
-  "tap_to_select_location": "Ketuk untuk menentukan lokasi"
+  "tap_to_select_location": "Ketuk untuk menentukan lokasi",
+  "get_premium": "Dapatkan Fitur Premium",
+  "premium_benefits_description": "Tingkatkan ke Storyqito Premium untuk menikmati fitur tambah lokasi ke cerita Anda :)",
+  "close": "Tutup",
+  "coming_soon": "Fitur Premium segera hadir!",
+  "upgrade": "Tingkatkan",
+  "premium_feature": "Fitur Premium",
+  "upgrade_to_add_location": "Tingkatkan ke Premium untuk menambahkan lokasi ke cerita Anda",
+  "upgrade_now": "Tingkatkan Sekarang"
+
 }

@@ -244,4 +244,28 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get tap_to_select_location => 'Ketuk untuk menentukan lokasi';
+
+  @override
+  String get get_premium => 'Dapatkan Fitur Premium';
+
+  @override
+  String get premium_benefits_description => 'Tingkatkan ke Storyqito Premium untuk menikmati fitur tambah lokasi ke cerita Anda :)';
+
+  @override
+  String get close => 'Tutup';
+
+  @override
+  String get coming_soon => 'Fitur Premium segera hadir!';
+
+  @override
+  String get upgrade => 'Tingkatkan';
+
+  @override
+  String get premium_feature => 'Fitur Premium';
+
+  @override
+  String get upgrade_to_add_location => 'Tingkatkan ke Premium untuk menambahkan lokasi ke cerita Anda';
+
+  @override
+  String get upgrade_now => 'Tingkatkan Sekarang';
 }

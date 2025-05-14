@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -62,17 +64,25 @@ class _StoryLocationMapWidgetState extends State<StoryLocationMapWidget> {
           decoration: BoxDecoration(
             borderRadius: widget.borderRadius ?? BorderRadius.circular(12),
           ),
-          child: GoogleMap(
-            style: isDark ? customStyleDark : customStyleLight,
-            mapType: MapType.normal,
-            markers: markers,
-            initialCameraPosition: CameraPosition(
-              target: LatLng(widget.latitude, widget.longitude),
-              zoom: 11.0,
+          child: Listener(
+            onPointerDown: (_) => FocusScope.of(context).unfocus(),
+            child: GoogleMap(
+              gestureRecognizers: {
+                Factory<OneSequenceGestureRecognizer>(
+                  () => EagerGestureRecognizer(),
+                ),
+              },
+              style: isDark ? customStyleDark : customStyleLight,
+              mapType: MapType.normal,
+              markers: markers,
+              initialCameraPosition: CameraPosition(
+                target: LatLng(widget.latitude, widget.longitude),
+                zoom: 11.0,
+              ),
+              myLocationButtonEnabled: false,
+              zoomControlsEnabled: widget.controlsEnabled,
+              zoomGesturesEnabled: true,
             ),
-            myLocationButtonEnabled: widget.controlsEnabled,
-            zoomControlsEnabled: widget.controlsEnabled,
-            zoomGesturesEnabled: true,
           ),
         );
       },

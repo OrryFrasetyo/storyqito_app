@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -14,11 +16,14 @@ class MapWidget extends StatelessWidget {
     final mapProvider = context.watch<MapProvider>();
 
     return GoogleMap(
+      gestureRecognizers: {
+        Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
+      },
       style: isDark ? customStyleDark : customStyleLight,
       mapType: mapProvider.selectedMapType,
       markers: mapProvider.markers,
       initialCameraPosition: const CameraPosition(
-        target: LatLng(-2.014380, 118.152180),
+        target: LatLng(-2.014390, 118.152190),
         zoom: 4,
       ),
       myLocationButtonEnabled: true,

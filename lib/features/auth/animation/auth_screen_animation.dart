@@ -4,7 +4,7 @@ class AuthScreenAnimation extends Page {
   final Widget child;
   final bool isForward;
 
-  AuthScreenAnimation({
+  const AuthScreenAnimation({
     required this.child,
     required this.isForward,
     required LocalKey key,

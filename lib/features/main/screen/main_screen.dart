@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
-import 'package:storyqito_app/features/home/home_screen.dart';
+import 'package:storyqito_app/features/home/screen/home_screen.dart';
 import 'package:storyqito_app/features/main/animation/animate_tab_switcher.dart';
 import 'package:storyqito_app/features/map/ui/screen/story_map_screen.dart';
 import 'package:storyqito_app/features/setting/setting_screen.dart';

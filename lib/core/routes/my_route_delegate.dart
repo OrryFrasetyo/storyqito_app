@@ -8,8 +8,8 @@ import 'package:storyqito_app/core/utils/custom_page_transition.dart';
 import 'package:storyqito_app/features/auth/animation/auth_screen_animation.dart';
 import 'package:storyqito_app/features/auth/screen/login_screen.dart';
 import 'package:storyqito_app/features/auth/screen/register_screen.dart';
-import 'package:storyqito_app/features/detail/story_detail_dialog.dart';
-import 'package:storyqito_app/features/detail/story_detail_screen.dart';
+import 'package:storyqito_app/features/detail/dialog/story_detail_dialog.dart';
+import 'package:storyqito_app/features/detail/screen/story_detail_screen.dart';
 import 'package:storyqito_app/features/main/screen/main_screen.dart';
 import 'package:storyqito_app/features/widget/dialog_page.dart';
 import 'package:storyqito_app/features/widget/language_dialog.dart';
@@ -28,11 +28,11 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
   bool _isStoryDetail = false;
   bool _isStoryDetailDialog = false;
   bool _isLanguageDialogOpen = false;
+  bool _isNavigateForward = true;
   String? _currentStoryId;
   int _currentTabIndex = 0;
   ListStory? _currentStory;
 
-  bool _isNavigateForward = true;
 
   MyRouteDelegate(this.authProvider, this.settingProvider)
     : _navigationKey = GlobalKey<NavigatorState>() {
@@ -269,7 +269,7 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
       pages: [
         if (_isLoginScreen)
           AuthScreenAnimation(
-            key: ValueKey("LoginScreen"),
+            key: const ValueKey("LoginScreen"),
             isForward: !_isNavigateForward,
             child: LoginScreen(
               onLogin: () {
@@ -289,7 +289,7 @@ class MyRouteDelegate extends RouterDelegate<AppRoutePath>
 
         if (_isRegisterScreen)
           AuthScreenAnimation(
-            key: ValueKey("RegisterScreen"),
+            key: const ValueKey("RegisterScreen"),
             isForward: _isNavigateForward,
             child: RegisterScreen(
               onRegister: () {

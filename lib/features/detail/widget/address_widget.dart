@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:storyqito_app/core/data/network/static/address_load_state.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/address_provider.dart';
 
@@ -49,13 +50,13 @@ class _AddressWidgetState extends State<AddressWidget> {
                 "${localizations.longitude}: ${widget.longitude.toStringAsFixed(6)}";
 
             switch (addressProvider.state) {
-              case AddressLoadState.initial:
+              case AddressLoadStateInitial():
                 return Text(
                   '$latText, $lonText',
                   style: const TextStyle(fontSize: 14.0),
                 );
 
-              case AddressLoadState.loading:
+              case AddressLoadStateLoading():
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Row(
@@ -71,7 +72,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                   ),
                 );
 
-              case AddressLoadState.error:
+              case AddressLoadStateError():
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -87,23 +88,27 @@ class _AddressWidgetState extends State<AddressWidget> {
                   ],
                 );
 
-              case AddressLoadState.loaded:
+              case AddressLoadStateLoaded(formattedAddress: final address):
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (addressProvider.formattedAddress != null)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(
-                          addressProvider.formattedAddress!,
-                          style: const TextStyle(fontSize: 16.0),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Text(
+                        address,
+                        style: const TextStyle(fontSize: 16.0),
                       ),
+                    ),
                     Text(
                       "$latText, $lonText",
                       style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                     ),
                   ],
+                );
+
+              default:
+                return Text(
+                  "Unknown Address load state : ${addressProvider.state}",
                 );
             }
           },

@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:storyqito_app/core/data/network/static/story_load_state.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/auth_provider.dart';
 import 'package:storyqito_app/core/provider/story_provider.dart';
+import 'package:storyqito_app/features/home/widgets/empty_story_widget.dart';
 import 'package:storyqito_app/features/home/widgets/story_card_widget.dart';
+import 'package:storyqito_app/features/home/widgets/story_error_widget.dart';
 
 class StoryListWidget extends StatelessWidget {
   final ScrollController scrollController;
-  final StoryProvider storyProvider;
-  final VoidCallback onRefresh;
   final VoidCallback onLogout;
 
   const StoryListWidget({
     super.key,
     required this.scrollController,
-    required this.storyProvider,
-    required this.onRefresh,
     required this.onLogout,
   });
 
   @override
   Widget build(BuildContext context) {
     final authProvider = context.read<AuthProvider>();
+    final storyProvider = context.read<StoryProvider>();
 
     return RefreshIndicator(
       onRefresh: () async {
@@ -34,33 +34,40 @@ class StoryListWidget extends StatelessWidget {
         slivers: [
           _buildAppBar(context),
 
-          if (storyProvider.isLoading && storyProvider.stories.isEmpty)
-             const SliverToBoxAdapter(
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator(),
-                ),
+          if (storyProvider.state.isLoading && storyProvider.stories.isEmpty ||
+              storyProvider.state.isInitial)
+            const SliverFillRemaining(
+              child: Center(child: CircularProgressIndicator()),
+            )
+          else if (storyProvider.state.isError)
+            SliverFillRemaining(
+              child: StoryErrorWidget(
+                errorMsg: storyProvider.state.errorMessage!,
+                onRetry: () => _refreshStories(context),
               ),
-            ),
+            )
+          else if (storyProvider.stories.isEmpty)
+            EmptyStoryWidget()
+          else if (storyProvider.state.isLoaded)
+            _buildSliverStoryList(context),
 
-          if (storyProvider.stories.isEmpty && !storyProvider.isLoading)
-            _buildNoStories(context),
-
-          if (storyProvider.stories.isNotEmpty) _buildSliverStoryList(),
-
-          if (storyProvider.isLoading && storyProvider.stories.isNotEmpty)
+          if (storyProvider.state.isLoading && storyProvider.stories.isNotEmpty)
             const SliverToBoxAdapter(
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator(),
-                ),
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Center(child: CircularProgressIndicator()),
               ),
             ),
         ],
       ),
     );
+  }
+
+  void _refreshStories(BuildContext context) {
+    final authProvider = context.read<AuthProvider>();
+    if (authProvider.user != null) {
+      context.read<StoryProvider>().refreshStories(user: authProvider.user!);
+    }
   }
 
   SliverAppBar _buildAppBar(BuildContext context) {
@@ -80,7 +87,9 @@ class StoryListWidget extends StatelessWidget {
       ),
       actions: [
         IconButton(
-          onPressed: onRefresh,
+          onPressed: () {
+            _refreshStories(context);
+          },
           icon: Icon(Icons.refresh, color: Colors.purple),
         ),
         Padding(
@@ -95,65 +104,28 @@ class StoryListWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildNoStories(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
+  Widget _buildSliverStoryList(BuildContext context) {
+    final storyProvider = context.read<StoryProvider>();
 
-    return SliverFillRemaining(
-      hasScrollBody: false,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.auto_stories, size: 80, color: Colors.grey),
-            SizedBox(height: 16),
-            Text(
-              localizations.no_stories,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Text(
-                localizations.pull_to_refresh,
-                style: TextStyle(color: Colors.grey[600]),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSliverStoryList() {
     return SliverPadding(
       padding: const EdgeInsets.all(16.0),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
-            if (index == storyProvider.stories.length &&
-                storyProvider.isLoading) {
-              return Center(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
-
             if (index >= storyProvider.stories.length) {
               return null;
             }
 
-            final story = storyProvider.stories[index];
             return Center(
               child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 460),
-                child: StoryCardWidget(story: story),
+                constraints: const BoxConstraints(maxWidth: 460),
+                child: StoryCardWidget(story: storyProvider.stories[index]),
               ),
             );
           },
           childCount:
-              storyProvider.stories.length + (storyProvider.isLoading ? 1 : 0),
+              storyProvider.stories.length +
+              (storyProvider.state is StoryLoadStateLoading ? 1 : 0),
         ),
       ),
     );

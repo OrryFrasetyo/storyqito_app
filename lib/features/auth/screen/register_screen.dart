@@ -58,6 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     AppLocalizations.of(context)!.register_success,
                 style: TextStyle(color: Colors.black),
               ),
+              backgroundColor: Colors.green.shade300,
             ),
           );
         }

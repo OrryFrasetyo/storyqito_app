@@ -34,7 +34,7 @@ class MapController {
       final authProvider = context.read<AuthProvider>();
       final storyProvider = context.read<StoryProvider>();
 
-      if (!storyProvider.isLoading &&
+      if (!storyProvider.state.isLoading &&
           storyProvider.hasMoreStories &&
           authProvider.user != null) {
         storyProvider.getStories(user: authProvider.user!).then((_) {

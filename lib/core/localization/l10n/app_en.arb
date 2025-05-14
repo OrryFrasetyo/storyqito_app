@@ -71,13 +71,25 @@
   "uploading_story": "Uploading story..",
   "question_mark": "?",
   "error": "Error",
+
   "map": "Map",
   "refresh": "Refresh",
   "change_map_type": "Change map type",
   "ok": "OK",
   "loading_address": "Loading address",
   "address_not_available": "Address not available",
-  "tap_to_select_location": "Tap to select location"
+  "tap_to_select_location": "Tap to select location",
+  "get_premium": "Get Premium",
+  "premium_benefits_description": "Upgrade to Storyqito Premium to enjoy additional features  adding location to your stories!",
+  "close": "Close",
+  "coming_soon": "Upgrade feature coming soon!",
+  "upgrade": "Upgrade",
+  "premium_feature": "Premium Feature",
+  "upgrade_to_add_location": "Upgrade to Premium to add location to your stories",
+  "upgrade_now": "Upgrade Now"
+
+  
+
 
 
 }

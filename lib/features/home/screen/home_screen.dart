@@ -4,9 +4,6 @@ import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/auth_provider.dart';
 import 'package:storyqito_app/core/provider/story_provider.dart';
 import 'package:storyqito_app/features/home/widgets/auth_error_widget.dart';
-import 'package:storyqito_app/features/home/widgets/loading_widget.dart';
-import 'package:storyqito_app/features/home/widgets/no_user_widget.dart';
-import 'package:storyqito_app/features/home/widgets/story_error_widget.dart';
 import 'package:storyqito_app/features/home/widgets/story_list_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -66,17 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
       final storyProvider = context.read<StoryProvider>();
 
       if (storyProvider.hasMoreStories &&
-          !storyProvider.isLoading &&
+          !storyProvider.state.isLoading &&
           authProvider.user != null) {
         storyProvider.getStories(user: authProvider.user!);
       }
-    }
-  }
-
-  void _refreshStories() {
-    final authProvider = context.read<AuthProvider>();
-    if (authProvider.user != null) {
-      context.read<StoryProvider>().refreshStories(user: authProvider.user!);
     }
   }
 
@@ -99,9 +89,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Consumer2<AuthProvider, StoryProvider>(
         builder: (context, authProvider, storyProvider, child) {
-          if (authProvider.isLoadingLogin) {
-            return LoadingWidget();
-          }
 
           if (authProvider.errorMsg.isNotEmpty) {
             return AuthErrorWidget(
@@ -110,21 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           }
 
-          if (authProvider.user == null) {
-            return NoUserWidget();
-          }
-
-          if (storyProvider.errorMsg.isNotEmpty) {
-            return StoryErrorWidget(
-              errorMsg: storyProvider.errorMsg,
-              onRetry: () => _refreshStories(),
-            );
-          }
-
           return StoryListWidget(
             scrollController: _scrollController,
-            storyProvider: storyProvider,
-            onRefresh: _refreshStories,
             onLogout: () => _logOut(authProvider),
           );
         },

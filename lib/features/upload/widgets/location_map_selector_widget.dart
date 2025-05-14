@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:storyqito_app/core/data/network/static/address_load_state.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/add_new_story_provider.dart';
 import 'package:storyqito_app/core/provider/address_provider.dart';
@@ -35,17 +38,24 @@ class LocationMapSelectorWidget extends StatelessWidget {
           ],
         ),
         if (uploadProvider.isLocationAttached) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: 16.0),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 700),
             opacity: uploadProvider.isLocationAttached ? 1.0 : 0.0,
             child: Container(
               height: 250.0,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
               clipBehavior: Clip.antiAlias,
               child: Stack(
                 children: [
                   GoogleMap(
+                    gestureRecognizers: {
+                      Factory<OneSequenceGestureRecognizer>(
+                        () => EagerGestureRecognizer(),
+                      ),
+                    },
                     style: isDark ? customStyleDark : customStyleLight,
                     mapType: MapType.normal,
                     markers: {
@@ -58,20 +68,17 @@ class LocationMapSelectorWidget extends StatelessWidget {
                             uploadProvider.setAttachedLocation(newPosition);
                           },
                           infoWindow: InfoWindow(
-                            snippet:
-                                context
-                                    .watch<AddressProvider>()
-                                    .formattedAddress ??
-                                AppLocalizations.of(
-                                  context,
-                                )!.address_not_available,
+                            snippet: context
+                                .watch<AddressProvider>()
+                                .state
+                                .getAddressOrFallback(context),
                           ),
                         ),
                     },
                     initialCameraPosition: CameraPosition(
                       target:
                           uploadProvider.attachedLocation ??
-                          const LatLng(-2.014380, 118.152180),
+                          const LatLng(-2.014390, 118.152190),
                       zoom: uploadProvider.attachedLocation != null ? 12 : 4,
                     ),
                     myLocationButtonEnabled: true,
@@ -79,14 +86,14 @@ class LocationMapSelectorWidget extends StatelessWidget {
                     zoomGesturesEnabled: true,
                     onTap: (position) {
                       uploadProvider.setAttachedLocation(position);
-            
+
                       context.read<AddressProvider>().getAddressFromCoordinates(
                         position.latitude,
                         position.longitude,
                       );
                     },
                   ),
-            
+
                   if (uploadProvider.attachedLocation == null)
                     Positioned.fill(
                       child: Center(
@@ -95,16 +102,16 @@ class LocationMapSelectorWidget extends StatelessWidget {
                           children: [
                             Icon(
                               Icons.touch_app,
-                              size: 40,
+                              size: 36.0,
                               color: Theme.of(
                                 context,
                               ).colorScheme.primary.withValues(alpha: 0.8),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 8.0),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
+                                horizontal: 16.0,
+                                vertical: 8.0,
                               ),
                               decoration: BoxDecoration(
                                 color: Theme.of(
@@ -128,7 +135,7 @@ class LocationMapSelectorWidget extends StatelessWidget {
             ),
           ),
           if (uploadProvider.attachedLocation != null) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: 8.0),
             Row(
               children: [
                 Expanded(

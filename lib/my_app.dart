@@ -6,6 +6,7 @@ import 'package:storyqito_app/core/routes/my_route_delegate.dart';
 import 'package:storyqito_app/core/routes/my_route_information_parser.dart';
 import 'package:storyqito_app/core/style/theme.dart';
 import 'package:storyqito_app/core/style/util.dart';
+import 'package:storyqito_app/core/variant/build_config.dart';
 
 class MyApp extends StatelessWidget {
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     MaterialTheme theme = MaterialTheme(textTheme);
 
     return MaterialApp.router(
-      title: "StoryQito",
+      title: BuildConfig.appName,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: settingProvider.locale,
