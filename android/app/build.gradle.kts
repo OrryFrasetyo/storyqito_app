@@ -16,7 +16,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.storyqito_app"
+    namespace = "com.orryfrasetyo.storyqito_app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -30,7 +30,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.storyqito_app"
+        applicationId = "com.orryfrasetyo.storyqito_app"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

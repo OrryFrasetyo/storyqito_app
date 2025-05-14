@@ -160,6 +160,11 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
     final imageFile = addNewStoryProvider.imageFile;
     final showCamera = addNewStoryProvider.showCamera;
     final isUploading = addNewStoryProvider.isLoading;
+    final appFlavor = const String.fromEnvironment(
+      "APP_FLAVOR",
+      defaultValue: "free",
+    );
+    final isPaidVersion = appFlavor == "paid";
 
     return Scaffold(
       appBar: AppBar(
@@ -216,7 +221,10 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
                       const SizedBox(height: 16),
 
                       if (kIsWeb) ...[
-                        LocationMapSelectorWidget(),
+                        if (isPaidVersion)
+                          LocationMapSelectorWidget()
+                        else
+                          _buildPremiumFeature(context),
                       ] else if (Theme.of(context).platform ==
                           TargetPlatform.android) ...[
                         if (BuildConfig.canAddLocation) ...[

@@ -43,6 +43,9 @@ dependencies:
   # environment
   flutter_dotenv: ^5.2.1
 
+  #info app
+  package_info_plus: ^8.3.0
+
 flutter_native_splash:
   color: "#ffffff"
   image: assets/icon/storyqito-logo.png

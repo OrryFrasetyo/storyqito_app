@@ -1,4 +1,4 @@
-package com.example.storyqito_app
+package com.orryfrasetyo.storyqito_app
 
 import io.flutter.embedding.android.FlutterActivity
 
