@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:storyqito_app/core/provider/setting_provider.dart';
+import 'package:storyqito_app/core/provider/setting/setting_provider.dart';
 import 'package:storyqito_app/features/map/util/map_style.dart';
 
 class StoryLocationMapWidget extends StatefulWidget {

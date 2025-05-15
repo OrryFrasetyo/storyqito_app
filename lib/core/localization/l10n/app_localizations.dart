@@ -616,6 +616,36 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Tingkatkan Sekarang'**
   String get upgrade_now;
+
+  /// No description provided for @use_current_location.
+  ///
+  /// In id, this message translates to:
+  /// **'Gunakan lokasi saat ini'**
+  String get use_current_location;
+
+  /// No description provided for @location_services_disabled.
+  ///
+  /// In id, this message translates to:
+  /// **'Layanan lokasi dinonaktifkan.'**
+  String get location_services_disabled;
+
+  /// No description provided for @location_permissions_denied.
+  ///
+  /// In id, this message translates to:
+  /// **'Izin lokasi ditolak.'**
+  String get location_permissions_denied;
+
+  /// No description provided for @location_permissions_permanently_denied.
+  ///
+  /// In id, this message translates to:
+  /// **'Izin lokasi ditolak secara permanen. Harap aktifkan di pengaturan perangkat Anda. Atau anda bisa menentukan lokasi secara manual'**
+  String get location_permissions_permanently_denied;
+
+  /// No description provided for @location_error.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak dapat mengakses lokasi Anda. Silakan periksa izin Anda.'**
+  String get location_error;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -8,12 +8,14 @@ import 'package:storyqito_app/core/data/repository/auth_repository.dart';
 import 'package:storyqito_app/core/data/repository/maps_repository.dart';
 import 'package:storyqito_app/core/data/repository/setting_repository.dart';
 import 'package:storyqito_app/core/data/repository/story_repository.dart';
-import 'package:storyqito_app/core/provider/add_new_story_provider.dart';
-import 'package:storyqito_app/core/provider/address_provider.dart';
-import 'package:storyqito_app/core/provider/auth_provider.dart';
-import 'package:storyqito_app/core/provider/map_provider.dart';
-import 'package:storyqito_app/core/provider/setting_provider.dart';
-import 'package:storyqito_app/core/provider/story_provider.dart';
+import 'package:storyqito_app/core/provider/upload/add_new_story_provider.dart';
+import 'package:storyqito_app/core/provider/map/address_provider.dart';
+import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
+import 'package:storyqito_app/core/provider/map/map_provider.dart';
+import 'package:storyqito_app/core/provider/setting/setting_provider.dart';
+import 'package:storyqito_app/core/provider/story/story_provider.dart';
+import 'package:storyqito_app/core/provider/upload/upload_location_loading_provider.dart';
+import 'package:storyqito_app/core/provider/upload/upload_map_controller_provider.dart';
 import 'package:storyqito_app/core/routes/my_route_delegate.dart';
 import 'package:storyqito_app/core/routes/my_route_information_parser.dart';
 import 'package:storyqito_app/my_app.dart';
@@ -65,6 +67,12 @@ class AppRoot extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => AddressProvider(context.read<MapsRepository>()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UploadLocationLoadingProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UploadMapControllerProvider(),
         ),
         ChangeNotifierProvider(
           create:

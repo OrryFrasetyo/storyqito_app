@@ -1,5 +1,5 @@
 name: storyqito_app
-description: "A new Flutter project."
+description: "Flutter app for sharing stories with images and location"
 
 publish_to: "none"
 
@@ -16,18 +16,30 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
+
+  # shared_preferences
   shared_preferences: ^2.5.3
+
+  # network
   http: ^1.3.0
+  http_parser: ^4.1.2
+
+  # state management
   provider: ^6.1.4
+
   equatable: ^2.0.7
+
+  # splash screen
   flutter_native_splash: ^2.4.6
+
   intl: ^0.19.0
 
-  http_parser: ^4.1.2
   path: ^1.9.1
+
+  # camera and image picker
   image_picker: ^1.1.2
   camera: ^0.11.1
-  universal_html: ^2.2.4
+
   dropdown_button2: ^2.3.9
   lottie: ^3.3.1
 
@@ -35,6 +47,7 @@ dependencies:
   google_maps_flutter: ^2.12.1
   google_maps_flutter_web: ^0.5.12
   google_maps_flutter_android: ^2.16.1
+  geolocator: ^14.0.0
 
   # code generation
   json_annotation: ^4.9.0
@@ -42,9 +55,12 @@ dependencies:
 
   # environment
   flutter_dotenv: ^5.2.1
+  universal_html: ^2.2.4
 
   #info app
   package_info_plus: ^8.3.0
+
+  pointer_interceptor: ^0.10.1+2
 
 flutter_native_splash:
   color: "#ffffff"

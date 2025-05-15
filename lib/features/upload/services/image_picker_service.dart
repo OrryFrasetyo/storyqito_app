@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
-import 'package:storyqito_app/core/provider/add_new_story_provider.dart';
+import 'package:storyqito_app/core/provider/upload/add_new_story_provider.dart';
 
 class ImagePickerService {
   final ImagePicker _imagePicker = ImagePicker();

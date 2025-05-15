@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
-import 'package:storyqito_app/core/provider/add_new_story_provider.dart';
-import 'package:storyqito_app/core/provider/auth_provider.dart';
-import 'package:storyqito_app/core/provider/story_provider.dart';
+import 'package:storyqito_app/core/provider/upload/add_new_story_provider.dart';
+import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
+import 'package:storyqito_app/core/provider/story/story_provider.dart';
 import 'package:storyqito_app/core/routes/my_route_delegate.dart';
 import 'package:storyqito_app/core/variant/build_config.dart';
 import 'package:storyqito_app/features/upload/services/camera_service.dart';
@@ -298,7 +298,6 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
               onPressed: () {
                 _showPremiumUpgrade(context);
               },
-              icon: Icon(Icons.star),
               label: Text(AppLocalizations.of(context)!.upgrade_now),
             ),
           ],

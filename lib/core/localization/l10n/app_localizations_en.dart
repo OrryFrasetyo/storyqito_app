@@ -268,4 +268,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get upgrade_now => 'Upgrade Now';
+
+  @override
+  String get use_current_location => 'Use current location';
+
+  @override
+  String get location_services_disabled => 'Location services are disabled.';
+
+  @override
+  String get location_permissions_denied => 'Location permissions are denied.';
+
+  @override
+  String get location_permissions_permanently_denied => 'Location permissions are permanently denied. Please enable them in your device settings. Or you can select location manually';
+
+  @override
+  String get location_error => 'Unable to access your location. Please check your permissions.';
 }

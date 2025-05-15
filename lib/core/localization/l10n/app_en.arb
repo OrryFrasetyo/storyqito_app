@@ -1,4 +1,5 @@
 {
+  "@@locale": "en",
   "name_app": "Storyqito",
   "login_account": "Login Account",
   "please_login_using_your_account": "Please login using your account",
@@ -86,10 +87,11 @@
   "upgrade": "Upgrade",
   "premium_feature": "Premium Feature",
   "upgrade_to_add_location": "Upgrade to Premium to add location to your stories",
-  "upgrade_now": "Upgrade Now"
-
-  
-
-
+  "upgrade_now": "Upgrade Now",
+  "use_current_location": "Use current location",
+  "location_services_disabled": "Location services are disabled.",
+  "location_permissions_denied": "Location permissions are denied.",
+  "location_permissions_permanently_denied": "Location permissions are permanently denied. Please enable them in your device settings. Or you can select location manually",
+  "location_error": "Unable to access your location. Please check your permissions."
 
 }

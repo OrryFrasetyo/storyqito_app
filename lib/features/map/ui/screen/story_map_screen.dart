@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
-import 'package:storyqito_app/core/provider/auth_provider.dart';
-import 'package:storyqito_app/core/provider/map_provider.dart';
-import 'package:storyqito_app/core/provider/story_provider.dart';
+import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
+import 'package:storyqito_app/core/provider/map/map_provider.dart';
+import 'package:storyqito_app/core/provider/story/story_provider.dart';
 import 'package:storyqito_app/features/map/ui/layout/landscape_layout.dart';
 import 'package:storyqito_app/features/map/ui/layout/potrait_layout.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/data/network/responses/list_story.dart';
 import 'package:storyqito_app/core/data/network/static/address_load_state.dart';
-import 'package:storyqito_app/core/provider/address_provider.dart';
+import 'package:storyqito_app/core/provider/map/address_provider.dart';
 import 'package:storyqito_app/features/detail/widget/address_widget.dart';
 import 'package:storyqito_app/features/detail/widget/story_location_map_widget.dart';
 

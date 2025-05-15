@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/data/network/static/address_load_state.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
-import 'package:storyqito_app/core/provider/address_provider.dart';
+import 'package:storyqito_app/core/provider/map/address_provider.dart';
 
 class AddressWidget extends StatefulWidget {
   final double latitude;

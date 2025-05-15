@@ -19,7 +19,6 @@
 		</script>
 
 		<script>
-			// Load Google Maps with API key from environment variables
 			document.addEventListener("DOMContentLoaded", function () {
 				const script = document.getElementById("google-maps-script");
 				script.src = `https://maps.googleapis.com/maps/api/js?key=${window.ENV.GOOGLE_MAPS_API_KEY}&loading=async`;
@@ -32,7 +31,7 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="Flutter app for sharing stories with images and location.">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -43,7 +42,7 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
 
-  <title>storyqito_app</title>
+  <title>Storyqito App</title>
   <link rel="manifest" href="manifest.json">
   <style id="splash-screen-style">
     html {
@@ -54,7 +53,7 @@
       margin: 0;
       min-height: 100%;
       background-color: #ffffff;
-          background-size: 100% 100%;
+      background-size: 100% 100%;
     }
 
     .center {
@@ -68,18 +67,21 @@
 
     .contain {
       display:block;
-      width:100%; height:100%;
+      width:100%; 
+      height:100%;
       object-fit: contain;
     }
 
     .stretch {
       display:block;
-      width:100%; height:100%;
+      width:100%; 
+      height:100%;
     }
 
     .cover {
       display:block;
-      width:100%; height:100%;
+      width:100%; 
+      height:100%;
       object-fit: cover;
     }
 
@@ -110,6 +112,7 @@
     }
   </style>
   <script id="splash-screen-script">
+    
     function removeSplashFromWeb() {
       document.getElementById("splash")?.remove();
       document.getElementById("splash-branding")?.remove();

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
-import 'package:storyqito_app/core/provider/auth_provider.dart';
-import 'package:storyqito_app/core/provider/story_provider.dart';
+import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
+import 'package:storyqito_app/core/provider/story/story_provider.dart';
 import 'package:storyqito_app/features/home/widgets/auth_error_widget.dart';
 import 'package:storyqito_app/features/home/widgets/story_list_widget.dart';
 

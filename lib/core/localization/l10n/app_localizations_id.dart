@@ -268,4 +268,19 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get upgrade_now => 'Tingkatkan Sekarang';
+
+  @override
+  String get use_current_location => 'Gunakan lokasi saat ini';
+
+  @override
+  String get location_services_disabled => 'Layanan lokasi dinonaktifkan.';
+
+  @override
+  String get location_permissions_denied => 'Izin lokasi ditolak.';
+
+  @override
+  String get location_permissions_permanently_denied => 'Izin lokasi ditolak secara permanen. Harap aktifkan di pengaturan perangkat Anda. Atau anda bisa menentukan lokasi secara manual';
+
+  @override
+  String get location_error => 'Tidak dapat mengakses lokasi Anda. Silakan periksa izin Anda.';
 }

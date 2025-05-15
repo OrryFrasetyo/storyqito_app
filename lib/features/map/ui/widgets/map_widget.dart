@@ -3,8 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:storyqito_app/core/provider/map_provider.dart';
-import 'package:storyqito_app/core/provider/setting_provider.dart';
+import 'package:storyqito_app/core/provider/map/map_provider.dart';
+import 'package:storyqito_app/core/provider/setting/setting_provider.dart';
 import 'package:storyqito_app/features/map/util/map_style.dart';
 
 class MapWidget extends StatelessWidget {

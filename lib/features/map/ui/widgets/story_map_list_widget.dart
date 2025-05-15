@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/data/network/responses/list_story.dart';
-import 'package:storyqito_app/core/provider/auth_provider.dart';
-import 'package:storyqito_app/core/provider/map_provider.dart';
-import 'package:storyqito_app/core/provider/story_provider.dart';
+import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
+import 'package:storyqito_app/core/provider/map/map_provider.dart';
+import 'package:storyqito_app/core/provider/story/story_provider.dart';
 import 'package:storyqito_app/core/routes/my_route_delegate.dart';
 import 'package:storyqito_app/features/home/widgets/empty_story_widget.dart';
 import 'package:storyqito_app/features/home/widgets/story_error_widget.dart';

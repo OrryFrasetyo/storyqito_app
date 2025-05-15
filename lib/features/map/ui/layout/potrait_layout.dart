@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:storyqito_app/core/provider/map_provider.dart';
+import 'package:storyqito_app/core/provider/map/map_provider.dart';
 import 'package:storyqito_app/features/map/ui/layout/horizontal_split_layout.dart';
 import 'package:storyqito_app/features/map/ui/widgets/map_widget.dart';
 import 'package:storyqito_app/features/map/ui/widgets/story_map_list_widget.dart';

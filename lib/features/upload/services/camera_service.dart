@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
-import 'package:storyqito_app/core/provider/add_new_story_provider.dart';
+import 'package:storyqito_app/core/provider/upload/add_new_story_provider.dart';
 import 'package:storyqito_app/features/upload/util/web_camera_util.dart';
 
 class CameraService {

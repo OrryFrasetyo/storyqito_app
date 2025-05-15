@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:storyqito_app/core/data/network/responses/list_story.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
-import 'package:storyqito_app/core/provider/auth_provider.dart';
-import 'package:storyqito_app/core/provider/setting_provider.dart';
+import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
+import 'package:storyqito_app/core/provider/setting/setting_provider.dart';
 import 'package:storyqito_app/core/routes/app_route_path.dart';
 import 'package:storyqito_app/core/utils/custom_page_transition.dart';
 import 'package:storyqito_app/features/auth/animation/auth_screen_animation.dart';
