@@ -12,24 +12,28 @@ class MapWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.watch<SettingProvider>().setting?.isDark == true;
     final mapProvider = context.watch<MapProvider>();
+    final isDark = context.watch<SettingProvider>().setting?.isDark == true;
 
-    return GoogleMap(
-      gestureRecognizers: {
-        Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
-      },
-      style: isDark ? customStyleDark : customStyleLight,
-      mapType: mapProvider.selectedMapType,
-      markers: mapProvider.markers,
-      initialCameraPosition: const CameraPosition(
-        target: LatLng(-2.014390, 118.152190),
-        zoom: 4,
-      ),
-      myLocationButtonEnabled: true,
-      zoomControlsEnabled: true,
-      zoomGesturesEnabled: true,
-      onMapCreated: mapProvider.onMapCreated,
-    );
+    return context.mounted
+        ? GoogleMap(
+          gestureRecognizers: {
+            Factory<OneSequenceGestureRecognizer>(
+              () => EagerGestureRecognizer(),
+            ),
+          },
+          style: isDark ? customStyleDark : customStyleLight,
+          mapType: mapProvider.selectedMapType,
+          markers: mapProvider.markers,
+          initialCameraPosition: const CameraPosition(
+            target: LatLng(-2.014390, 118.152190),
+            zoom: 4,
+          ),
+          myLocationButtonEnabled: true,
+          zoomControlsEnabled: true,
+          zoomGesturesEnabled: true,
+          onMapCreated: mapProvider.onMapCreated,
+        )
+        : const SizedBox.shrink();
   }
 }

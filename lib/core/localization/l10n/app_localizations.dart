@@ -646,6 +646,30 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'Tidak dapat mengakses lokasi Anda. Silakan periksa izin Anda.'**
   String get location_error;
+
+  /// No description provided for @story_not_found.
+  ///
+  /// In id, this message translates to:
+  /// **'Cerita Tidak Ditemukan'**
+  String get story_not_found;
+
+  /// No description provided for @page_not_found.
+  ///
+  /// In id, this message translates to:
+  /// **'Halaman Tidak Ditemukan'**
+  String get page_not_found;
+
+  /// No description provided for @page_not_found_description.
+  ///
+  /// In id, this message translates to:
+  /// **'Halaman yang Anda cari tidak ditemukan.'**
+  String get page_not_found_description;
+
+  /// No description provided for @go_to_home.
+  ///
+  /// In id, this message translates to:
+  /// **'Kembali ke Beranda'**
+  String get go_to_home;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

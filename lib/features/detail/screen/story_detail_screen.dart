@@ -26,7 +26,9 @@ class StoryDetailScreen extends StatelessWidget {
         ),
         elevation: 0,
         leading: IconButton(
-          onPressed: onBackPressed,
+          onPressed: () {
+            onBackPressed();
+          },
           icon: Icon(Icons.arrow_back),
         ),
       ),

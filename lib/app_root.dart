@@ -16,7 +16,7 @@ import 'package:storyqito_app/core/provider/setting/setting_provider.dart';
 import 'package:storyqito_app/core/provider/story/story_provider.dart';
 import 'package:storyqito_app/core/provider/upload/upload_location_loading_provider.dart';
 import 'package:storyqito_app/core/provider/upload/upload_map_controller_provider.dart';
-import 'package:storyqito_app/core/routes/my_route_delegate.dart';
+import 'package:storyqito_app/core/routes/app_router.dart';
 import 'package:storyqito_app/core/routes/my_route_information_parser.dart';
 import 'package:storyqito_app/my_app.dart';
 
@@ -33,6 +33,11 @@ class AppRoot extends StatelessWidget {
         Provider(create: (_) => MyRouteInformationParser()),
         Provider(create: (_) => ApiServices(httpClient: http.Client())),
         Provider(create: (_) => MapsApiService(httpClient: http.Client())),
+        Provider(
+          create:
+              (context) =>
+                  AppRouter(authProvider: context.read<AuthProvider>()),
+        ),
         Provider(
           create:
               (context) =>
@@ -74,13 +79,7 @@ class AppRoot extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => UploadMapControllerProvider(),
         ),
-        ChangeNotifierProvider(
-          create:
-              (context) => MyRouteDelegate(
-                context.read<AuthProvider>(),
-                context.read<SettingProvider>(),
-              ),
-        ),
+
       ],
       child: MyApp(),
     );

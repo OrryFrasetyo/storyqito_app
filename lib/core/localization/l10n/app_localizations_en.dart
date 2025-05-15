@@ -283,4 +283,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get location_error => 'Unable to access your location. Please check your permissions.';
+
+  @override
+  String get story_not_found => 'Story Not Found';
+
+  @override
+  String get page_not_found => 'Page Not Found';
+
+  @override
+  String get page_not_found_description => 'The page you\'re looking for doesn\'t exist.';
+
+  @override
+  String get go_to_home => 'Go to Home';
 }

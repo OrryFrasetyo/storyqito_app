@@ -92,6 +92,10 @@
   "location_services_disabled": "Location services are disabled.",
   "location_permissions_denied": "Location permissions are denied.",
   "location_permissions_permanently_denied": "Location permissions are permanently denied. Please enable them in your device settings. Or you can select location manually",
-  "location_error": "Unable to access your location. Please check your permissions."
+  "location_error": "Unable to access your location. Please check your permissions.",
+  "story_not_found": "Story Not Found",
+  "page_not_found": "Page Not Found",
+  "page_not_found_description": "The page you're looking for doesn't exist.",
+  "go_to_home": "Go to Home"
 
 }

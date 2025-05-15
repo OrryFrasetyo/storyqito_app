@@ -41,9 +41,12 @@ class StoryListWidget extends StatelessWidget {
             )
           else if (storyProvider.state.isError)
             SliverFillRemaining(
-              child: StoryErrorWidget(
-                errorMsg: storyProvider.state.errorMessage!,
-                onRetry: () => _refreshStories(context),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: StoryErrorWidget(
+                  errorMsg: storyProvider.state.errorMessage!,
+                  onRetry: () => _refreshStories(context),
+                ),
               ),
             )
           else if (storyProvider.stories.isEmpty)

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
@@ -7,9 +8,7 @@ import 'package:storyqito_app/features/home/widgets/auth_error_widget.dart';
 import 'package:storyqito_app/features/home/widgets/story_list_widget.dart';
 
 class HomeScreen extends StatefulWidget {
-  final VoidCallback onLogout;
-
-  const HomeScreen({super.key, required this.onLogout});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -78,8 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _logOut(AuthProvider authProvider) async {
     await authProvider.logout();
-    widget.onLogout();
     if (mounted) {
+      context.go("/login");
       _showLogoutSuccessMessage();
     }
   }
@@ -89,11 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Consumer2<AuthProvider, StoryProvider>(
         builder: (context, authProvider, storyProvider, child) {
-
           if (authProvider.errorMsg.isNotEmpty) {
             return AuthErrorWidget(
               errorMsg: authProvider.errorMsg,
-              onLogout: widget.onLogout,
+              onLogout: () => _logOut(authProvider),
             );
           }
 

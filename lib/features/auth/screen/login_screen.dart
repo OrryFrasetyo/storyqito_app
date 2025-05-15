@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/data/model/user.dart';
 import 'package:storyqito_app/core/data/network/util/validators.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
 import 'package:storyqito_app/core/provider/setting/setting_provider.dart';
-import 'package:storyqito_app/core/routes/my_route_delegate.dart';
 import 'package:storyqito_app/core/style/theme.dart';
 import 'package:storyqito_app/features/widget/language_picker.dart';
 
 class LoginScreen extends StatefulWidget {
-  final VoidCallback onLogin;
-  final VoidCallback onRegister;
-
-  const LoginScreen({
-    super.key,
-    required this.onLogin,
-    required this.onRegister,
-  });
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -46,9 +39,10 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       final result = await authProvider.login(user.email!, user.password!);
+
       if (result.data != null) {
-        widget.onLogin();
         if (mounted) {
+          context.go("/");
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               margin: EdgeInsets.only(bottom: 16, left: 16, right: 16),
@@ -84,23 +78,16 @@ class _LoginScreenState extends State<LoginScreen> {
       builder: (context, authProvider, child) {
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.transparent,
             actions: [
               Consumer<SettingProvider>(
                 builder:
-                    (context, settingProvider, _) => Padding(
-                      padding: const EdgeInsets.only(right: 12.0),
+                    (context, provider, _) => Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
                       child: LanguagePicker(
-                        onLanguageChanged:
-                            (code) => settingProvider.setLocale(code),
-                        selectedLanguageCode:
-                            settingProvider.locale.languageCode,
+                        selectedLanguageCode: provider.locale.languageCode,
+                        onLanguageChanged: (code) => provider.setLocale(code),
                         isCompactMode: true,
-                        onTapDialog: () {
-                          final delegate =
-                              Router.of(context).routerDelegate
-                                  as MyRouteDelegate;
-                          delegate.showLanguageDialog();
-                        },
                       ),
                     ),
               ),
@@ -208,10 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(color: Colors.grey.shade600),
                             ),
                             TextButton(
-                              onPressed:
-                                  authProvider.isLoadingLogin
-                                      ? null
-                                      : widget.onRegister,
+                              onPressed: () => context.go("/register"),
                               style: TextButton.styleFrom(
                                 padding: EdgeInsets.all(8.0),
                                 minimumSize: Size(50, 30),

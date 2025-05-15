@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/data/model/user.dart';
 import 'package:storyqito_app/core/data/network/util/validators.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
 import 'package:storyqito_app/core/provider/setting/setting_provider.dart';
-import 'package:storyqito_app/core/routes/my_route_delegate.dart';
 import 'package:storyqito_app/core/style/theme.dart';
 import 'package:storyqito_app/features/widget/language_picker.dart';
 
 class RegisterScreen extends StatefulWidget {
-  final VoidCallback onRegister;
-  final VoidCallback onLogin;
-
-  const RegisterScreen({
-    super.key,
-    required this.onRegister,
-    required this.onLogin,
-  });
+  const RegisterScreen({super.key});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -48,9 +41,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       final result = await authProvider.register(user);
+
       if (result.data != null && !result.data!.error) {
-        widget.onRegister();
         if (mounted) {
+          context.go("/");
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -84,21 +78,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         actions: [
           Consumer<SettingProvider>(
             builder:
-                (context, settingProvider, _) => Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
+                (context, provider, _) => Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
                   child: LanguagePicker(
-                    onLanguageChanged:
-                        (code) => settingProvider.setLocale(code),
-                    selectedLanguageCode: settingProvider.locale.languageCode,
+                    selectedLanguageCode: provider.locale.languageCode,
+                    onLanguageChanged: (code) => provider.setLocale(code),
                     isCompactMode: true,
-                    onTapDialog: () {
-                      final delegate =
-                          Router.of(context).routerDelegate as MyRouteDelegate;
-                      delegate.showLanguageDialog();
-                    },
                   ),
                 ),
           ),
@@ -219,7 +208,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           style: TextStyle(color: Colors.grey.shade600),
                         ),
                         TextButton(
-                          onPressed: widget.onLogin,
+                          onPressed: () => context.go("/login"),
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.all(8.0),
                             minimumSize: Size(50, 30),

@@ -31,7 +31,7 @@ class _AnimateTabSwitcherState extends State<AnimateTabSwitcher> {
     return Stack(
       children: List.generate(widget.children.length, (i) {
         final isActive = i == widget.index;
-        // final isOld = i == _oldIndex;
+        final isOld = i == _oldIndex;
 
         return AnimatedOpacity(
           duration: const Duration(milliseconds: 700),

@@ -8,7 +8,7 @@ import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/upload/add_new_story_provider.dart';
 import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
 import 'package:storyqito_app/core/provider/story/story_provider.dart';
-import 'package:storyqito_app/core/routes/my_route_delegate.dart';
+import 'package:storyqito_app/core/routes/app_router.dart';
 import 'package:storyqito_app/core/variant/build_config.dart';
 import 'package:storyqito_app/features/upload/services/camera_service.dart';
 import 'package:storyqito_app/features/upload/services/image_picker_service.dart';
@@ -105,7 +105,7 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
     if (_addNewStoryProvider.isSuccess) {
       _cameraService.cleanUpCamera();
 
-      context.read<MyRouteDelegate>().navigateToHome();
+      context.navigateToHome();
       await context.read<StoryProvider>().refreshStories(
         user: authProvider.user!,
       );

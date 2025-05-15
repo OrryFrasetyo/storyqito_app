@@ -14,8 +14,8 @@ class AuthScreenAnimation extends Page {
   Route createRoute(BuildContext context) {
     return PageRouteBuilder(
       settings: this,
-      transitionDuration: const Duration(milliseconds: 500),
-      reverseTransitionDuration: const Duration(milliseconds: 400),
+      transitionDuration: const Duration(milliseconds: 800),
+      reverseTransitionDuration: const Duration(milliseconds: 600),
       pageBuilder: (context, animation, secondaryAnimation) => child,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         final begin =

@@ -101,7 +101,12 @@
   "location_services_disabled": "Layanan lokasi dinonaktifkan.",
   "location_permissions_denied": "Izin lokasi ditolak.",
   "location_permissions_permanently_denied": "Izin lokasi ditolak secara permanen. Harap aktifkan di pengaturan perangkat Anda. Atau anda bisa menentukan lokasi secara manual",
-  "location_error": "Tidak dapat mengakses lokasi Anda. Silakan periksa izin Anda."
+  "location_error": "Tidak dapat mengakses lokasi Anda. Silakan periksa izin Anda.",
+
+  "story_not_found": "Cerita Tidak Ditemukan",
+  "page_not_found": "Halaman Tidak Ditemukan",
+  "page_not_found_description": "Halaman yang Anda cari tidak ditemukan.",
+  "go_to_home": "Kembali ke Beranda"
 
 
 }

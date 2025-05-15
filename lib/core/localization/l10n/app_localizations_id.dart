@@ -283,4 +283,16 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get location_error => 'Tidak dapat mengakses lokasi Anda. Silakan periksa izin Anda.';
+
+  @override
+  String get story_not_found => 'Cerita Tidak Ditemukan';
+
+  @override
+  String get page_not_found => 'Halaman Tidak Ditemukan';
+
+  @override
+  String get page_not_found_description => 'Halaman yang Anda cari tidak ditemukan.';
+
+  @override
+  String get go_to_home => 'Kembali ke Beranda';
 }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/data/network/responses/list_story.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
-import 'package:storyqito_app/core/routes/my_route_delegate.dart';
+import 'package:storyqito_app/core/routes/app_router.dart';
 import 'package:storyqito_app/core/utils/formatted_local_time.dart';
 
 class StoryCardWidget extends StatelessWidget {
@@ -21,7 +20,7 @@ class StoryCardWidget extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16.0),
         onTap: () {
-          context.read<MyRouteDelegate>().navigateToStoryDetail(story);
+          context.navigateToStoryDetail(story);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

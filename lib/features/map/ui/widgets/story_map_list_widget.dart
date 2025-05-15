@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/data/network/responses/list_story.dart';
+import 'package:storyqito_app/core/routes/app_router.dart';
 import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
 import 'package:storyqito_app/core/provider/map/map_provider.dart';
 import 'package:storyqito_app/core/provider/story/story_provider.dart';
-import 'package:storyqito_app/core/routes/my_route_delegate.dart';
 import 'package:storyqito_app/features/home/widgets/empty_story_widget.dart';
 import 'package:storyqito_app/features/home/widgets/story_error_widget.dart';
 import 'package:storyqito_app/features/map/ui/widgets/story_map_card_widget.dart';
@@ -93,10 +93,9 @@ class StoryMapListWidget extends StatelessWidget {
                   context.read<MapProvider>().onStoryTap(story);
                 }
               },
-              onDoubleTap:
-                  () => context.read<MyRouteDelegate>().navigateToStoryDetail(
-                    story,
-                  ),
+              onDoubleTap: () {
+                context.navigateToStoryDetail(story);
+              },
               child: Card(
                 margin: EdgeInsets.only(bottom: 16),
                 child: StoryMapCardWidget(

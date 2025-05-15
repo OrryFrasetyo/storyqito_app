@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/setting/setting_provider.dart';
-import 'package:storyqito_app/core/routes/my_route_delegate.dart';
 import 'package:storyqito_app/features/widget/language_picker.dart';
 
 class SettingScreen extends StatefulWidget {
-  final VoidCallback onLogout;
-
-  const SettingScreen({super.key, required this.onLogout});
+  const SettingScreen({super.key});
 
   @override
   State<SettingScreen> createState() => _SettingScreenState();
@@ -69,12 +66,6 @@ class _SettingScreenState extends State<SettingScreen> {
                         selectedLanguageCode:
                             settingProvider.locale.languageCode,
                         isCompactMode: false,
-                        onTapDialog: () {
-                          final delegate =
-                              Router.of(context).routerDelegate
-                                  as MyRouteDelegate;
-                          delegate.showLanguageDialog();
-                        },
                       ),
                     ),
                     SizedBox(height: 16.0),
