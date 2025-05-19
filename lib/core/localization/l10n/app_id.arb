@@ -40,6 +40,7 @@
 
   "story_detail": "Detail Cerita",
   "location": "Lokasi",
+  "location_available": "Lokasi tersedia",
   "latitude": "Garis Lintang",
   "longitude": "Garis Bujur",
 
@@ -50,6 +51,8 @@
   "retry": "Coba Lagi",
   "logout_success": "Berhasil keluar akun",
   "logout": "Keluar",
+  "logout_confirm": "Konfirmasi keluar",
+  "logout_confirm_message": "Apakah Anda yakin ingin keluar?",
 
   "language_updated": "Bahasa berhasil diperbarui",
 
@@ -60,6 +63,9 @@
   "h_ago_plural": "jam yang lalu",
   "m_ago_singular": "menit yang lalu",
   "m_ago_plural": "menit yang lalu",
+
+  "show_more": "Lihat Selengkapnya",
+  "show_less": "Sembunyikan",
 
   "camera": "Kamera",
   "gallery": "Galeri",

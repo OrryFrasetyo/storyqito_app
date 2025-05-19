@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart' show kIsWeb, Uint8List;
+import 'package:flutter/foundation.dart' show Uint8List;
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as path;
@@ -10,12 +10,14 @@ import 'package:storyqito_app/core/data/network/responses/login_response.dart';
 import 'package:storyqito_app/core/data/network/responses/simple_response.dart';
 import 'package:storyqito_app/core/data/network/responses/stories_response.dart';
 import 'package:storyqito_app/core/data/network/util/api_response.dart';
+import 'package:storyqito_app/core/utils/constants.dart';
 
 class ApiServices {
   static const String _baseUrl = "https://story-api.dicoding.dev/v1";
   final http.Client httpClient;
+  final AppService appService;
 
-  ApiServices({required this.httpClient});
+  ApiServices({required this.appService, required this.httpClient});
 
   Future<ApiResponse<SimpleResponse>> register(User user) async {
     return await executeSafely(() async {
@@ -69,12 +71,10 @@ class ApiServices {
   }) async {
     return await executeSafely(() async {
       final queryParams = <String, String>{};
-      if (page != null) {
-        queryParams["page"] = page.toString();
-      }
-      if (size != null) {
-        queryParams["size"] = size.toString();
-      }
+      if (page != null) queryParams["page"] = page.toString();
+
+      if (size != null) queryParams["size"] = size.toString();
+
       queryParams["location"] = location.toString();
 
       final uri = Uri.parse(
@@ -87,6 +87,7 @@ class ApiServices {
           "Authorization": "Bearer ${user.token}",
         },
       );
+
       if (response.statusCode == 200) {
         return StoriesResponse.fromJson(jsonDecode(response.body));
       } else {
@@ -121,7 +122,7 @@ class ApiServices {
       final extension = path.extension(fileName).toLowerCase();
       final mimeType = MediaType("image", _getImageMimeType(extension));
 
-      if (kIsWeb && photoBytes != null) {
+      if (appService.getKIsWeb() && photoBytes != null) {
         final multipart = http.MultipartFile.fromBytes(
           "photo",
           photoBytes,
@@ -144,14 +145,24 @@ class ApiServices {
         throw Exception("Tidak ada file gambar yang disediakan");
       }
 
-      final streamedResponse = await request.send();
+      final streamedResponse = await httpClient.send(request);
       final response = await http.Response.fromStream(streamedResponse);
-      final json = jsonDecode(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return SimpleResponse.fromJson(json);
+        try {
+          final json = jsonDecode(response.body);
+          return SimpleResponse.fromJson(json);
+        } catch (e) {
+          throw FormatException("Failed to decode response: ${response.body}");
+        }
       } else {
-        final errorMsg = json["message"] ?? "Unknown error occurred";
+        String errorMsg;
+        try {
+          final json = jsonDecode(response.body);
+          errorMsg = json["message"] ?? "Unknown error occurred";
+        } catch (e) {
+          errorMsg = "Server error: Status code ${response.statusCode}";
+        }
         throw Exception(errorMsg);
       }
     });

@@ -134,32 +134,6 @@ class MaterialTheme {
           horizontal: 16,
         ),
       ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: baseTheme.colorScheme.primary,
-          elevation: 0,
-          textStyle: TextStyle(
-            fontFamily: "Quicksand",
-            fontWeight: FontWeight.bold,
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ),
-        ),
-      ),
-      snackBarTheme: SnackBarThemeData(
-        backgroundColor: baseTheme.colorScheme.surfaceContainerHigh,
-        behavior: SnackBarBehavior.floating,
-        elevation: 6,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        contentTextStyle: TextStyle(
-          fontWeight: FontWeight.w400,
-          color: baseTheme.colorScheme.onSurface,
-          fontFamily: "Quicksand",
-        ),
-      ),
     );
   }
 
@@ -182,32 +156,6 @@ class MaterialTheme {
           horizontal: 16,
         ),
       ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.black,
-          backgroundColor: baseTheme.colorScheme.primary,
-          elevation: 0,
-          textStyle: TextStyle(
-            fontFamily: "Quicksand",
-            fontWeight: FontWeight.bold,
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ),
-        ),
-      ),
-      snackBarTheme: SnackBarThemeData(
-        backgroundColor: baseTheme.colorScheme.surfaceContainerHigh,
-        behavior: SnackBarBehavior.floating,
-        elevation: 6,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        contentTextStyle: TextStyle(
-          fontWeight: FontWeight.w400,
-          color: baseTheme.colorScheme.onSurface,
-          fontFamily: "Quicksand",
-        ),
-      ),
     );
   }
 
@@ -218,9 +166,35 @@ class MaterialTheme {
     textTheme: textTheme.apply(
       bodyColor: colorScheme.onSurface,
       displayColor: colorScheme.onSurface,
+      fontFamily: "Quicksand",
     ),
     scaffoldBackgroundColor: colorScheme.surface,
     canvasColor: colorScheme.surface,
+    fontFamily: "Quicksand",
+    fontFamilyFallback: ["Quicksand"],
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: colorScheme.surfaceContainerLowest,
+        backgroundColor: colorScheme.primary,
+        elevation: 0,
+        textStyle: TextStyle(
+          fontFamily: "Quicksand",
+          fontWeight: FontWeight.bold,
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      ),
+    ),
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: colorScheme.surfaceContainerHigh,
+      behavior: SnackBarBehavior.floating,
+      elevation: 6,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      contentTextStyle: TextStyle(
+        fontWeight: FontWeight.w400,
+        color: colorScheme.onSurface,
+      ),
+    ),
   );
 
   List<ExtendedColor> get extendedColors => [];

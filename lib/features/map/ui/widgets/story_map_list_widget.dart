@@ -5,8 +5,8 @@ import 'package:storyqito_app/core/routes/app_router.dart';
 import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
 import 'package:storyqito_app/core/provider/map/map_provider.dart';
 import 'package:storyqito_app/core/provider/story/story_provider.dart';
-import 'package:storyqito_app/features/home/widgets/empty_story_widget.dart';
-import 'package:storyqito_app/features/home/widgets/story_error_widget.dart';
+import 'package:storyqito_app/features/widget/empty_story_widget.dart';
+import 'package:storyqito_app/features/widget/story_error_widget.dart';
 import 'package:storyqito_app/features/map/ui/widgets/story_map_card_widget.dart';
 
 class StoryMapListWidget extends StatelessWidget {

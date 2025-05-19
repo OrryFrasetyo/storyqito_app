@@ -8,6 +8,7 @@ import 'package:storyqito_app/core/data/repository/auth_repository.dart';
 import 'package:storyqito_app/core/data/repository/maps_repository.dart';
 import 'package:storyqito_app/core/data/repository/setting_repository.dart';
 import 'package:storyqito_app/core/data/repository/story_repository.dart';
+import 'package:storyqito_app/core/provider/app/app_provider.dart';
 import 'package:storyqito_app/core/provider/upload/add_new_story_provider.dart';
 import 'package:storyqito_app/core/provider/map/address_provider.dart';
 import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
@@ -18,6 +19,7 @@ import 'package:storyqito_app/core/provider/upload/upload_location_loading_provi
 import 'package:storyqito_app/core/provider/upload/upload_map_controller_provider.dart';
 import 'package:storyqito_app/core/routes/app_router.dart';
 import 'package:storyqito_app/core/routes/my_route_information_parser.dart';
+import 'package:storyqito_app/core/utils/constants.dart';
 import 'package:storyqito_app/my_app.dart';
 
 class AppRoot extends StatelessWidget {
@@ -31,7 +33,13 @@ class AppRoot extends StatelessWidget {
       providers: [
         Provider(create: (_) => SettingRepository(sharedPrefs)),
         Provider(create: (_) => MyRouteInformationParser()),
-        Provider(create: (_) => ApiServices(httpClient: http.Client())),
+        Provider(
+          create:
+              (_) => ApiServices(
+                httpClient: http.Client(),
+                appService: AppService(),
+              ),
+        ),
         Provider(create: (_) => MapsApiService(httpClient: http.Client())),
         Provider(
           create:
@@ -49,6 +57,7 @@ class AppRoot extends StatelessWidget {
         Provider(
           create: (context) => MapsRepository(context.read<MapsApiService>()),
         ),
+        ChangeNotifierProvider(create: (_) => AppProvider()),
         ChangeNotifierProvider(
           create: (context) => AuthProvider(context.read<AuthRepository>()),
         ),
@@ -79,7 +88,6 @@ class AppRoot extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => UploadMapControllerProvider(),
         ),
-
       ],
       child: MyApp(),
     );

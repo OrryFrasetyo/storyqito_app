@@ -10,20 +10,20 @@ class StoryLocationMapWidget extends StatefulWidget {
   final double latitude;
   final double longitude;
   final double height;
-  final BorderRadius? borderRadius;
   final bool controlsEnabled;
   final String title;
   final String location;
+  final BorderRadius? borderRadius;
 
   const StoryLocationMapWidget({
     super.key,
     required this.latitude,
     required this.longitude,
     this.height = 200.0,
-    this.borderRadius,
     this.controlsEnabled = true,
     required this.title,
     required this.location,
+    this.borderRadius,
   });
 
   @override
@@ -62,9 +62,10 @@ class _StoryLocationMapWidgetState extends State<StoryLocationMapWidget> {
           width: double.infinity,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(12),
+            borderRadius: widget.borderRadius ?? BorderRadius.circular(12.0),
           ),
           child: Listener(
+            key: const Key("map-listener"),
             onPointerDown: (_) => FocusScope.of(context).unfocus(),
             child:
                 context.mounted

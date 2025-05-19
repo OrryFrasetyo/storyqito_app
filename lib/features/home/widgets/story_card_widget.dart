@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:readmore/readmore.dart';
 import 'package:storyqito_app/core/data/network/responses/list_story.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
-import 'package:storyqito_app/core/routes/app_router.dart';
+import 'package:storyqito_app/core/provider/app/app_provider.dart';
 import 'package:storyqito_app/core/utils/formatted_local_time.dart';
 
 class StoryCardWidget extends StatelessWidget {
@@ -20,7 +22,7 @@ class StoryCardWidget extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16.0),
         onTap: () {
-          context.navigateToStoryDetail(story);
+          context.read<AppProvider>().openDetail(story);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +50,7 @@ class StoryCardWidget extends StatelessWidget {
                           children: [
                             Text(
                               story.name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -63,7 +65,31 @@ class StoryCardWidget extends StatelessWidget {
                           ],
                         ),
                       ),
+                      if (story.lat != null && story.lon != null)
+                        Tooltip(
+                          message: localizations.location_available,
+                          child: Icon(
+                            Icons.location_on,
+                            color: Colors.red,
+                            size: 18.0,
+                          ),
+                        ),
                     ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 12),
+                    child: ReadMoreText(
+                      story.description,
+                      trimMode: TrimMode.Line,
+                      trimLines: 2,
+                      trimCollapsedText: localizations.show_more,
+                      trimExpandedText: localizations.show_less,
+                      style: TextStyle(fontSize: 14),
+                      moreStyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -79,7 +105,7 @@ class StoryCardWidget extends StatelessWidget {
                     return Container(
                       width: double.infinity,
                       constraints: BoxConstraints(
-                        minWidth: double.infinity,
+                        //TODO minWidth: double.infinity,
                         maxHeight: 400.0,
                       ),
                       child: ConstrainedBox(

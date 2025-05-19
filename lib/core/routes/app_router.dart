@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:storyqito_app/core/data/network/responses/list_story.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
+import 'package:storyqito_app/core/provider/app/app_provider.dart';
 import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
 import 'package:storyqito_app/features/auth/animation/auth_screen_animation.dart';
 import 'package:storyqito_app/features/auth/screen/login_screen.dart';
@@ -12,18 +13,18 @@ import 'package:storyqito_app/features/home/screen/home_screen.dart';
 import 'package:storyqito_app/features/main/screen/main_screen.dart';
 import 'package:storyqito_app/features/map/ui/screen/story_map_screen.dart';
 import 'package:storyqito_app/features/setting/setting_screen.dart';
-import 'package:storyqito_app/features/unknown/unknown_screen.dart';
+import 'package:storyqito_app/features/not_found/not_found_screen.dart';
 import 'package:storyqito_app/features/upload/screen/upload_story_screen.dart';
 
 class AppRouter {
-  static ListStory? _currentStory;
   final AuthProvider authProvider;
-  final GlobalKey<NavigatorState> rootNavigatorKey =
+  final AppProvider appProvider;
+  final GlobalKey<NavigatorState> _rootNavigatorKey =
       GlobalKey<NavigatorState>();
-  final GlobalKey<NavigatorState> shellNavigatorKey =
+  final GlobalKey<NavigatorState> _shellNavigatorKey =
       GlobalKey<NavigatorState>();
 
-  AppRouter({required this.authProvider}) {
+  AppRouter({required this.appProvider, required this.authProvider}) {
     _initAuthState();
   }
 
@@ -32,23 +33,34 @@ class AppRouter {
   }
 
   late final GoRouter router = GoRouter(
-    navigatorKey: rootNavigatorKey,
+    navigatorKey: _rootNavigatorKey,
     initialLocation: "/",
     debugLogDiagnostics: false,
-    refreshListenable: authProvider,
+    refreshListenable: Listenable.merge([authProvider, appProvider]),
     redirect: _handleRedirect,
-    errorBuilder: (context, state) => const UnknownScreen(),
+    errorBuilder: (context, state) => const NotFoundScreen(),
     routerNeglect: false,
     routes: [
       GoRoute(
-        path: "/unknown",
-        name: "unknown",
-        builder: (context, state) => const UnknownScreen(),
+        path: "/not_found",
+        name: "not_found",
+        builder: (context, state) => const NotFoundScreen(),
       ),
+
 
       GoRoute(
         path: "/login",
         name: "login",
+        redirect: (context, state) {
+          if (appProvider.isRegister) {
+            return "/register";
+          }
+          if (appProvider.isLanguageDialogOpen) {
+            return "/login/language-dialog";
+          }
+          return null;
+        },
+        routes: [_languageDialogRoute("login")],
         pageBuilder:
             (context, state) => AuthScreenAnimation(
               child: LoginScreen(),
@@ -168,7 +180,7 @@ class AppRouter {
       "/upload",
       "/map",
       "/setting",
-      "/unknown",
+      "/not_found",
     ];
 
     final isValidPath =
@@ -178,15 +190,15 @@ class AppRouter {
 
     if (!isValidPath) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        router.go("/unknown");
+        router.go("/not_found");
       });
-      return "/unknown";
+      return "/not_found";
     }
 
     final bool isGoingToAuth = path == "/login" || path == "/register";
 
-    if (!isLoggedIn && !isGoingToAuth && path != "/unknown") {
-      return "/unknown";
+    if (!isLoggedIn && !isGoingToAuth && path != "/not_found") {
+      return "/not_found";
     }
 
     if (isLoggedIn && isGoingToAuth) {
@@ -251,7 +263,8 @@ Page _buildStoryDetailPage(GoRouterState state, ListStory? persistedStory) {
     child: Builder(
       builder: (context) {
         final isDesktop =
-            MediaQuery.of(context).size.width >= MainScreen.tabletWidthThreshold;
+            MediaQuery.of(context).size.width >=
+            MainScreen.tabletWidthThreshold;
         return isDesktop
             ? StoryDetailDialog(
               story: story,
@@ -291,4 +304,28 @@ extension GoRouterExtension on BuildContext {
         GoRouter.of(this).go('/');
     }
   }
+}
+
+CustomTransitionPage<dynamic> _dialogTransition(
+  GoRouterState state,
+  Widget childWidget,
+) {
+  return CustomTransitionPage(
+    key: state.pageKey,
+    fullscreenDialog: true,
+    maintainState: true,
+    opaque: false,
+    barrierDismissible: true,
+    barrierColor: Colors.black54,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(
+        opacity: animation,
+        child: ScaleTransition(
+          scale: CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
+          child: child,
+        ),
+      );
+    },
+    child: childWidget,
+  );
 }

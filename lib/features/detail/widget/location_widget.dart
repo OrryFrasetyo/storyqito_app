@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:storyqito_app/core/data/network/responses/list_story.dart';
 import 'package:storyqito_app/core/data/network/static/address_load_state.dart';
+import 'package:storyqito_app/core/provider/app/app_provider.dart';
 import 'package:storyqito_app/core/provider/map/address_provider.dart';
 import 'package:storyqito_app/features/detail/widget/address_widget.dart';
 import 'package:storyqito_app/features/detail/widget/story_location_map_widget.dart';
 
 class LocationWidget extends StatefulWidget {
-  final ListStory listStory;
   final bool mapControlsEnabled;
   final String mapKeyPrefix;
 
   const LocationWidget({
     super.key,
-    required this.listStory,
     this.mapControlsEnabled = true,
     this.mapKeyPrefix = "detail",
   });
@@ -32,59 +30,21 @@ class _LocationWidgetState extends State<LocationWidget> {
     if (!_requestAddress) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.read<AddressProvider>().getAddressFromCoordinates(
-          widget.listStory.lat!,
-          widget.listStory.lon!,
+          context.read<AppProvider>().selectedStory!.lat!,
+          context.read<AppProvider>().selectedStory!.lon!,
         );
       });
       _requestAddress = true;
     }
   }
 
-  void _showStoryMapDialog() {
-    final address = context.read<AddressProvider>().state.getAddressOrFallback(
-      context,
-    );
-
-    showDialog(
-      context: context,
-      barrierColor: Colors.black.withValues(alpha: 0.9),
-      builder: (_) {
-        return Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SafeArea(
-            child: Stack(
-              children: [
-                StoryLocationMapWidget(
-                  latitude: widget.listStory.lat!,
-                  longitude: widget.listStory.lon!,
-                  title: widget.listStory.name,
-                  location: address,
-                  height: MediaQuery.of(context).size.height,
-                  controlsEnabled: true,
-                ),
-                Positioned(
-                  top: 16,
-                  left: 16,
-                  child: FloatingActionButton.small(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Icon(Icons.close),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final story = context.read<AppProvider>().selectedStory!;
     final address = context.watch<AddressProvider>().state.getAddressOrFallback(
       context,
     );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -92,9 +52,9 @@ class _LocationWidgetState extends State<LocationWidget> {
         const SizedBox(height: 16.0),
 
         AddressWidget(
-          latitude: widget.listStory.lat!,
-          longitude: widget.listStory.lon!,
-          storyId: widget.listStory.id,
+          latitude: story.lat!,
+          longitude: story.lon!,
+          storyId: story.id,
         ),
 
         const SizedBox(height: 16.0),
@@ -102,25 +62,13 @@ class _LocationWidgetState extends State<LocationWidget> {
         Stack(
           children: [
             StoryLocationMapWidget(
-              key: ValueKey(
-                "${widget.mapKeyPrefix}-location-map-${widget.listStory.id}",
-              ),
-              latitude: widget.listStory.lat!,
-              longitude: widget.listStory.lon!,
+              key: ValueKey("${widget.mapKeyPrefix}-location-map-${story.id}"),
+              latitude: story.lat!,
+              longitude: story.lon!,
               height: 400.0,
-              title: widget.listStory.name,
+              title: story.name,
               controlsEnabled: widget.mapControlsEnabled,
               location: address,
-            ),
-            Positioned(
-              top: 12.0,
-              right: 12.0,
-              child: FloatingActionButton.small(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-                onPressed: _showStoryMapDialog,
-                child: const Icon(Icons.fullscreen),
-              ),
             ),
           ],
         ),

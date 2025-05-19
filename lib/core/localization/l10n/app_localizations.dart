@@ -305,6 +305,12 @@ abstract class AppLocalizations {
   /// **'Lokasi'**
   String get location;
 
+  /// No description provided for @location_available.
+  ///
+  /// In id, this message translates to:
+  /// **'Lokasi tersedia'**
+  String get location_available;
+
   /// No description provided for @latitude.
   ///
   /// In id, this message translates to:
@@ -359,6 +365,18 @@ abstract class AppLocalizations {
   /// **'Keluar'**
   String get logout;
 
+  /// No description provided for @logout_confirm.
+  ///
+  /// In id, this message translates to:
+  /// **'Konfirmasi keluar'**
+  String get logout_confirm;
+
+  /// No description provided for @logout_confirm_message.
+  ///
+  /// In id, this message translates to:
+  /// **'Apakah Anda yakin ingin keluar?'**
+  String get logout_confirm_message;
+
   /// No description provided for @language_updated.
   ///
   /// In id, this message translates to:
@@ -406,6 +424,18 @@ abstract class AppLocalizations {
   /// In id, this message translates to:
   /// **'menit yang lalu'**
   String get m_ago_plural;
+
+  /// No description provided for @show_more.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat Selengkapnya'**
+  String get show_more;
+
+  /// No description provided for @show_less.
+  ///
+  /// In id, this message translates to:
+  /// **'Sembunyikan'**
+  String get show_less;
 
   /// No description provided for @camera.
   ///

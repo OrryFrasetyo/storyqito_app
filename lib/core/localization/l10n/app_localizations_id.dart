@@ -114,6 +114,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get location => 'Lokasi';
 
   @override
+  String get location_available => 'Lokasi tersedia';
+
+  @override
   String get latitude => 'Garis Lintang';
 
   @override
@@ -141,6 +144,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get logout => 'Keluar';
 
   @override
+  String get logout_confirm => 'Konfirmasi keluar';
+
+  @override
+  String get logout_confirm_message => 'Apakah Anda yakin ingin keluar?';
+
+  @override
   String get language_updated => 'Bahasa berhasil diperbarui';
 
   @override
@@ -163,6 +172,12 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get m_ago_plural => 'menit yang lalu';
+
+  @override
+  String get show_more => 'Lihat Selengkapnya';
+
+  @override
+  String get show_less => 'Sembunyikan';
 
   @override
   String get camera => 'Kamera';

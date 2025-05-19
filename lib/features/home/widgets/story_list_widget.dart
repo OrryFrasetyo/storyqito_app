@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/data/network/static/story_load_state.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
+import 'package:storyqito_app/core/provider/app/app_provider.dart';
 import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
 import 'package:storyqito_app/core/provider/story/story_provider.dart';
-import 'package:storyqito_app/features/home/widgets/empty_story_widget.dart';
+import 'package:storyqito_app/features/widget/empty_story_widget.dart';
 import 'package:storyqito_app/features/home/widgets/story_card_widget.dart';
-import 'package:storyqito_app/features/home/widgets/story_error_widget.dart';
+import 'package:storyqito_app/features/widget/story_error_widget.dart';
 
 class StoryListWidget extends StatelessWidget {
   final ScrollController scrollController;
@@ -89,19 +90,21 @@ class StoryListWidget extends StatelessWidget {
         ],
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            _refreshStories(context);
-          },
-          icon: Icon(Icons.refresh, color: Colors.purple),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: IconButton(
-            onPressed: onLogout,
-            icon: Icon(Icons.logout, color: Colors.red),
+        if (context.watch<AppProvider>().selectedStory == null) ...[
+          IconButton(
+            onPressed: () {
+              _refreshStories(context);
+            },
+            icon: const Icon(Icons.refresh, color: Colors.purple),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: IconButton(
+              onPressed: onLogout,
+              icon: Icon(Icons.logout, color: Colors.red),
+            ),
+          ),
+        ],
       ],
       elevation: 0,
     );

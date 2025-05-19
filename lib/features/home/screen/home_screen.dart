@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
+import 'package:storyqito_app/core/provider/app/app_provider.dart';
 import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
 import 'package:storyqito_app/core/provider/story/story_provider.dart';
-import 'package:storyqito_app/features/home/widgets/auth_error_widget.dart';
+import 'package:storyqito_app/features/widget/auth_error_widget.dart';
 import 'package:storyqito_app/features/home/widgets/story_list_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -69,18 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _showLogoutSuccessMessage() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(AppLocalizations.of(context)!.logout_success)),
-    );
-  }
-
   void _logOut(AuthProvider authProvider) async {
-    await authProvider.logout();
-    if (mounted) {
-      context.go("/login");
-      _showLogoutSuccessMessage();
-    }
+    context.read<AppProvider>().openDialogLogOut();
   }
 
   @override

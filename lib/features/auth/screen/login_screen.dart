@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/data/model/user.dart';
-import 'package:storyqito_app/core/data/network/util/validators.dart';
+import 'package:storyqito_app/core/provider/app/app_provider.dart';
+import 'package:storyqito_app/core/utils/constants.dart';
+import 'package:storyqito_app/core/utils/validators.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
 import 'package:storyqito_app/core/provider/setting/setting_provider.dart';
@@ -42,10 +43,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (result.data != null) {
         if (mounted) {
-          context.go("/");
+          context.read<AuthProvider>().isLogged();
+
+          bool isWideScreen =
+              MediaQuery.of(context).size.width >= tabletWidthThreshold;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              margin: EdgeInsets.only(bottom: 16, left: 16, right: 16),
+              margin:
+                  isWideScreen
+                      ? EdgeInsets.only(bottom: 16, left: 96, right: 16)
+                      : EdgeInsets.only(bottom: 16, left: 16, right: 16),
               content: Text(
                 result.message ?? AppLocalizations.of(context)!.login_success,
                 style: TextStyle(color: Colors.black),
@@ -96,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
           body: Center(
             child: SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: 400.0),
                   child: Form(
@@ -190,18 +197,31 @@ class _LoginScreenState extends State<LoginScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              localizations.dont_have_account,
-                              style: TextStyle(color: Colors.grey.shade600),
+                            Flexible(
+                              child: Text(
+                                localizations.dont_have_account,
+                                style: TextStyle(color: Colors.grey.shade600),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                             TextButton(
-                              onPressed: () => context.go("/register"),
+                              onPressed: () {
+                                context.read<AppProvider>().openRegister();
+                              },
                               style: TextButton.styleFrom(
-                                padding: EdgeInsets.all(8.0),
+                                padding: EdgeInsets.zero,
                                 minimumSize: Size(50, 30),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
-                              child: Text(localizations.register_lower),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                ),
+                                child: Text(
+                                  localizations.register_lower,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                             ),
                           ],
                         ),

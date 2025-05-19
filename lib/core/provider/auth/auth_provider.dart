@@ -14,6 +14,7 @@ class AuthProvider extends ChangeNotifier {
   bool isLoadingLogout = false;
   bool isLoadingRegister = false;
   bool isLoggedIn = false;
+  bool isLogoutSuccess = false;
 
   User? user;
   String errorMsg = "";
@@ -51,20 +52,23 @@ class AuthProvider extends ChangeNotifier {
     return response;
   }
 
-  Future<bool> logout() async {
+  Future<void> logout() async {
     isLoadingLogout = true;
     notifyListeners();
 
-    final logout = await authRepository.logout();
-    if (logout) {
-      await authRepository.deleteUser();
+    try {
+      final logout = await authRepository.logout();
+      if (logout) {
+        await authRepository.deleteUser();
+      }
+      isLoggedIn = await authRepository.isLoggedIn();
+      isLogoutSuccess = true;
+    } catch (e) {
+      errorMsg = "An error occurred while logging out";
+      isLogoutSuccess = false;
     }
-    isLoggedIn = await authRepository.isLoggedIn();
-
     isLoadingLogout = false;
     notifyListeners();
-
-    return !isLoggedIn;
   }
 
   Future<bool> saveUser(User user) async {
@@ -86,10 +90,10 @@ class AuthProvider extends ChangeNotifier {
     try {
       user = await authRepository.getUser();
       if (user == null) {
-        errorMsg = "Employee not found";
+        errorMsg = "User not found";
       }
     } catch (e) {
-      errorMsg = "Error occurred while fetching employee data";
+      errorMsg = "Error occurred while fetching user data";
     }
 
     isLoadingLogin = false;

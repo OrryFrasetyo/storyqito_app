@@ -33,15 +33,17 @@ dependencies:
   flutter_native_splash: ^2.4.6
 
   intl: ^0.19.0
-
+  url_launcher: ^6.3.0
   path: ^1.9.1
 
   # camera and image picker
   image_picker: ^1.1.2
   camera: ^0.11.1
 
+  # ui
   dropdown_button2: ^2.3.9
   lottie: ^3.3.1
+  readmore: ^3.0.0
 
   # google maps
   google_maps_flutter: ^2.12.1

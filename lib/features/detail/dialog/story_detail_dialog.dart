@@ -1,154 +1,153 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:storyqito_app/core/data/network/responses/list_story.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
+import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
+import 'package:storyqito_app/core/provider/app/app_provider.dart';
 import 'package:storyqito_app/core/utils/formatted_local_time.dart';
+import 'package:storyqito_app/core/utils/open_url.dart';
+import 'package:storyqito_app/features/detail/widget/detail_image_widget.dart';
 import 'package:storyqito_app/features/detail/widget/location_widget.dart';
 
-class StoryDetailDialog extends StatelessWidget {
-  final ListStory story;
-  final VoidCallback onClose;
+class StoryDetailDialog extends StatefulWidget {
+  const StoryDetailDialog({super.key});
 
-  const StoryDetailDialog({
-    super.key,
-    required this.story,
-    required this.onClose,
-  });
+  @override
+  State<StoryDetailDialog> createState() => _StoryDetailDialogState();
+}
+
+class _StoryDetailDialogState extends State<StoryDetailDialog> {
+  final ScrollController _scrollController = ScrollController();
+  Timer? _someTimer;
+  bool _showScrollbar = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _someTimer = Timer(Duration(milliseconds: 800), () {
+        if (mounted && _scrollController.offset == 0.0) {
+          setState(() => _showScrollbar = false);
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _someTimer?.cancel();
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-
+    final story = context.read<AppProvider>().selectedStory!;
     final screenWidth = MediaQuery.of(context).size.width;
     final dialogWidth = screenWidth > 800 ? 700.0 : screenWidth * 0.8;
 
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (didPop, result) {
-        if (didPop) {
-          onClose();
-        }
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          context.read<AppProvider>().closeDetail();
+        });
       },
-      child: Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: EdgeInsets.symmetric(
-          horizontal: (screenWidth - dialogWidth) / 2,
-          vertical: 24,
-        ),
-        child: Container(
-          width: dialogWidth,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildHeader(context, localizations),
-              Divider(height: 1),
-              Flexible(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildStoryImage(),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildStoryAuthorInfo(context),
-                            const SizedBox(height: 16.0),
-                            Text(
-                              story.description,
-                              style: TextStyle(fontSize: 16.0),
-                            ),
-                            const SizedBox(height: 24.0),
+      child: Stack(
+        children: [
+          Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: (screenWidth - dialogWidth) / 2,
+              vertical: 24,
+            ),
+            child: PointerInterceptor(
+              child: Container(
+                width: dialogWidth,
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: Scrollbar(
+                        controller: _scrollController,
+                        thumbVisibility: _showScrollbar,
+                        child: SingleChildScrollView(
+                          controller: _scrollController,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildStoryImage(story.photoUrl),
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildStoryAuthorInfo(context),
+                                    const SizedBox(height: 16.0),
 
-                            if (story.lat != null && story.lon != null)
-                              LocationWidget(
-                                listStory: story,
-                                mapControlsEnabled: false,
-                                mapKeyPrefix: "dialog",
+                                    Text(
+                                      story.description,
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+
+                                    const SizedBox(height: 24.0),
+
+                                    if (story.lat != null && story.lon != null)
+                                      LocationWidget(
+                                        mapControlsEnabled: false,
+                                        mapKeyPrefix: "dialog",
+                                      ),
+                                  ],
+                                ),
                               ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context, AppLocalizations localizations) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 16.0,
-        right: 8.0,
-        top: 8.0,
-        bottom: 8.0,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            localizations.story_detail,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+          Positioned(
+            top: 8,
+            right: 8,
+            child: IconButton(
+              icon: Icon(Icons.close_rounded, size: 28, color: Colors.white),
+              onPressed: () {
+                context.read<AppProvider>().closeDetail();
+              },
+            ),
           ),
-          IconButton(icon: const Icon(Icons.close), onPressed: onClose),
         ],
       ),
     );
   }
 
-  Widget _buildStoryImage() {
+  Widget _buildStoryImage(String photoUrl) {
     return ConstrainedBox(
       constraints: const BoxConstraints(
         minWidth: double.infinity,
         minHeight: 400.0,
       ),
-      child: Image.network(
-        story.photoUrl,
-        fit: BoxFit.contain,
-        width: double.infinity,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          return Container(
-            height: 350.0,
-            color: Colors.grey[200],
-            child: Center(
-              child: CircularProgressIndicator(
-                value:
-                    loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                        : null,
-              ),
-            ),
-          );
-        },
-        errorBuilder:
-            (context, error, stackTrace) => Container(
-              height: 350.0,
-              color: Colors.grey[300],
-              child: Center(
-                child: Icon(
-                  Icons.broken_image,
-                  size: 64,
-                  color: Colors.grey[400],
-                ),
-              ),
-            ),
-      ),
+      child: GestureDetector(
+        onTap: () => openUrl(photoUrl),
+        child: DetailImageWidget(photoUrl: photoUrl),
+      )
     );
   }
 
   Widget _buildStoryAuthorInfo(BuildContext context) {
+    final story = context.read<AppProvider>().selectedStory!;
+
     return Row(
       children: [
         CircleAvatar(

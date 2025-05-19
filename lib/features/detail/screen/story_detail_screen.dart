@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:storyqito_app/core/data/network/responses/list_story.dart';
+import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
+import 'package:storyqito_app/core/provider/app/app_provider.dart';
 import 'package:storyqito_app/core/utils/formatted_local_time.dart';
+import 'package:storyqito_app/features/detail/widget/detail_image_widget.dart';
 import 'package:storyqito_app/features/detail/widget/location_widget.dart';
 
 class StoryDetailScreen extends StatelessWidget {
-  final ListStory story;
-  final VoidCallback onBackPressed;
-
-  const StoryDetailScreen({
-    super.key,
-    required this.story,
-    required this.onBackPressed,
-  });
+  const StoryDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final story = context.read<AppProvider>().selectedStory!;
 
     return Scaffold(
       appBar: AppBar(
@@ -27,7 +23,9 @@ class StoryDetailScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            onBackPressed();
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.read<AppProvider>().closeDetail();
+            });
           },
           icon: Icon(Icons.arrow_back),
         ),
@@ -36,51 +34,14 @@ class StoryDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Hero(
-                tag: "story-image-${story.id}",
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: double.infinity,
-                    minHeight: 200,
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16.0),
-                    child: Image.network(
-                      story.photoUrl,
-                      width: double.infinity,
-                      fit: BoxFit.contain,
-                      loadingBuilder: (context, child, loadingStatus) {
-                        if (loadingStatus == null) return child;
-                        return Container(
-                          constraints: const BoxConstraints(minHeight: 350),
-                          color: Colors.grey[200],
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              value:
-                                  loadingStatus.expectedTotalBytes != null
-                                      ? loadingStatus.cumulativeBytesLoaded /
-                                          loadingStatus.expectedTotalBytes!
-                                      : null,
-                            ),
-                          ),
-                        );
-                      },
-                      errorBuilder:
-                          (context, error, stackTrace) => Container(
-                            color: Colors.grey[300],
-                            child: Center(
-                              child: Icon(
-                                Icons.broken_image,
-                                size: 64.0,
-                                color: Colors.grey[400],
-                              ),
-                            ),
-                          ),
-                    ),
-                  ),
+            Hero(
+              tag: "story-image-${story.id}",
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: double.infinity,
+                  minHeight: 200,
                 ),
+                child: DetailImageWidget(photoUrl: story.photoUrl),
               ),
             ),
 
@@ -99,7 +60,6 @@ class StoryDetailScreen extends StatelessWidget {
 
                   if (story.lat != null && story.lon != null)
                     LocationWidget(
-                      listStory: story,
                       mapControlsEnabled: true,
                       mapKeyPrefix: "detail",
                     ),
@@ -113,6 +73,8 @@ class StoryDetailScreen extends StatelessWidget {
   }
 
   Widget _buildStoryAuthorInfo(BuildContext context) {
+    final story = context.read<AppProvider>().selectedStory!;
+
     return Row(
       children: [
         CircleAvatar(

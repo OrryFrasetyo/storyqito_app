@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 
-class UnknownScreen extends StatefulWidget {
-  const UnknownScreen({super.key});
+class NotFoundScreen extends StatefulWidget {
+  const NotFoundScreen({super.key});
 
   @override
-  State<UnknownScreen> createState() => _UnknownScreenState();
+  State<NotFoundScreen> createState() => _NotFoundScreenState();
 }
 
-class _UnknownScreenState extends State<UnknownScreen>
+class _NotFoundScreenState extends State<NotFoundScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _bounceAnimation;
@@ -56,8 +56,8 @@ class _UnknownScreenState extends State<UnknownScreen>
                 },
                 child:
                     isDark
-                        ? _buildUnknownDarkMode(accentColor)
-                        : _buildUnknownLightMode(accentColor),
+                        ? _buildNotFoundDarkMode(accentColor)
+                        : _buildNotFoundLightMode(accentColor),
               ),
               const SizedBox(height: 36.0),
 
@@ -109,12 +109,12 @@ class _UnknownScreenState extends State<UnknownScreen>
     );
   }
 
-  Widget _buildUnknownLightMode(Color accentColor) {
+  Widget _buildNotFoundLightMode(Color accentColor) {
     return Stack(
       alignment: Alignment.center,
       children: [
         Text(
-          "Unknown",
+          "Not Found",
           style: TextStyle(
             fontSize: 120.0,
             fontWeight: FontWeight.bold,
@@ -122,7 +122,7 @@ class _UnknownScreenState extends State<UnknownScreen>
           ),
         ),
         Text(
-          "Unknown",
+          "Not Found",
           style: TextStyle(
             fontSize: 100.0,
             fontWeight: FontWeight.bold,
@@ -134,12 +134,12 @@ class _UnknownScreenState extends State<UnknownScreen>
     );
   }
 
-  Widget _buildUnknownDarkMode(Color accentColor) {
+  Widget _buildNotFoundDarkMode(Color accentColor) {
     return Stack(
       alignment: Alignment.center,
       children: [
         Text(
-          "Unknown",
+          "Not Found",
           style: TextStyle(
             fontSize: 120.0,
             fontWeight: FontWeight.bold,
@@ -147,7 +147,7 @@ class _UnknownScreenState extends State<UnknownScreen>
           ),
         ),
         Text(
-          "Unknown",
+          "Not Found",
           style: TextStyle(
             fontSize: 100.0,
             fontWeight: FontWeight.bold,

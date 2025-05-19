@@ -24,6 +24,7 @@ class _AddressWidgetState extends State<AddressWidget> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -52,7 +53,7 @@ class _AddressWidgetState extends State<AddressWidget> {
             switch (addressProvider.state) {
               case AddressLoadStateInitial():
                 return Text(
-                  '$latText, $lonText',
+                  "$latText, $lonText",
                   style: const TextStyle(fontSize: 14.0),
                 );
 
@@ -103,7 +104,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                       "$latText, $lonText",
                       style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                     ),
-                  ],
+                  ],  
                 );
 
               default:

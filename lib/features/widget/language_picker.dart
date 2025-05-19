@@ -1,18 +1,18 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
+import 'package:storyqito_app/core/provider/app/app_provider.dart';
 
 class LanguagePicker extends StatelessWidget {
   final Function(String) onLanguageChanged;
   final String selectedLanguageCode;
-  final VoidCallback? onTapDialog;
   final bool isCompactMode;
 
   const LanguagePicker({
     super.key,
     required this.onLanguageChanged,
     required this.selectedLanguageCode,
-    this.onTapDialog,
     this.isCompactMode = false,
   });
 
@@ -21,11 +21,7 @@ class LanguagePicker extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
 
     return isCompactMode
-        ? IconButton(
-          icon: Icon(Icons.language),
-          tooltip: localizations.language,
-          onPressed: onTapDialog, 
-          )
+        ? _buildCompactSelector(context, localizations)
         : _buildDropdownSelector(context, localizations);
   }
 
@@ -48,13 +44,15 @@ class LanguagePicker extends StatelessWidget {
                   height: 24.0,
                 ),
                 const SizedBox(width: 8.0),
-                Text(
-                  localizations.english,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
+                Flexible(
+                  child: Text(
+                    localizations.english,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -70,13 +68,15 @@ class LanguagePicker extends StatelessWidget {
                   height: 24.0,
                 ),
                 const SizedBox(width: 8.0),
-                Text(
-                  localizations.indonesian,
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w600,
+                Flexible(
+                  child: Text(
+                    localizations.indonesian,
+                    style: const TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -89,8 +89,8 @@ class LanguagePicker extends StatelessWidget {
           }
         },
         buttonStyleData: ButtonStyleData(
+          width: 140,
           height: 40.0,
-          // width: 140,
           padding: const EdgeInsets.only(left: 16.0, right: 8.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18.0),
@@ -122,6 +122,19 @@ class LanguagePicker extends StatelessWidget {
           padding: EdgeInsets.only(left: 10.0, right: 10.0),
         ),
       ),
+    );
+  }
+
+  Widget _buildCompactSelector(
+    BuildContext context,
+    AppLocalizations localizations,
+  ) {
+    return IconButton(
+      icon: const Icon(Icons.language_rounded),
+      tooltip: localizations.language,
+      onPressed: () {
+        context.read<AppProvider>().openLanguageDialog();
+      },
     );
   }
 }

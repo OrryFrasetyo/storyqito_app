@@ -114,6 +114,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get location => 'Location';
 
   @override
+  String get location_available => 'Location available';
+
+  @override
   String get latitude => 'Latitude';
 
   @override
@@ -141,6 +144,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logout => 'Logout';
 
   @override
+  String get logout_confirm => 'Logout Confirmation';
+
+  @override
+  String get logout_confirm_message => 'Are you sure you want to logout?';
+
+  @override
   String get language_updated => 'Language successfully updated';
 
   @override
@@ -163,6 +172,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get m_ago_plural => 'minutes ago';
+
+  @override
+  String get show_more => 'Show more';
+
+  @override
+  String get show_less => 'Show less';
 
   @override
   String get camera => 'Camera';
