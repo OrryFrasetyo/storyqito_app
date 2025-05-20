@@ -8,11 +8,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/upload/add_new_story_provider.dart';
+import 'package:storyqito_app/core/utils/constants.dart';
 import 'package:universal_html/html.dart' as html;
 
 class WebCameraUtil {
   bool isChromeMobile() {
-    if (!kIsWeb) return false;
+    final AppService appService = AppService();
+    
+    if (!appService.getKIsWeb()) return false;
 
     try {
       final userAgent = html.window.navigator.userAgent.toLowerCase();
@@ -56,13 +59,10 @@ class WebCameraUtil {
             ..accept = "image/*"
             ..setAttribute("capture", "environment");
 
-      // add to DOM temporarily
       html.document.body!.append(inputElement);
 
-      // trigger click
       inputElement.click();
 
-      // create a completer to handle async file selection
       final completer = Completer<void>();
 
       inputElement.onChange.listen((event) async {

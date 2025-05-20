@@ -7,9 +7,9 @@ import 'package:storyqito_app/features/map/service/map_service.dart';
 
 class MapProvider extends ChangeNotifier {
   final MapService _mapService = MapService();
-  final ScrollController scrollController = ScrollController();
   final AuthProvider _authProvider;
   final StoryProvider _storyProvider;
+  final ScrollController scrollController = ScrollController();
 
   MapProvider({
     required AuthProvider authProvider,

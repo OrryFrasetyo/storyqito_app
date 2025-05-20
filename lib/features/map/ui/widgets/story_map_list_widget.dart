@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/data/network/responses/list_story.dart';
-import 'package:storyqito_app/core/routes/app_router.dart';
+import 'package:storyqito_app/core/provider/app/app_provider.dart';
 import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
 import 'package:storyqito_app/core/provider/map/map_provider.dart';
 import 'package:storyqito_app/core/provider/story/story_provider.dart';
@@ -13,13 +13,6 @@ class StoryMapListWidget extends StatelessWidget {
   final Function(ListStory)? onStoryTap;
 
   const StoryMapListWidget({super.key, this.onStoryTap});
-
-  void _refreshStories(BuildContext context) {
-    final authProvider = context.read<AuthProvider>();
-    if (authProvider.user != null) {
-      context.read<StoryProvider>().refreshStories(user: authProvider.user!);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +87,7 @@ class StoryMapListWidget extends StatelessWidget {
                 }
               },
               onDoubleTap: () {
-                context.navigateToStoryDetail(story);
+                context.read<AppProvider>().openDetail(story);
               },
               child: Card(
                 margin: EdgeInsets.only(bottom: 16),
@@ -111,5 +104,12 @@ class StoryMapListWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _refreshStories(BuildContext context) {
+    final authProvider = context.read<AuthProvider>();
+    if (authProvider.user != null) {
+      context.read<StoryProvider>().refreshStories(user: authProvider.user!);
+    }
   }
 }

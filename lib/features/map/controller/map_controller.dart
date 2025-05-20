@@ -60,6 +60,18 @@ class MapController {
     }
   }
 
+  Future<void> refreshStories() async {
+    final authProvider = context.read<AuthProvider>();
+    if (authProvider.user != null) {
+      final storyProvider = context.read<StoryProvider>();
+      await storyProvider.refreshStories(user: authProvider.user!);
+
+      if (isMapReady) {
+        updateMarkersFromStories(storyProvider.stories);
+      }
+    }
+  }
+
   void toggleMapType() {
     selectedMapType =
         selectedMapType == MapType.normal ? MapType.satellite : MapType.normal;
@@ -104,18 +116,6 @@ class MapController {
     if (story.lat != null && story.lon != null && isMapReady) {
       final position = LatLng(story.lat!, story.lon!);
       _mapService.animateCameraToPosition(position, 15);
-    }
-  }
-
-  Future<void> refreshStories() async {
-    final authProvider = context.read<AuthProvider>();
-    if (authProvider.user != null) {
-      final storyProvider = context.read<StoryProvider>();
-      await storyProvider.refreshStories(user: authProvider.user!);
-
-      if (isMapReady) {
-        updateMarkersFromStories(storyProvider.stories);
-      }
     }
   }
 }

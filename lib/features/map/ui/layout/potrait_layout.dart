@@ -28,7 +28,7 @@ class _PotraitLayoutState extends State<PotraitLayout> {
         },
       ),
       totalHeight: MediaQuery.of(context).size.height,
-      ratio: 0.3,
+      ratio: 0.30,
     );
   }
 }

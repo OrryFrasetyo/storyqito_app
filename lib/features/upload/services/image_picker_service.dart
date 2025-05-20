@@ -6,8 +6,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/upload/add_new_story_provider.dart';
+import 'package:storyqito_app/core/utils/constants.dart';
 
 class ImagePickerService {
+  final AppService appService = AppService();
   final ImagePicker _imagePicker = ImagePicker();
   BuildContext? _context;
 
@@ -19,7 +21,7 @@ class ImagePickerService {
     if (_context == null) return;
     final context = _context!;
 
-    if (kIsWeb && source == ImageSource.camera) {
+    if (appService.getKIsWeb() && source == ImageSource.camera) {
       return;
     }
 
@@ -32,7 +34,7 @@ class ImagePickerService {
       if (pickedFile != null) {
         int fileSize = 0;
 
-        if (kIsWeb) {
+        if (appService.getKIsWeb()) {
           Uint8List bytes = await pickedFile.readAsBytes();
           fileSize = bytes.lengthInBytes;
         } else {

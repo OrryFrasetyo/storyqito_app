@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
+import 'package:storyqito_app/core/provider/app/app_provider.dart';
 import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
 import 'package:storyqito_app/core/provider/map/map_provider.dart';
 import 'package:storyqito_app/core/provider/story/story_provider.dart';
@@ -40,18 +41,20 @@ class _StoryMapScreenState extends State<StoryMapScreen> {
           ],
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: mapProvider.refreshStories,
-            tooltip: localizations.refresh,
-          ),
-          const SizedBox(width: 4.0),
-          IconButton(
-            icon: const Icon(Icons.layers),
-            onPressed: mapProvider.toggleMapType,
-            tooltip: localizations.change_map_type,
-          ),
-          const SizedBox(width: 8.0),
+          if (context.watch<AppProvider>().selectedStory == null) ...[
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: mapProvider.refreshStories,
+              tooltip: localizations.refresh,
+            ),
+            const SizedBox(width: 4.0),
+            IconButton(
+              icon: const Icon(Icons.layers),
+              onPressed: mapProvider.toggleMapType,
+              tooltip: localizations.change_map_type,
+            ),
+            const SizedBox(width: 8.0),
+          ],
         ],
       ),
       body: Consumer2<AuthProvider, StoryProvider>(
@@ -62,7 +65,10 @@ class _StoryMapScreenState extends State<StoryMapScreen> {
                 SnackBar(
                   content: Text(mapProvider.locationWarningMessage),
                   duration: const Duration(seconds: 3),
-                  action: SnackBarAction(label: localizations.ok, onPressed: () {}),
+                  action: SnackBarAction(
+                    label: localizations.ok,
+                    onPressed: () {},
+                  ),
                 ),
               );
             }

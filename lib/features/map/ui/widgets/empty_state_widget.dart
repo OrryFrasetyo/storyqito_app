@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 
-class EmptyStoryWidget extends StatelessWidget {
-  const EmptyStoryWidget({super.key});
+class EmptyStateWidget extends StatelessWidget {
+  final AppLocalizations localizations;
+
+  const EmptyStateWidget({super.key, required this.localizations});
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-    return SliverFillRemaining(
-      hasScrollBody: false,
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.6,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.auto_stories, size: 80.0, color: Colors.grey),
-            const SizedBox(height: 16.0),
+            Icon(Icons.auto_stories, size: 80, color: Colors.grey),
+            SizedBox(height: 16),
             Text(
               localizations.no_stories,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 8.0),
+            SizedBox(height: 8),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Text(

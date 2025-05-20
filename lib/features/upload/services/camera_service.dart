@@ -2,14 +2,15 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/upload/add_new_story_provider.dart';
+import 'package:storyqito_app/core/utils/constants.dart';
 import 'package:storyqito_app/features/upload/util/web_camera_util.dart';
 
 class CameraService {
+  final AppService appService = AppService();
   CameraController? _cameraController;
   BuildContext? _context;
   late final WebCameraUtil _webCameraUtil = WebCameraUtil();
@@ -39,8 +40,8 @@ class CameraService {
     }
   }
 
-  Future<void> handleCameraButton() async {
-    if (!kIsWeb || _context == null) return;
+  Future<void> handleWebCamera() async {
+    if (!appService.getKIsWeb() || _context == null) return;
 
     final context = _context!;
 
@@ -102,7 +103,7 @@ class CameraService {
       log("Camera access error details: $e");
 
       if (_context != null && _context!.mounted) {
-        String errorMessage = '${_localizations.camera_access_denied} $e';
+        String errorMessage = "${_localizations.camera_access_denied} $e";
         if (e.toString().contains("notReadable")) {
           errorMessage = _localizations.camera_used_by_other;
         }

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
+import 'package:storyqito_app/core/provider/upload/add_new_story_provider.dart';
 
 class LocationMapControlsWidget extends StatelessWidget {
-  final LatLng location;
   final VoidCallback onUseCurrentLocation;
   final VoidCallback onClear;
   final bool isLoading;
 
   const LocationMapControlsWidget({
     super.key,
-    required this.location,
     required this.onUseCurrentLocation,
     required this.onClear,
     required this.isLoading,
@@ -18,6 +17,7 @@ class LocationMapControlsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final location = context.watch<AddNewStoryProvider>().attachedLocation!;
     return Row(
       children: [
         Expanded(

@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/upload/add_new_story_provider.dart';
+import 'package:storyqito_app/core/utils/constants.dart';
 
 class ImagePreviewWidget extends StatelessWidget {
   final XFile? imageFile;
@@ -14,13 +15,15 @@ class ImagePreviewWidget extends StatelessWidget {
 
   const ImagePreviewWidget({
     super.key,
-    this.imageFile,
+    required this.imageFile,
     required this.onCameraPressed,
     required this.onGalleryPressed,
   });
 
   @override
   Widget build(BuildContext context) {
+    final AppService appService = AppService();
+
     if (imageFile == null) {
       return _buildImagePlaceholder(context);
     }
@@ -30,7 +33,7 @@ class ImagePreviewWidget extends StatelessWidget {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
       clipBehavior: Clip.antiAlias,
       child:
-          kIsWeb
+          appService.getKIsWeb()
               ? Image.network(imageFile!.path)
               : Image.file(File(imageFile!.path)),
     );

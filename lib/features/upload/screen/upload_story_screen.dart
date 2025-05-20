@@ -9,9 +9,11 @@ import 'package:storyqito_app/core/provider/upload/add_new_story_provider.dart';
 import 'package:storyqito_app/core/provider/auth/auth_provider.dart';
 import 'package:storyqito_app/core/provider/story/story_provider.dart';
 import 'package:storyqito_app/core/routes/app_router.dart';
+import 'package:storyqito_app/core/utils/constants.dart';
 import 'package:storyqito_app/core/variant/build_config.dart';
 import 'package:storyqito_app/features/upload/services/camera_service.dart';
 import 'package:storyqito_app/features/upload/services/image_picker_service.dart';
+import 'package:storyqito_app/features/upload/widgets/build_premium_feature.dart';
 import 'package:storyqito_app/features/upload/widgets/camera_web_view_widget.dart';
 import 'package:storyqito_app/features/upload/widgets/image_preview_widget.dart';
 import 'package:storyqito_app/features/upload/widgets/location_map_selector_widget.dart';
@@ -27,12 +29,17 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
   late final CameraService _cameraService;
   late final ImagePickerService _imagePickerService;
   late AddNewStoryProvider _addNewStoryProvider;
+  final TextEditingController _descriptionController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  final AppService _appService = AppService();
 
   @override
   void initState() {
     super.initState();
     _cameraService = CameraService();
     _imagePickerService = ImagePickerService();
+    _descriptionController.text =
+        context.read<AddNewStoryProvider>().description;
   }
 
   @override
@@ -42,17 +49,32 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
 
     _cameraService.initialize(context);
     _imagePickerService.initialize(context);
+    if (_addNewStoryProvider.isLocationAttached) {
+      _scrollToLocationSelector();
+    }
   }
 
   @override
   void dispose() {
     _cameraService.cleanUpCamera();
+    _descriptionController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
+  void _scrollToLocationSelector() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
   Future<void> _handleCameraButton() async {
-    if (kIsWeb) {
-      await _cameraService.handleCameraButton();
+    if (_appService.getKIsWeb()) {
+      await _cameraService.handleWebCamera();
     } else {
       await _imagePickerService.pickImage(ImageSource.camera);
     }
@@ -61,9 +83,8 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
   Future<void> _uploadStory() async {
     final localizations = AppLocalizations.of(context)!;
     final authProvider = context.read<AuthProvider>();
-
     final imageFile = _addNewStoryProvider.imageFile;
-    final caption = _addNewStoryProvider.caption;
+    final description = _addNewStoryProvider.description;
 
     if (imageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -72,7 +93,7 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
       return;
     }
 
-    if (caption.isEmpty) {
+    if (description.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(localizations.please_write_description)),
       );
@@ -80,7 +101,6 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
     }
 
     authProvider.getUser();
-    _addNewStoryProvider.reset();
 
     final token = authProvider.user?.token ?? "";
     double? lat;
@@ -94,7 +114,7 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
 
     await _addNewStoryProvider.uploadStoryWithFile(
       token: token,
-      description: caption,
+      description: description,
       imageFile: imageFile,
       lat: lat,
       lon: lon,
@@ -105,7 +125,12 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
     if (_addNewStoryProvider.isSuccess) {
       _cameraService.cleanUpCamera();
 
+      _addNewStoryProvider.reset();
+
+      _descriptionController.clear();
+
       context.navigateToHome();
+
       await context.read<StoryProvider>().refreshStories(
         user: authProvider.user!,
       );
@@ -123,40 +148,11 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
     }
   }
 
-  void _showPremiumUpgrade(BuildContext context) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: Text(AppLocalizations.of(context)!.get_premium),
-            content: Text(
-              AppLocalizations.of(context)!.premium_benefits_description,
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text(AppLocalizations.of(context)!.close),
-              ),
-              FilledButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(AppLocalizations.of(context)!.coming_soon),
-                    ),
-                  );
-                },
-                child: Text(AppLocalizations.of(context)!.upgrade),
-              ),
-            ],
-          ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context)!;
     final addNewStoryProvider = context.watch<AddNewStoryProvider>();
+    final AppService appService = AppService();
     final imageFile = addNewStoryProvider.imageFile;
     final showCamera = addNewStoryProvider.showCamera;
     final isUploading = addNewStoryProvider.isLoading;
@@ -186,6 +182,7 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
       ),
       body: Center(
         child: SingleChildScrollView(
+          controller: _scrollController,
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 475),
@@ -210,27 +207,57 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
 
                     if (imageFile != null && !showCamera) ...[
                       TextField(
+                        controller: _descriptionController,
                         decoration: InputDecoration(
                           hintText: localization.write_a_description,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                         ),
                         maxLines: 3,
                         onChanged: (value) {
-                          addNewStoryProvider.setCaption(value);
+                          addNewStoryProvider.setDescription(value);
                         },
                       ),
                       const SizedBox(height: 16),
 
-                      if (kIsWeb) ...[
+                      if (appService.getKIsWeb()) ...[
                         if (isPaidVersion)
-                          LocationMapSelectorWidget()
+                          StatefulBuilder(
+                            builder: (
+                              BuildContext context,
+                              StateSetter setState,
+                            ) {
+                              return LocationMapSelectorWidget();
+                            },
+                          )
                         else
-                          _buildPremiumFeature(context),
+                          BuildPremiumFeature(),
                       ] else if (Theme.of(context).platform ==
                           TargetPlatform.android) ...[
                         if (BuildConfig.canAddLocation) ...[
-                          LocationMapSelectorWidget(),
+                          StatefulBuilder(
+                            builder: (
+                              BuildContext context,
+                              StateSetter setState,
+                            ) {
+                              return LocationMapSelectorWidget();
+                            },
+                          ),
                         ] else ...[
-                          _buildPremiumFeature(context),
+                          BuildPremiumFeature(),
                         ],
                       ],
 
@@ -262,45 +289,6 @@ class _UploadStoryScreenState extends State<UploadStoryScreen> {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPremiumFeature(BuildContext context) {
-    return Card(
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.location_on,
-              size: 36.0,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              AppLocalizations.of(context)!.premium_feature,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8.0),
-            Text(
-              AppLocalizations.of(context)!.upgrade_to_add_location,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 16.0),
-            OutlinedButton.icon(
-              onPressed: () {
-                _showPremiumUpgrade(context);
-              },
-              label: Text(AppLocalizations.of(context)!.upgrade_now),
-            ),
-          ],
         ),
       ),
     );

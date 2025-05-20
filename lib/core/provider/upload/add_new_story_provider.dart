@@ -4,22 +4,27 @@ import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:storyqito_app/core/data/repository/story_repository.dart';
+import 'package:storyqito_app/core/utils/constants.dart';
 
 class AddNewStoryProvider extends ChangeNotifier {
-  final StoryRepository _storyRepository;
+  final AppService appService;
+  final StoryRepository storyRepository;
 
-  AddNewStoryProvider(this._storyRepository);
+  AddNewStoryProvider({
+    required this.storyRepository,
+    required this.appService,
+  });
 
   bool _isLoading = false;
   bool _isSuccess = false;
   String? _errorMsg;
-  String _caption = "";
+  String _description = "";
   XFile? _imageFile;
 
   bool get isLoading => _isLoading;
   bool get isSuccess => _isSuccess;
   String? get errorMsg => _errorMsg;
-  String get caption => _caption;
+  String get description => _description;
   XFile? get imageFile => _imageFile;
 
   bool _showCamera = false;
@@ -43,8 +48,8 @@ class AddNewStoryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCaption(String caption) {
-    _caption = caption;
+  void setDescription(String description) {
+    _description = description;
     notifyListeners();
   }
 
@@ -89,7 +94,7 @@ class AddNewStoryProvider extends ChangeNotifier {
     _isLoading = false;
     _isSuccess = false;
     _errorMsg = null;
-    _caption = "";
+    _description = "";
     _imageFile = null;
     notifyListeners();
   }
@@ -113,7 +118,7 @@ class AddNewStoryProvider extends ChangeNotifier {
     _isSuccess = false;
     notifyListeners();
 
-    final result = await _storyRepository.addNewStory(
+    final result = await storyRepository.addNewStory(
       token: token,
       description: description,
       photoFile: photoFile,
@@ -140,7 +145,7 @@ class AddNewStoryProvider extends ChangeNotifier {
     double? lat,
     double? lon,
   }) async {
-    if (kIsWeb) {
+    if (appService.getKIsWeb()) {
       final bytes = await imageFile.readAsBytes();
       return addNewStory(
         token: token,

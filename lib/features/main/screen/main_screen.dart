@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
+import 'package:storyqito_app/core/utils/constants.dart';
 import 'package:storyqito_app/features/home/screen/home_screen.dart';
 import 'package:storyqito_app/features/main/animation/animate_tab_switcher';
 import 'package:storyqito_app/features/map/ui/screen/story_map_screen.dart';
@@ -22,8 +23,6 @@ class MainScreen extends StatefulWidget {
     this.routeExtra,
   });
 
-  static const int tabletWidthThreshold = 600;
-
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
@@ -38,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
     final localizations = AppLocalizations.of(context)!;
 
     if ((screenWidth - _previousWidth).abs() > 5) {
-      _isMobile = screenWidth < MainScreen.tabletWidthThreshold;
+      _isMobile = screenWidth < tabletWidthThreshold;
       _previousWidth = screenWidth;
     }
 

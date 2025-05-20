@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
+import 'package:storyqito_app/core/provider/app/app_provider.dart';
 import 'package:storyqito_app/core/provider/upload/add_new_story_provider.dart';
 import 'package:storyqito_app/core/provider/map/address_provider.dart';
 import 'package:storyqito_app/core/provider/upload/upload_location_loading_provider.dart';
@@ -23,49 +24,7 @@ class LocationMapSelectorWidget extends StatefulWidget {
 }
 
 class _LocationMapSelectorWidgetState extends State<LocationMapSelectorWidget> {
-  void _openFullscreenMap(
-    BuildContext context,
-    AddNewStoryProvider addNewStoryProvider,
-  ) {
-    if (addNewStoryProvider.attachedLocation == null) return;
-
-    showDialog(
-      context: context,
-      barrierColor: Colors.black.withValues(alpha: 0.9),
-      builder: (_) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          insetPadding: EdgeInsets.all(48.0),
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: BuildGoogleMapWidget(),
-                ),
-              ),
-
-              Positioned(
-                top: -40,
-                right: -40,
-                child: PointerInterceptor(
-                  child: FloatingActionButton.small(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Icon(Icons.close),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  
 
   Future<void> _getCurrentPosition(BuildContext context) async {
     final addNewStoryProvider = context.read<AddNewStoryProvider>();
@@ -173,9 +132,20 @@ class _LocationMapSelectorWidgetState extends State<LocationMapSelectorWidget> {
           if (addNewStoryProvider.attachedLocation != null) ...[
             const SizedBox(height: 8.0),
             LocationMapControlsWidget(
-              location: addNewStoryProvider.attachedLocation!,
               onUseCurrentLocation: () => _getCurrentPosition(context),
-              onClear: () => addNewStoryProvider.setAttachedLocation(null),
+              onClear: () async {
+                if (!context.mounted) return;
+
+                final controllerProvider =
+                    context.read<UploadMapControllerProvider>();
+                final location = addNewStoryProvider.attachedLocation;
+
+                if (location == null) return;
+
+                await controllerProvider.animateCamera(
+                  CameraPosition(target: location, zoom: 15),
+                );
+              },
               isLoading: uploadLocationLoadingProvider.isLoading,
             ),
           ],
@@ -261,8 +231,9 @@ class _LocationMapSelectorWidgetState extends State<LocationMapSelectorWidget> {
                   child: FloatingActionButton.small(
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
-                    onPressed:
-                        () => _openFullscreenMap(context, addNewStoryProvider),
+                    onPressed: () {
+                      context.read<AppProvider>().openUploadFullScreenMap();
+                    },
                     child: const Icon(Icons.fullscreen),
                   ),
                 ),
