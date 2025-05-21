@@ -18,7 +18,6 @@ import 'package:storyqito_app/core/provider/story/story_provider.dart';
 import 'package:storyqito_app/core/provider/upload/upload_location_loading_provider.dart';
 import 'package:storyqito_app/core/provider/upload/upload_map_controller_provider.dart';
 import 'package:storyqito_app/core/routes/app_router.dart';
-import 'package:storyqito_app/core/routes/my_route_information_parser.dart';
 import 'package:storyqito_app/core/utils/constants.dart';
 import 'package:storyqito_app/my_app.dart';
 
@@ -32,7 +31,6 @@ class AppRoot extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider(create: (_) => SettingRepository(sharedPrefs)),
-        Provider(create: (_) => MyRouteInformationParser()),
         Provider(
           create:
               (_) => ApiServices(
@@ -44,11 +42,6 @@ class AppRoot extends StatelessWidget {
         Provider(
           create:
               (context) =>
-                  AppRouter(authProvider: context.read<AuthProvider>()),
-        ),
-        Provider(
-          create:
-              (context) =>
                   AuthRepository(sharedPrefs, context.read<ApiServices>()),
         ),
         Provider(
@@ -56,6 +49,13 @@ class AppRoot extends StatelessWidget {
         ),
         Provider(
           create: (context) => MapsRepository(context.read<MapsApiService>()),
+        ),
+        Provider(
+          create:
+              (context) => AppRouter(
+                authProvider: context.read<AuthProvider>(),
+                appProvider: context.read<AppProvider>(),
+              ),
         ),
         ChangeNotifierProvider(create: (_) => AppProvider()),
         ChangeNotifierProvider(
@@ -66,7 +66,10 @@ class AppRoot extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create:
-              (context) => AddNewStoryProvider(context.read<StoryRepository>()),
+              (context) => AddNewStoryProvider(
+                storyRepository: context.read<StoryRepository>(),
+                appService: AppService(),
+              ),
         ),
         ChangeNotifierProvider(
           create:
