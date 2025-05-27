@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/data/model/user.dart';
 import 'package:storyqito_app/core/provider/app/app_provider.dart';
@@ -34,6 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _submitFormRegister() async {
     if (_formKey.currentState!.validate()) {
+      FocusScope.of(context).unfocus();
       final authProvider = context.read<AuthProvider>();
       final User user = User(
         name: _nameController.text,
@@ -45,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (result.data != null && !result.data!.error) {
         if (mounted) {
-          context.go("/");
+          context.read<AppProvider>().openLogin();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(

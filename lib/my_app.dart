@@ -17,12 +17,12 @@ class MyApp extends StatelessWidget {
     final settingProvider = context.watch<SettingProvider>();
     final isDarkTheme = settingProvider.setting?.isDark ?? false;
     final router = context.read<AppRouter>().router;
-    final AppService _appService = AppService();
+    final AppService appService = AppService();
 
     TextTheme textTheme = createTextTheme(context);
     MaterialTheme theme = MaterialTheme(textTheme);
 
-    if (_appService.getKIsWeb()) {
+    if (appService.getKIsWeb()) {
       final appFlavor = const String.fromEnvironment(
         "APP_FLAVOR",
         defaultValue: "free",

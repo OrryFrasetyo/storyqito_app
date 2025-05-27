@@ -31,7 +31,7 @@ class LanguagePicker extends StatelessWidget {
   ) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
-        isExpanded: false,
+        isExpanded: true,
         items: [
           DropdownMenuItem<String>(
             value: "en",
@@ -44,15 +44,13 @@ class LanguagePicker extends StatelessWidget {
                   height: 24.0,
                 ),
                 const SizedBox(width: 8.0),
-                Flexible(
-                  child: Text(
-                    localizations.english,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    overflow: TextOverflow.ellipsis,
+                Text(
+                  localizations.english,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -68,15 +66,13 @@ class LanguagePicker extends StatelessWidget {
                   height: 24.0,
                 ),
                 const SizedBox(width: 8.0),
-                Flexible(
-                  child: Text(
-                    localizations.indonesian,
-                    style: const TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    overflow: TextOverflow.ellipsis,
+                Text(
+                  localizations.indonesian,
+                  style: const TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w600,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -89,9 +85,9 @@ class LanguagePicker extends StatelessWidget {
           }
         },
         buttonStyleData: ButtonStyleData(
-          width: 140,
+          width: double.infinity,
           height: 40.0,
-          padding: const EdgeInsets.only(left: 16.0, right: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18.0),
             color: Theme.of(context).colorScheme.primaryContainer,
@@ -99,7 +95,7 @@ class LanguagePicker extends StatelessWidget {
           elevation: 2,
         ),
         iconStyleData: IconStyleData(
-          icon: const Icon(Icons.arrow_drop_down),
+          icon: const Icon(Icons.arrow_drop_down, size: 18.0),
           iconEnabledColor: Theme.of(context).colorScheme.onPrimaryContainer,
           iconDisabledColor: Theme.of(context).colorScheme.onSurfaceVariant,
         ),
@@ -119,7 +115,7 @@ class LanguagePicker extends StatelessWidget {
         ),
         menuItemStyleData: const MenuItemStyleData(
           height: 40,
-          padding: EdgeInsets.only(left: 10.0, right: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
         ),
       ),
     );
@@ -130,7 +126,7 @@ class LanguagePicker extends StatelessWidget {
     AppLocalizations localizations,
   ) {
     return IconButton(
-      icon: const Icon(Icons.language_rounded),
+      icon: const Icon(Icons.language),
       tooltip: localizations.language,
       onPressed: () {
         context.read<AppProvider>().openLanguageDialog();

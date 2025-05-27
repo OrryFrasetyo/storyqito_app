@@ -235,18 +235,18 @@ class AppRouter {
 
     final validPaths = [
       '/',
-      '/not-found',
       '/login',
       '/login/language-dialog',
       '/register',
       '/register/language-dialog',
-      '/logout-confirmation',
       '/story',
       '/upload',
       '/upload/map',
       '/upload/upgrade',
       '/map',
       '/setting',
+      '/logout-confirmation',
+      '/not-found',
     ];
 
     final isValidPath =
@@ -267,7 +267,7 @@ class AppRouter {
         !isGoingToAuth &&
         path != '/not-found' &&
         !appProvider.isLanguageDialogOpen) {
-      return '/not-found';
+      return '/login';
     }
 
     if (isLoggedIn && isGoingToAuth) {

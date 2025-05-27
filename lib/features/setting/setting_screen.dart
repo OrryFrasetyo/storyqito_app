@@ -60,12 +60,15 @@ class _SettingScreenState extends State<SettingScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                       ),
-                      trailing: LanguagePicker(
-                        onLanguageChanged:
-                            (code) => settingProvider.setLocale(code),
-                        selectedLanguageCode:
-                            settingProvider.locale.languageCode,
-                        isCompactMode: false,
+                      trailing: SizedBox(
+                        width: 140,
+                        child: LanguagePicker(
+                          onLanguageChanged:
+                              (code) => settingProvider.setLocale(code),
+                          selectedLanguageCode:
+                              settingProvider.locale.languageCode,
+                          isCompactMode: false,
+                        ),
                       ),
                     ),
                     SizedBox(height: 16.0),

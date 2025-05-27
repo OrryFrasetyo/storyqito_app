@@ -50,13 +50,7 @@ class AppRoot extends StatelessWidget {
         Provider(
           create: (context) => MapsRepository(context.read<MapsApiService>()),
         ),
-        Provider(
-          create:
-              (context) => AppRouter(
-                authProvider: context.read<AuthProvider>(),
-                appProvider: context.read<AppProvider>(),
-              ),
-        ),
+
         ChangeNotifierProvider(create: (_) => AppProvider()),
         ChangeNotifierProvider(
           create: (context) => AuthProvider(context.read<AuthRepository>()),
@@ -90,6 +84,13 @@ class AppRoot extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => UploadMapControllerProvider(),
+        ),
+        Provider(
+          create:
+              (context) => AppRouter(
+                authProvider: context.read<AuthProvider>(),
+                appProvider: context.read<AppProvider>(),
+              ),
         ),
       ],
       child: MyApp(),

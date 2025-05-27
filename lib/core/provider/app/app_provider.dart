@@ -108,4 +108,17 @@ class AppProvider extends ChangeNotifier {
     _isDetailFullScreenMap = false;
     notifyListeners();
   }
+
+  void resetAllState() {
+    _selectedStory = null;
+    _isRegister = false;
+    _isLogin = false;
+    _isDialogLogOutOpen = false;
+    _isLanguageDialogOpen = false;
+    _isUpDialogOpen = false;
+    _isFromDetail = false;
+    _isUploadFullScreenMap = false;
+    _isDetailFullScreenMap = false;
+    notifyListeners();
+  }
 }
