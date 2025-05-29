@@ -15,7 +15,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get login_account => 'Masuk Akun';
 
   @override
-  String get please_login_using_your_account => 'Silahkan masuk menggunakan akun Anda';
+  String get please_login_using_your_account =>
+      'Silahkan masuk menggunakan akun Anda';
 
   @override
   String get email => 'Email';
@@ -93,7 +94,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get cancel => 'Batal';
 
   @override
-  String get direct_story_access_not_support => 'Akses langsung ke cerita tidak didukung. Dialihkan ke beranda.';
+  String get direct_story_access_not_support =>
+      'Akses langsung ke cerita tidak didukung. Dialihkan ke beranda.';
 
   @override
   String get dark_theme => 'Tema Gelap';
@@ -132,7 +134,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get no_stories => 'Tidak ada cerita yang tersedia';
 
   @override
-  String get pull_to_refresh => 'Tarik ke bawah untuk menyegarkan atau pilih unggah untuk menambahkan cerita baru';
+  String get pull_to_refresh =>
+      'Tarik ke bawah untuk menyegarkan atau pilih unggah untuk menambahkan cerita baru';
 
   @override
   String get retry => 'Coba Lagi';
@@ -189,7 +192,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get change_image => 'Ganti Gambar';
 
   @override
-  String get image_too_large => 'Ukuran gambar terlalu besar. Ukuran maksimum adalah 1MB.';
+  String get image_too_large =>
+      'Ukuran gambar terlalu besar. Ukuran maksimum adalah 1MB.';
 
   @override
   String get error_taking_picture => 'Terjadi kesalahan saat mengambil gambar:';
@@ -201,16 +205,19 @@ class AppLocalizationsId extends AppLocalizations {
   String get error_accessing_camera => 'Akses kamera ditolak';
 
   @override
-  String get error_initializing_camera => 'Terjadi kesalahan saat menyiapkan kamera:';
+  String get error_initializing_camera =>
+      'Terjadi kesalahan saat menyiapkan kamera:';
 
   @override
-  String get error_switching_camera => 'Terjadi kesalahan saat mengganti kamera:';
+  String get error_switching_camera =>
+      'Terjadi kesalahan saat mengganti kamera:';
 
   @override
   String get camera_access_denied => 'Akses ke kamera ditolak:';
 
   @override
-  String get camera_used_by_other => 'Kamera sedang digunakan oleh aplikasi lain. Silakan tutup aplikasi kamera lainnya dan coba kembali.';
+  String get camera_used_by_other =>
+      'Kamera sedang digunakan oleh aplikasi lain. Silakan tutup aplikasi kamera lainnya dan coba kembali.';
 
   @override
   String get please_select_image => 'Mohon pilih gambar terlebih dahulu';
@@ -264,7 +271,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get get_premium => 'Dapatkan Fitur Premium';
 
   @override
-  String get premium_benefits_description => 'Tingkatkan ke Storyqito Premium untuk menikmati fitur tambah lokasi ke cerita Anda :)';
+  String get premium_benefits_description =>
+      'Tingkatkan ke Storyqito Premium untuk menikmati fitur tambah lokasi ke cerita Anda :)';
 
   @override
   String get close => 'Tutup';
@@ -279,7 +287,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get premium_feature => 'Fitur Premium';
 
   @override
-  String get upgrade_to_add_location => 'Tingkatkan ke Premium untuk menambahkan lokasi ke cerita Anda';
+  String get upgrade_to_add_location =>
+      'Tingkatkan ke Premium untuk menambahkan lokasi ke cerita Anda';
 
   @override
   String get upgrade_now => 'Tingkatkan Sekarang';
@@ -294,10 +303,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get location_permissions_denied => 'Izin lokasi ditolak.';
 
   @override
-  String get location_permissions_permanently_denied => 'Izin lokasi ditolak secara permanen. Harap aktifkan di pengaturan perangkat Anda. Atau anda bisa menentukan lokasi secara manual';
+  String get location_permissions_permanently_denied =>
+      'Izin lokasi ditolak secara permanen. Harap aktifkan di pengaturan perangkat Anda. Atau anda bisa menentukan lokasi secara manual';
 
   @override
-  String get location_error => 'Tidak dapat mengakses lokasi Anda. Silakan periksa izin Anda.';
+  String get location_error =>
+      'Tidak dapat mengakses lokasi Anda. Silakan periksa izin Anda.';
 
   @override
   String get story_not_found => 'Cerita Tidak Ditemukan';
@@ -306,7 +317,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get page_not_found => 'Halaman Tidak Ditemukan';
 
   @override
-  String get page_not_found_description => 'Halaman yang Anda cari tidak ditemukan.';
+  String get page_not_found_description =>
+      'Halaman yang Anda cari tidak ditemukan.';
 
   @override
   String get go_to_home => 'Kembali ke Beranda';

@@ -19,11 +19,11 @@ class _SettingScreenState extends State<SettingScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           localizations.setting,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -63,8 +63,6 @@ class _SettingScreenState extends State<SettingScreen> {
                       trailing: SizedBox(
                         width: 140,
                         child: LanguagePicker(
-                          onLanguageChanged:
-                              (code) => settingProvider.setLocale(code),
                           selectedLanguageCode:
                               settingProvider.locale.languageCode,
                           isCompactMode: false,

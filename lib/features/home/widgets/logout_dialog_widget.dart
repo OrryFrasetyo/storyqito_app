@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/app/app_provider.dart';
@@ -47,16 +46,15 @@ class LogoutDialogWidget extends StatelessWidget {
               await context.read<AuthProvider>().logout();
               if (context.mounted) {
                 appProvider.closeDialogLogOut();
-                if (authProvider.isLogoutSuccess) {
-                  appProvider.closeDialogLogOut();
 
+                if (authProvider.isLogoutSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(localizations.logout_success)),
                   );
-
-                  if (context.mounted) {
-                    GoRouter.of(context).go('/login');
-                  }
+                  // TODO
+                  // if (context.mounted) {
+                  //   GoRouter.of(context).go('/login');
+                  // }
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(authProvider.errorMsg)),

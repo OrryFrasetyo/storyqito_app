@@ -41,12 +41,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
       final result = await authProvider.login(user.email!, user.password!);
 
-      if (result.data != null) {
+      if (result.data != null && !result.data!.error) {
         if (mounted) {
           context.read<AuthProvider>().isLogged();
 
           bool isWideScreen =
               MediaQuery.of(context).size.width >= tabletWidthThreshold;
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               margin:
@@ -54,10 +55,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       ? EdgeInsets.only(bottom: 16, left: 96, right: 16)
                       : EdgeInsets.only(bottom: 16, left: 16, right: 16),
               content: Text(
-                result.message ?? AppLocalizations.of(context)!.login_success,
+                AppLocalizations.of(context)!.login_success,
                 style: TextStyle(color: Colors.black),
               ),
               backgroundColor: Colors.green.shade300,
+              behavior: SnackBarBehavior.floating,
             ),
           );
         }
@@ -66,10 +68,13 @@ class _LoginScreenState extends State<LoginScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                result.message ?? AppLocalizations.of(context)!.login_failed,
+                result.message ??
+                    result.data?.message ??
+                    AppLocalizations.of(context)!.login_failed,
                 style: TextStyle(color: Colors.black),
               ),
               backgroundColor: Theme.of(context).colorScheme.error,
+              behavior: SnackBarBehavior.floating,
             ),
           );
         }
@@ -93,7 +98,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.only(right: 8.0),
                       child: LanguagePicker(
                         selectedLanguageCode: provider.locale.languageCode,
-                        onLanguageChanged: (code) => provider.setLocale(code),
                         isCompactMode: true,
                       ),
                     ),

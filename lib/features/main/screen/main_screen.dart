@@ -58,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
             _isMobile
                 ? tabContent
                 : Row(
-                  key: ValueKey("desktop_layout"),
+                  key: const ValueKey("desktop_layout"),
                   children: [
                     NavigationRail(
                       destinations: [

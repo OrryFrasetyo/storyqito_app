@@ -15,7 +15,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login_account => 'Login Account';
 
   @override
-  String get please_login_using_your_account => 'Please login using your account';
+  String get please_login_using_your_account =>
+      'Please login using your account';
 
   @override
   String get email => 'Email';
@@ -93,7 +94,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
-  String get direct_story_access_not_support => 'Direct access to stories is not supported. Redirected to the home.';
+  String get direct_story_access_not_support =>
+      'Direct access to stories is not supported. Redirected to the home.';
 
   @override
   String get dark_theme => 'Dark Theme';
@@ -132,7 +134,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no_stories => 'No stories available';
 
   @override
-  String get pull_to_refresh => 'Pull down to refresh or select upload to add a new story';
+  String get pull_to_refresh =>
+      'Pull down to refresh or select upload to add a new story';
 
   @override
   String get retry => 'Retry';
@@ -210,7 +213,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get camera_access_denied => 'Camera access denied';
 
   @override
-  String get camera_used_by_other => 'Camera is in use by another app. Please close other camera apps and try again.';
+  String get camera_used_by_other =>
+      'Camera is in use by another app. Please close other camera apps and try again.';
 
   @override
   String get please_select_image => 'Please select an image first!';
@@ -264,7 +268,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get get_premium => 'Get Premium';
 
   @override
-  String get premium_benefits_description => 'Upgrade to Storyqito Premium to enjoy additional features  adding location to your stories!';
+  String get premium_benefits_description =>
+      'Upgrade to Storyqito Premium to enjoy additional features  adding location to your stories!';
 
   @override
   String get close => 'Close';
@@ -279,7 +284,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premium_feature => 'Premium Feature';
 
   @override
-  String get upgrade_to_add_location => 'Upgrade to Premium to add location to your stories';
+  String get upgrade_to_add_location =>
+      'Upgrade to Premium to add location to your stories';
 
   @override
   String get upgrade_now => 'Upgrade Now';
@@ -294,10 +300,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get location_permissions_denied => 'Location permissions are denied.';
 
   @override
-  String get location_permissions_permanently_denied => 'Location permissions are permanently denied. Please enable them in your device settings. Or you can select location manually';
+  String get location_permissions_permanently_denied =>
+      'Location permissions are permanently denied. Please enable them in your device settings. Or you can select location manually';
 
   @override
-  String get location_error => 'Unable to access your location. Please check your permissions.';
+  String get location_error =>
+      'Unable to access your location. Please check your permissions.';
 
   @override
   String get story_not_found => 'Story Not Found';
@@ -306,7 +314,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get page_not_found => 'Page Not Found';
 
   @override
-  String get page_not_found_description => 'The page you\'re looking for doesn\'t exist.';
+  String get page_not_found_description =>
+      'The page you\'re looking for doesn\'t exist.';
 
   @override
   String get go_to_home => 'Go to Home';

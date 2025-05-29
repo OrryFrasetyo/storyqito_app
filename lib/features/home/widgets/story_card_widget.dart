@@ -105,7 +105,6 @@ class StoryCardWidget extends StatelessWidget {
                     return Container(
                       width: double.infinity,
                       constraints: BoxConstraints(
-                        //TODO minWidth: double.infinity,
                         maxHeight: 400.0,
                       ),
                       child: ConstrainedBox(

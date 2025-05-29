@@ -29,7 +29,7 @@ class StoryErrorWidget extends StatelessWidget {
           const SizedBox(height: 16.0),
           Text(
             "${localizations.error_loading_stories} $errorMsg",
-            style: TextStyle(fontSize: 16.0),
+            style: const TextStyle(fontSize: 16.0),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16.0),

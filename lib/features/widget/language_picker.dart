@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:storyqito_app/core/localization/l10n/app_localizations.dart';
 import 'package:storyqito_app/core/provider/app/app_provider.dart';
+import 'package:storyqito_app/core/provider/setting/setting_provider.dart';
 
 class LanguagePicker extends StatelessWidget {
-  final Function(String) onLanguageChanged;
   final String selectedLanguageCode;
   final bool isCompactMode;
 
   const LanguagePicker({
     super.key,
-    required this.onLanguageChanged,
     required this.selectedLanguageCode,
     this.isCompactMode = false,
   });
@@ -29,6 +28,8 @@ class LanguagePicker extends StatelessWidget {
     BuildContext context,
     AppLocalizations localizations,
   ) {
+    final settingProvider = context.read<SettingProvider>();
+
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
         isExpanded: true,
@@ -81,7 +82,7 @@ class LanguagePicker extends StatelessWidget {
         value: selectedLanguageCode,
         onChanged: (value) {
           if (value != null) {
-            onLanguageChanged(value);
+            settingProvider.setLocale(value);
           }
         },
         buttonStyleData: ButtonStyleData(

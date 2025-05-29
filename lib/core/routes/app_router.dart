@@ -159,19 +159,6 @@ class AppRouter {
           ),
 
           GoRoute(
-            path: '/map',
-            name: 'map',
-            builder: (context, state) => StoryMapScreen(),
-            redirect: (context, state) {
-              if (appProvider.selectedStory != null) {
-                return '/map/story/${appProvider.selectedStory!.id}';
-              }
-              return null;
-            },
-            routes: [_detailRoute('map')],
-          ),
-
-          GoRoute(
             path: '/upload',
             name: 'upload',
             builder: (context, state) => UploadStoryScreen(),
@@ -210,6 +197,21 @@ class AppRouter {
               ),
             ],
           ),
+
+          GoRoute(
+            path: '/map',
+            name: 'map',
+            builder: (context, state) => StoryMapScreen(),
+            redirect: (context, state) {
+              if (appProvider.selectedStory != null) {
+                return '/map/story/${appProvider.selectedStory!.id}';
+              }
+              return null;
+            },
+            routes: [_detailRoute('map')],
+          ),
+
+          
           GoRoute(
             path: '/setting',
             name: 'setting',

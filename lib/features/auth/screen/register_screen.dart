@@ -49,11 +49,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                result.message ??
-                    AppLocalizations.of(context)!.register_success,
+                AppLocalizations.of(context)!.register_success,
                 style: TextStyle(color: Colors.black),
               ),
               backgroundColor: Colors.green.shade300,
+              behavior: SnackBarBehavior.floating,
             ),
           );
         }
@@ -62,10 +62,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                result.message ?? AppLocalizations.of(context)!.register_failed,
+                result.message ??
+                    result.data?.message ??
+                    AppLocalizations.of(context)!.register_failed,
                 style: TextStyle(color: Colors.black),
               ),
               backgroundColor: Theme.of(context).colorScheme.error,
+              behavior: SnackBarBehavior.floating,
             ),
           );
         }
@@ -77,109 +80,113 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        actions: [
-          Consumer<SettingProvider>(
-            builder:
-                (context, provider, _) => Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: LanguagePicker(
-                    selectedLanguageCode: provider.locale.languageCode,
-                    onLanguageChanged: (code) => provider.setLocale(code),
-                    isCompactMode: true,
-                  ),
-                ),
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, child) {
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            actions: [
+              Consumer<SettingProvider>(
+                builder:
+                    (context, provider, _) => Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: LanguagePicker(
+                        selectedLanguageCode: provider.locale.languageCode,
+                        isCompactMode: true,
+                      ),
+                    ),
+              ),
+            ],
           ),
-        ],
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 400.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Image.asset("assets/icon/storyqito-logo.png", height: 80),
-                    const SizedBox(height: 16.0),
-                    Text(
-                      localizations.create_account,
-                      style: Theme.of(context).textTheme.headlineMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8.0),
-                    Text(
-                      localizations.please_create_account,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.grey.shade600,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 32),
-                    TextFormField(
-                      controller: _nameController,
-                      decoration: customInputDecoration(
-                        label: localizations.full_name,
-                        prefixIcon: Icons.person_outlined,
-                      ),
-                      validator:
-                          (value) => Validators.validateRequired(
-                            value,
-                            localizations.enter_full_name,
-                          ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: customInputDecoration(
-                        label: localizations.email,
-                        prefixIcon: Icons.email_outlined,
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                      validator:
-                          (value) => Validators.validateEmail(
-                            value,
-                            localizations.enter_email,
-                            localizations.enter_valid_email,
-                          ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    TextFormField(
-                      controller: _passwordController,
-                      decoration: customInputDecoration(
-                        label: localizations.password,
-                        prefixIcon: Icons.lock_outlined,
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          },
-                          icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
+          body: Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 400.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Image.asset(
+                          "assets/icon/storyqito-logo.png",
+                          height: 80,
                         ),
-                      ),
-                      obscureText: _obscurePassword,
-                      validator:
-                          (value) => Validators.validatePassword(
-                            value,
-                            localizations.enter_password,
-                            localizations.password_minimum,
+                        const SizedBox(height: 16.0),
+                        Text(
+                          localizations.create_account,
+                          style: Theme.of(context).textTheme.headlineMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8.0),
+                        Text(
+                          localizations.please_create_account,
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(color: Colors.grey.shade600),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 32),
+                        TextFormField(
+                          controller: _nameController,
+                          enabled: !authProvider.isLoadingRegister,
+                          decoration: customInputDecoration(
+                            label: localizations.full_name,
+                            prefixIcon: Icons.person_outlined,
                           ),
-                    ),
-                    const SizedBox(height: 24.0),
-                    Consumer<AuthProvider>(
-                      builder: (context, authProvider, child) {
-                        return ElevatedButton(
+                          validator:
+                              (value) => Validators.validateRequired(
+                                value,
+                                localizations.enter_full_name,
+                              ),
+                        ),
+                        const SizedBox(height: 16.0),
+                        TextFormField(
+                          controller: _emailController,
+                          enabled: !authProvider.isLoadingRegister,
+                          decoration: customInputDecoration(
+                            label: localizations.email,
+                            prefixIcon: Icons.email_outlined,
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          validator:
+                              (value) => Validators.validateEmail(
+                                value,
+                                localizations.enter_email,
+                                localizations.enter_valid_email,
+                              ),
+                        ),
+                        const SizedBox(height: 16.0),
+                        TextFormField(
+                          controller: _passwordController,
+                          enabled: !authProvider.isLoadingRegister,
+                          decoration: customInputDecoration(
+                            label: localizations.password,
+                            prefixIcon: Icons.lock_outlined,
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _obscurePassword = !_obscurePassword;
+                                });
+                              },
+                              icon: Icon(
+                                _obscurePassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                            ),
+                          ),
+                          obscureText: _obscurePassword,
+                          validator:
+                              (value) => Validators.validatePassword(
+                                value,
+                                localizations.enter_password,
+                                localizations.password_minimum,
+                              ),
+                        ),
+                        const SizedBox(height: 24.0),
+                        ElevatedButton(
                           onPressed:
                               authProvider.isLoadingRegister
                                   ? null
@@ -197,41 +204,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                   )
                                   : Text(localizations.register_upper),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 24.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            localizations.already_have_account,
-                            style: TextStyle(color: Colors.grey.shade600),
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: true,
-                          ),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            context.read<AppProvider>().openLogin();
-                          },
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.all(8.0),
-                            minimumSize: Size(50, 30),
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          ),
-                          child: Text(localizations.login_lower),
+                        const SizedBox(height: 24.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                localizations.already_have_account,
+                                style: TextStyle(color: Colors.grey.shade600),
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                context.read<AppProvider>().openLogin();
+                              },
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.all(8.0),
+                                minimumSize: Size(50, 30),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              child: Text(localizations.login_lower),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
