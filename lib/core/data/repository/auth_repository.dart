@@ -29,11 +29,9 @@ class AuthRepository {
   }
 
   Future<bool> deleteUser() async {
-    return _sharedPrefs.setString(AuthPrefsKey.userKey, "");
-    // TODO
-    // final result = await _sharedPrefs.remove(AuthPrefsKey.userKey);
+    final result = await _sharedPrefs.remove(AuthPrefsKey.userKey);
 
-    // return result;
+    return result;
   }
 
   Future<User?> getUser() async {
@@ -41,13 +39,11 @@ class AuthRepository {
     final json = _sharedPrefs.getString(AuthPrefsKey.userKey) ?? "";
     User? user;
     try {
-      user = UserExtension.fromJsonString(json);
-      // TODO:
-      // if (json.isNotEmpty) {
-      //   user = UserExtension.fromJsonString(json);
-      // } else {
-      //   user = null;
-      // }
+      if (json.isNotEmpty) {
+        user = UserExtension.fromJsonString(json);
+      } else {
+        user = null;
+      }
     } catch (e) {
       user = null;
     }

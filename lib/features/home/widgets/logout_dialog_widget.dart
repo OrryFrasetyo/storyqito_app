@@ -51,10 +51,6 @@ class LogoutDialogWidget extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(localizations.logout_success)),
                   );
-                  // TODO
-                  // if (context.mounted) {
-                  //   GoRouter.of(context).go('/login');
-                  // }
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(authProvider.errorMsg)),

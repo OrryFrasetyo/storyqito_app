@@ -58,14 +58,12 @@ class AuthProvider extends ChangeNotifier {
 
     try {
       final logout = await authRepository.logout();
+      
       if (logout) {
         await authRepository.deleteUser();
       }
+
       isLoggedIn = await authRepository.isLoggedIn();
-      // TODO:
-      // isLoggedIn = false;
-      // user = null;
-      // errorMsg = "";
       isLogoutSuccess = true;
     } catch (e) {
       errorMsg = "An error occurred while logging out";
